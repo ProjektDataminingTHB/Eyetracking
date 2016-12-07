@@ -1,0 +1,30 @@
+1 )Daten zerlegen in Versuchsgruppen:
+	pro Nutzer Zuordnung von Target --> Blickwerten
+	erwartetes Ergebnis:
+		Verzeichnise mit allen Durchläufen für eine Versuchsperson
+			Dateie getrennt in Target und Blickwerte
+			
+			Muster:
+			/v01/liegende8_langsam/probelauf/cycle1/Target.csv
+			/v01/liegende8_langsam/probelauf/cycle1/Blickpunkte.csv
+			/v01/liegende8_langsam/messung1/cycle1/Target.csv
+			/v01/liegende8_langsam/messung1/cycle1/Blickpunkte.csv
+			/v01/liegende8_langsam/messung1/cycle2/Target.csv
+			/v01/liegende8_langsam/messung1/cycle2/Blickpunkte.csv
+			/v01/liegende8_langsam/messung2/cycle1/Target.csv
+			/v01/liegende8_langsam/messung2/cycle1/Blickpunkte.csv
+			/v01/liegende8_langsam/messung2/cycle2/Target.csv
+			/v01/liegende8_langsam/messung2/cycle2/Blickpunkte.csv
+
+2) Klären der Koordinatensystemposition:
+	ggf.Angleichung
+
+3) Zuordnung der Blickpunkte zu den Targetpunkten mittels Zeitstempel
+	erwartetes Ergebnis:
+		jeder Taget Punkt hat 2-3 Blickpunkte
+
+4) Fragen notieren für den Auftraggeber
+	-->Nullen ==> evtl. geschlossene Augen (Zwinkern)
+	-->Timestamp, wie ist der zu rekonstruieren
+	-->Koordinatensystem, sind die für beide Dateien gleich gelegt
+	--> Was bedeutet Fixcross?
