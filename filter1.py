@@ -40,7 +40,7 @@ for dateiname in dateinamen:
 			file_.write(';')
 			file_.write(str(list.at[i,'blick_r_x']))
 			file_.write(';')
-			file_.write(str(list.at[i,'blick_r_x']))
+			file_.write(str(list.at[i,'blick_r_y']))
 			file_.write('\n')
 		file_.close()
 		
