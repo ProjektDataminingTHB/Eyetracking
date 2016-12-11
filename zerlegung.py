@@ -114,6 +114,7 @@ def struktur_erstellung(begin, end, cycle_start, cycle_stop, messung, erste_spal
 def zerlegung(ausgabe_ordner = './daten_zerlegung', eingabe_ordner = './', eingabe_prefix = 'vp_', eingabe_blick_suffix = '_gaze', ausgabe_prefix = 'vp_', ausgabe_blick_suffix = '_gaze', messung_ordner_prefix = 'messung', probe_ordner_prefix = 'probe', delim = ' '):
     err_ordner_not_exist = 'Der Ordner {} ist nicht vorhanden'
     header = ['zeitstempel', 'blick_l_x', 'blick_l_y', 'blick_r_x', 'blick_r_y']
+    header_target = ['t_tracker', 'pix_x', 'pix_y']
     experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
     messungen = ['messung_1', 'messung_2', 'probe']
 
@@ -193,10 +194,24 @@ def zerlegung(ausgabe_ordner = './daten_zerlegung', eingabe_ordner = './', einga
                                         experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
             else:
+                inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = ';', names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x', 'deg_y'])
+                data1 = list(inhalt_datei['t_Tracker'])
+                data2 = list(inhalt_datei['pix_x'])
+                data3 = list(inhalt_datei['pix_y'])
+
+                data1 = data1[1:]
+                data2 = data2[1:]
+                data3 = data3[1:]
+
+                data = np.concatenate((np.array([data1]).T,
+                                      np.array([data2]).T,
+                                        np.array([data3]).T), axis = 1)
                 ordner = ausgabe_ordner + '/' + ausgabe_prefix + csv_name
                 if os.path.exists(ordner) == False:
                     os.mkdir(ordner)
-                shutil.copy(eingabe_ordner + '/' + csv_datei, ordner)
+                #shutil.copy(eingabe_ordner + '/' + csv_datei, ordner)
+                df = pd.DataFrame(data, columns=header_target)
+                df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + '.csv', index=False)
         i += 1
     print('Komplete Zerlegung abgeschlossen !!!')
 default_input = './daten'
