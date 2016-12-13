@@ -28,3 +28,6 @@
 	-->Timestamp, wie ist der zu rekonstruieren
 	-->Koordinatensystem, sind die für beide Dateien gleich gelegt
 	--> Was bedeutet Fixcross?
+	
+Refences
+	https://people.csail.mit.edu/tjudd/WherePeopleLook/Docs/WherePeopleLookTalk.pdf
