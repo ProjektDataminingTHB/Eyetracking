@@ -18,16 +18,23 @@
 
 2) Klären der Koordinatensystemposition:
 	ggf.Angleichung
+	Visualisierung der Punkte (Blick, verglichen mit Target)
 
 3) Zuordnung der Blickpunkte zu den Targetpunkten mittels Zeitstempel
 	erwartetes Ergebnis:
 		jeder Taget Punkt hat 2-3 Blickpunkte
 
-4) Fragen notieren für den Auftraggeber
+4) Fragen notieren für den Auftraggeber (siehe Datenbeschreibung.odt)
 	-->Nullen ==> evtl. geschlossene Augen (Zwinkern)
 	-->Timestamp, wie ist der zu rekonstruieren
 	-->Koordinatensystem, sind die für beide Dateien gleich gelegt
 	--> Was bedeutet Fixcross?
+
+5) Merkmale überlegen und erzeugen
+	Bsp.: pro Experiment Min. Max., Mittelwert, Varianz, Standardabweichung für den Abstand zwischen Blickpunkt und Zielpunkt
+	
+6) Clustern mittels DBScan
+
 	
 Refences
 	https://people.csail.mit.edu/tjudd/WherePeopleLook/Docs/WherePeopleLookTalk.pdf
