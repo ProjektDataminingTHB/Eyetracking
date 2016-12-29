@@ -36,5 +36,5 @@
 6) Clustern mittels DBScan
 
 	
-Refences
+References
 	https://people.csail.mit.edu/tjudd/WherePeopleLook/Docs/WherePeopleLookTalk.pdf
