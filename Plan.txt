@@ -23,12 +23,14 @@
 3) Zuordnung der Blickpunkte zu den Targetpunkten mittels Zeitstempel
 	erwartetes Ergebnis:
 		jeder Taget Punkt hat 2-3 Blickpunkte
+	==> Zusammenfassung der Dateien in eine Datei mit einem Eintrag pro Targetpunkt, dem der nächste Blickpunkt zugeordnet ist, der einen gößeren Zeitstempel hat.
 
 4) Fragen notieren für den Auftraggeber (siehe Datenbeschreibung.odt)
 	-->Nullen ==> evtl. geschlossene Augen (Zwinkern)
-	-->Timestamp, wie ist der zu rekonstruieren
+	#-->Timestamp, wie ist der zu rekonstruieren ==> als unwichtig markiert, Rekonstruktion nicht notwendig
 	-->Koordinatensystem, sind die für beide Dateien gleich gelegt
-	--> Was bedeutet Fixcross?
+	#--> Was bedeutet Fixcross? ==> als unwichtig gekennzeichnet, vermutlich nur Kalibrierung der Geräte
+	-->weitere Fragen, die bei der letzten Besprechung 2016 aufkamen.
 
 5) Merkmale überlegen und erzeugen
 	Bsp.: pro Experiment Min. Max., Mittelwert, Varianz, Standardabweichung für den Abstand zwischen Blickpunkt und Zielpunkt
