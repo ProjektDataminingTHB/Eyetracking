@@ -26,6 +26,7 @@ def finde_letzten_wert(zeitstempelliste, suchwert, anfang):
 				ende = ende1
 		except:
 			pass
+	return ende
 
 
 
@@ -61,12 +62,8 @@ for dateiname in dateinamen:
 					erster_zeitwert = messung_zeitstempel[0]
 					# das entfernt zwar den letzten Punkt in der Liste, allerdings benötigen wir die Liste auch nicht weiter
 					letzter_zeitwert = messung_zeitstempel.pop()
-					print(messungen_csv)
-					print('erster Wert' + str(erster_zeitwert))
 					erster_wert = finde_ersten_wert(ziel_zeitstempel, erster_zeitwert)
 					letzter_wert = finde_letzten_wert(ziel_zeitstempel, letzter_zeitwert, erster_wert)
-					print(erster_wert)
-					print(letzter_wert)
 					ergebnis_spalte1 = list(csv_df['t_tracker'])
 					ergebnis_spalte2 = list(csv_df['pix_x'])
 					ergebnis_spalte3 = list(csv_df['pix_y'])
