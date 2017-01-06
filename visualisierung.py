@@ -19,10 +19,10 @@ def percentage(n, N):
 
 def animate(i):
     data = np.genfromtxt(
-        '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/daten_zerlegung/vp_038/liegende_acht_langsam/messung_2/cycle2/vp_038_gaze.csv',
+        './daten_zerlegung/vp_045/liegende_acht_langsam/messung_2/cycle2/vp_045_gaze.csv',
         delimiter=',')
     target_data = np.genfromtxt(
-        '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/daten_zerlegung/vp_038/liegende_acht_langsam/messung_2/vp_038.csv',
+        './daten_zerlegung/vp_045/liegende_acht_langsam/messung_2/vp_045.csv',
         delimiter=',')
 
     data_array = np.array(data[1:, :])
