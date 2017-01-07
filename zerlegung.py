@@ -120,7 +120,7 @@ def zerlegung(ausgabe_ordner = './daten_zerlegung', eingabe_ordner = '''/home/he
     header_target = ['t_tracker', 'pix_x', 'pix_y']
     experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
     seps = [';', ' ', ',']
-    messungen = ['messung_1', 'messung_2', 'probe']
+    messungen = ['messung1', 'messung2', 'probe']
     cycles = ['cycle1', 'cycle2']
 
     if os.path.exists(eingabe_ordner) == False:
