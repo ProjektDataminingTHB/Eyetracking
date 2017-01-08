@@ -123,80 +123,80 @@ def gen_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1
     else:
         if os.path.exists(output_dir) == False:
             os.mkdir(output_dir)
+
+        if n_images != len(vp_list) and vp_select == 0:
+            print('Die Anzahl der zu generierenden Bilder und der eingegebenen Versuchspersonen stimmen nicht überein')
         else:
-            if n_images != len(vp_list) and vp_select == 0:
-                print('Die Anzahl der zu generierenden Bilder und der eingegebenen Versuchspersonen stimmen nicht überein')
-            else:
-                if vp_select < 2:
-                    for i in range(n_images):
-                        if acht == 0:
-                            exp = experimente[0]
-                        if acht == 1:
-                            exp = experimente[1]
-                        if acht == 2:
-                            exp = experimente[2]
+            if vp_select < 2:
+                for i in range(n_images):
+                    if acht == 0:
+                        exp = experimente[0]
+                    if acht == 1:
+                        exp = experimente[1]
+                    if acht == 2:
+                        exp = experimente[2]
 
-                        if messung == 1:
-                            mess = messungen[0]
-                        if messung == 2:
-                            mess = messungen[1]
+                    if messung == 1:
+                        mess = messungen[0]
+                    if messung == 2:
+                        mess = messungen[1]
 
-                        if cycle == 1:
-                            cyc = cycles[0]
-                        if cycle == 2:
-                            cyc = cycles[1]
+                    if cycle == 1:
+                        cyc = cycles[0]
+                    if cycle == 2:
+                        cyc = cycles[1]
 
-                        if acht < 0 or acht > 2:
-                            exp = random_choice(experimente)
+                    if acht < 0 or acht > 2:
+                        exp = random_choice(experimente)
 
-                        if messung < 0 or messung > 2:
+                    if messung < 0 or messung > 2:
+                        mess = random_choice(messungen)
+                        while mess == messungen[2] and (exp == experimente[1] or exp == experimente[2]):
                             mess = random_choice(messungen)
-                            while mess == messungen[2] and (exp == experimente[1] or exp == experimente[2]):
-                                mess = random_choice(messungen)
-                        if cycle < 0 or cycle > 2:
-                            cyc = random_choice(cycles)
-                            if mess == messungen[2]:
-                                cyc = cycles[0]
-                        if vp_select == 1:
-                            vp_num = int_to_str(randint(1, 130))
-                        else:
-                            vp_num = int_to_str(vp_list[i])
+                    if cycle < 0 or cycle > 2:
+                        cyc = random_choice(cycles)
+                        if mess == messungen[2]:
+                            cyc = cycles[0]
+                    if vp_select == 1:
+                        vp_num = int_to_str(randint(1, 130))
+                    else:
+                        vp_num = int_to_str(vp_list[i])
 
-                        plots(input_blick = '{}vp_{}/{}/{}/{}/vp_{}_gaze.csv'.format(input_dir, vp_num, exp, mess, cyc, vp_num),
+                    plots(input_blick = '{}vp_{}/{}/{}/{}/vp_{}_gaze.csv'.format(input_dir, vp_num, exp, mess, cyc, vp_num),
                                     input_target = '{}vp_{}/{}/{}/vp_{}.csv'.format(input_dir, vp_num, exp, mess, vp_num),
                                     output_path = output_dir, vp = vp_num, exp = exp, messung = mess, cycle = cyc,
                                     delim = ',')
-                else:
-                    if vp_select == 2:
-                        n_files = count_file()
-                        n_col = 2
-                        n_lig = int(n_files / n_col)
-                        n_lig += (n_files + n_lig)
-                        d = os.walk(input_dir)
-                        n = 1
-                        for sd in d:
-                            if sd[1] == []:
-                                parent = sd[0].split('/')
-                                parent = '/'.join(parent[0:len(parent) - 1])
-                                files = os.listdir(parent + '/')
+            else:
+                if vp_select == 2:
+                    n_files = count_file()
+                    n_col = 2
+                    n_lig = int(n_files / n_col)
+                    n_lig += (n_files + n_lig)
+                    d = os.walk(input_dir)
+                    n = 1
+                    for sd in d:
+                        if sd[1] == []:
+                            parent = sd[0].split('/')
+                            parent = '/'.join(parent[0:len(parent) - 1])
+                            files = os.listdir(parent + '/')
 
-                                for file in files:
-                                    if file.endswith(".csv"):
-                                        target = file
-                                vp_num = target.split('_')[1]
-                                exp = sd[0].split('/')[len(sd[0].split('/')) - 3]
-                                mess = sd[0].split('/')[len(sd[0].split('/')) - 2]
-                                cyc = sd[0].split('/')[len(sd[0].split('/')) - 1]
-                                plots(input_blick = sd[0] + '/' + sd[2][0],
+                            for file in files:
+                                if file.endswith(".csv"):
+                                    target = file
+                            vp_num = target.split('_')[1]
+                            exp = sd[0].split('/')[len(sd[0].split('/')) - 3]
+                            mess = sd[0].split('/')[len(sd[0].split('/')) - 2]
+                            cyc = sd[0].split('/')[len(sd[0].split('/')) - 1]
+                            plots(input_blick = sd[0] + '/' + sd[2][0],
                                       input_target = parent + '/' + target,
                                       output_path=output_dir, vp=vp_num, exp=exp, messung=mess, cycle=cyc,
                                       delim=',')
-                            n += 1
+                        n += 1
                         #plt.savefig(output_dir + 'bilder.png')
                         #pp = PdfPages('multipage.pdf')
                         #pp.savefig()
-                    else:
-                        print('Der eingegebene vp_select-Wert ist falsch')
+                else:
+                    print('Der eingegebene vp_select-Wert ist falsch')
 
 def vp_min_max(images):
     if images != []:
@@ -263,8 +263,8 @@ def gen_pdf_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Proj
                                         lig += 1
                                     if lig == n_lig:
                                         lig = 0
-                                        pages.drawString(pW / 2, space / 10,
-                                                        '{} / {}'.format(n_current_page, n_page))
+                                        #pages.drawString(pW / 2, space / 10,
+                                        #                '{} / {}'.format(n_current_page, n_page))
                                         pages.showPage()
                                         n_current_page += 1
                                     pages.drawImage(ImageReader(input_dir + '/' + image), space + col * iW, pH - (space + lig * iH + iH), iW, iH)
