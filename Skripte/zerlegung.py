@@ -111,7 +111,7 @@ def struktur_erstellung(begin, end, cycle_start, cycle_stop, messung, cycle, mes
     df = pd.DataFrame(data, columns = header)
     df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + ausgabe_blick_suffix + '.csv', index=False)
 
-def zerlegung(ausgabe_ordner = './daten_zerlegung', eingabe_ordner = '''/home/herval/Documents/THB/Master/Semester1/Projekt1/
+def zerlegung(ausgabe_ordner = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung', eingabe_ordner = '''/home/herval/Documents/THB/Master/Semester1/Projekt1/
 												DataMining/ProjektAufgabe/Eyetracking/2016 - Data Mining Projekt/1 - Aufgabe/DatenTHB''',
 												eingabe_prefix = 'vp_', eingabe_blick_suffix = '_gaze', ausgabe_prefix = 'vp_', ausgabe_blick_suffix = '_gaze',
 												messung_ordner_prefix = 'messung', probe_ordner_prefix = 'probe', delim = ' '):
@@ -224,7 +224,7 @@ def zerlegung(ausgabe_ordner = './daten_zerlegung', eingabe_ordner = '''/home/he
         i += 1
     print('Komplete Zerlegung abgeschlossen !!!')
 default_input = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/2016 - Data Mining Projekt/1 - Aufgabe/DatenTHB'
-default_output = './daten_zerlegung'
+default_output = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung'
 
 input_path = input('Wo ist Ihr Datenordner ({})?_ '.format(default_input))
 output_path = input('Wo würden Sie die Zerlegung ablegen ({})?_ '.format(default_output))

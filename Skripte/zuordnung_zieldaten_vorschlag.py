@@ -32,7 +32,7 @@ def finde_letzten_wert(zeitstempelliste, suchwert, anfang):
 
 #Ausführung
 
-verzeichnis = "./daten_zerlegung"
+verzeichnis = "/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung"
 dateinamen = os.listdir(verzeichnis)
 
 header_target = ['t_tracker', 'pix_x', 'pix_y']
