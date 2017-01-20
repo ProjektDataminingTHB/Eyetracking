@@ -1,4 +1,4 @@
-1 )Daten zerlegen in Versuchsgruppen:
+1 )Daten zerlegen in Versuchsgruppen: [fertig]
 	pro Nutzer Zuordnung von Target --> Blickwerten
 	erwartetes Ergebnis:
 		Verzeichnise mit allen Durchläufen für eine Versuchsperson
@@ -16,41 +16,52 @@
 			/v01/liegende8_langsam/messung2/cycle2/Target.csv
 			/v01/liegende8_langsam/messung2/cycle2/Blickpunkte.csv
 
-2) Klären der Koordinatensystemposition:
+2) Klären der Koordinatensystemposition: [fertig]
 	ggf.Angleichung
-<<<<<<< HEAD
-=======
 	Visualisierung der Punkte (Blick, verglichen mit Target)
->>>>>>> 69bcb79edbc994eaf40d683cdfd48bc89768a1cb
 
-3) Zuordnung der Blickpunkte zu den Targetpunkten mittels Zeitstempel
-	erwartetes Ergebnis:
-		jeder Taget Punkt hat 2-3 Blickpunkte
-<<<<<<< HEAD
-
-4) Fragen notieren für den Auftraggeber
-	-->Nullen ==> evtl. geschlossene Augen (Zwinkern)
-	-->Timestamp, wie ist der zu rekonstruieren
-	-->Koordinatensystem, sind die für beide Dateien gleich gelegt
-	--> Was bedeutet Fixcross?
-	
-Refences
-=======
-	==> Zusammenfassung der Dateien in eine Datei mit einem Eintrag pro Targetpunkt, dem der nächste Blickpunkt zugeordnet ist, der einen gößeren Zeitstempel hat.
-
-4) Fragen notieren für den Auftraggeber (siehe Datenbeschreibung.odt)
+3) Fragen notieren für den Auftraggeber (siehe Datenbeschreibung.odt) [fertig]
 	-->Nullen ==> evtl. geschlossene Augen (Zwinkern)
 	#-->Timestamp, wie ist der zu rekonstruieren ==> als unwichtig markiert, Rekonstruktion nicht notwendig
 	-->Koordinatensystem, sind die für beide Dateien gleich gelegt
 	#--> Was bedeutet Fixcross? ==> als unwichtig gekennzeichnet, vermutlich nur Kalibrierung der Geräte
 	-->weitere Fragen, die bei der letzten Besprechung 2016 aufkamen.
 
-5) Merkmale überlegen und erzeugen
-	Bsp.: pro Experiment Min. Max., Mittelwert, Varianz, Standardabweichung für den Abstand zwischen Blickpunkt und Zielpunkt
-	
-6) Clustern mittels DBScan
+4) Dokumntation vorläufig in versndbare Fassung bringen. [fertig]
 
-	
-References
->>>>>>> 69bcb79edbc994eaf40d683cdfd48bc89768a1cb
+5) Anpassung der Ordnerstruktur in GitHub [fertig]
+
+6) Zusammenführung der Target- und Gazedateien
+	Im Ordner data/processed/matched/
+		sollen drei Ordner entstehen:
+		- 8_langsam
+		- 8_schnell
+		- horizontal
+
+	in diesen Ordnern wird pro Versuchsperson 1 Datei liegen, die für den Versuch jeweils die Zeitreihen mit folgenden Attributen enthält:
+	tracker_target | pos_x_target | pos_y_target | tracker_gaze | pos_l_x | pos_l_y | pos_r_x | pos_r_y
+
+7) Erzeugung der Zeitreihenmerkmale
+	Im Ordner data/processed/expanded/
+		sollen drei Ordner entstehen
+		- 8_langsam
+		- 8_schnell
+		- horizontal
+
+	in den Ordnern sind Dateien, die die gleiche Struktur haben, wie die im Ordner matched, bloß, dass diese um die berechneten Attribute erweitert sind.
+	Die zu berechnenden attribute finden sich in der Dokumentation
+
+8) Erzeugung der Versuchspersonendatei
+	Im Ordner data/processed/result/
+		soll eine Datei angelegt werden.
+		Diese enthält pro Zeile die statistischen Merkmale einer Versuchsperson
+
+9) Clustern (DBScan / k-means ...?) --> Cluster Benennung
+
+10) Cluster Beschreibung
+	transparente Darstellung z.B. Entscheidungsbaum, Regelmengen ...
+
+
+
+References:
 	https://people.csail.mit.edu/tjudd/WherePeopleLook/Docs/WherePeopleLookTalk.pdf
