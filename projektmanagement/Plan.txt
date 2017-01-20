@@ -40,6 +40,8 @@
 
 	in diesen Ordnern wird pro Versuchsperson 1 Datei liegen, die für den Versuch jeweils die Zeitreihen mit folgenden Attributen enthält:
 	tracker_target | pos_x_target | pos_y_target | tracker_gaze | pos_l_x | pos_l_y | pos_r_x | pos_r_y
+	
+	Die Zuordnung erfolgt nach dem Muster, dass dem Targetpunkt der Blickpunkt zugeordnet wird, dessen Wert als erster in tracker_gaze >= tracker_target ist.
 
 7) Erzeugung der Zeitreihenmerkmale
 	Im Ordner data/processed/expanded/
@@ -49,7 +51,7 @@
 		- horizontal
 
 	in den Ordnern sind Dateien, die die gleiche Struktur haben, wie die im Ordner matched, bloß, dass diese um die berechneten Attribute erweitert sind.
-	Die zu berechnenden attribute finden sich in der Dokumentation
+	Die zu berechnenden Attribute finden sich in der Dokumentation.
 
 8) Erzeugung der Versuchspersonendatei
 	Im Ordner data/processed/result/
