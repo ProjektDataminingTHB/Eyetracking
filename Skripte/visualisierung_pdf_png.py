@@ -218,7 +218,7 @@ def vp_min_max(images):
 
 def gen_pdf_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/bilder/',
             output_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/pdf/',
-            pdf_name = 'visualisierung.pdf'):
+            pdf_name = 'visualisierung'):
 
     if os.path.exists(output_dir) == False:
         os.mkdir(output_dir)
@@ -228,7 +228,7 @@ def gen_pdf_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Proj
 
     images = os.listdir(input_dir)
     for exp in experimente:
-        pages = canvas.Canvas(output_dir + pdf_name + '_' + exp, pagesize=A4)
+        pages = canvas.Canvas(output_dir + pdf_name + '_' + exp + '.pdf', pagesize=A4)
         pW, pH = pagesizes.A4
         n_col = 3
         n_lig = 8

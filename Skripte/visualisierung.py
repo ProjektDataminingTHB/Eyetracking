@@ -3,6 +3,7 @@ import numpy as np
 import platform
 from random import randint
 import os
+import matplotlib.animation as animation
 from reportlab.lib.colors import *
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, A4
@@ -58,8 +59,8 @@ def count_file(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1
                     n += 1
     return n
 
-def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_langsam/messung2/cycle2/vp_045_gaze.csv',
-          input_target = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_langsam/messung2/vp_045.csv',
+def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_schnell/messung2/cycle2/vp_045_gaze.csv',
+          input_target = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_schnell/messung2/vp_045.csv',
           output_path = './', vp = 45, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
 
 
@@ -86,7 +87,12 @@ def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/Da
     mitte = np.array([(link[:, 0] + recht[:, 0]) / 2, (link[:, 1] + recht[:, 1]) / 2])
     mitte = mitte.T
 
+    target_mitte = np.array([np.mean(target_data_array[:, 0]), np.mean(target_data_array[:, 1])])
+    mitte_mitte = np.array([np.mean(mitte[:, 0]), np.mean(mitte[:, 1])])
 
+    u = mitte_mitte - target_mitte
+
+    z_target_data_array = target_data_array + u
     div_x = 10
     div_y = 10
     tresh_x = np.mean(mitte[:, 0])
@@ -94,6 +100,9 @@ def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/Da
 
     fig = plt.figure()
     plt.plot(target_data_array[:, 0], target_data_array[:, 1], 'r', marker='x', markersize = 8, label='Targetpunkte')
+    plt.plot(z_target_data_array[:, 0], z_target_data_array[:, 1], 'r', marker='x', markersize = 8, label='Targetpunkte')
+    plt.plot(target_mitte[0], target_mitte[1], 'y', marker='o', markersize = 11, label='Mitte der Targetpunkte')
+    plt.plot(mitte_mitte[0], mitte_mitte[1], 'c', marker='o', markersize = 18, label='Mitte der Blickpunkte')
     plt.plot(link[:, 0], link[:, 1], 'b', marker='o', label='Blick., l. Auge')
     plt.plot(recht[:, 0], recht[:, 1], 'g', marker='^', label='Blickp., r. Auge')
     plt.axis([min(np.min(link[:, 0]), np.min(recht[:, 0]), np.min(target_data_array[:, 0])) - tresh_x / div_x,
@@ -105,6 +114,8 @@ def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/Da
     plt.ylabel('y')
     plt.xlabel('x')
 
+    #im_ani = animation.ArtistAnimation(fig, ims, interval=50, repeat_delay=3000,
+    #                                   blit=True)
     plt.savefig(output_path + filename + '-{}-{}-{}.png'.format(exp, messung, cycle))
     plt.show()
     plt.close()
