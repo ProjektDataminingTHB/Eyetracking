@@ -3,71 +3,13 @@ import pandas as pd
 import os
 import platform
 from config import Config as cfg
-
-def occurIn(exclude, str_name):
-    for exc in exclude:
-        if exc in str_name:
-            return True
-    return False
-
-def remove_begin(pattern, string):
-    l_pattern = len(pattern)
-    l_string = len(string)
-    if pattern in string:
-        n_string = ''
-        for i in range(l_pattern, l_string):
-            n_string += string[i]
-        return n_string
-    else:
-        return string
-
-def remove_end(pattern, string):
-    l_pattern = len(pattern)
-    l_string = len(string)
-    if pattern in string:
-        n_string = ''
-        for i in range(l_string - l_pattern):
-            n_string += string[i]
-        return n_string
-    else:
-        return string
-
-def find_separator(seps, file):
-    for sep in seps:
-        inhalt_datei = pd.read_csv(file, sep=sep,
-                                   names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x',
-                                          'deg_y'])
-        for sep1 in seps:
-            if sep1 != sep:
-                if sep1 in inhalt_datei['t_Tracker'][1]:
-                    return sep1
-    return ''
-
-def occur(e, list):
-    i = 0
-    for el in list:
-        if el == e:
-            i += 1
-    return i
-
-def index_messung(punkt, column, messung_number):
-    column_tmp = list()
-
-    for e in column:
-        column_tmp.append(e)
-    i = 0
-
-    if 'Cycle:' not in punkt:
-        while i < messung_number:
-            column_tmp.remove(punkt)
-            i += 1
-    return column_tmp.index(punkt)
+import tools as tls
 
 def gaze_zerlegung(begin, end, cycle_start, cycle_stop, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte,
                    fuenfte_spalte, messung_number = 0):
 
-    start = index_messung(begin, zweite_spalte, messung_number) + 1
-    stop = index_messung(end, zweite_spalte, messung_number) + 1
+    start = tls.index_messung(begin, zweite_spalte, messung_number) + 1
+    stop = tls.index_messung(end, zweite_spalte, messung_number) + 1
 
     blick_l_x = zweite_spalte[start:stop]
     blick_l_y = dritte_spalte[start:stop]
@@ -75,8 +17,8 @@ def gaze_zerlegung(begin, end, cycle_start, cycle_stop, erste_spalte, zweite_spa
     blick_r_x = vierte_spalte[start:stop]
     blick_r_y = fuenfte_spalte[start:stop]
 
-    index_start = index_messung(cycle_start, blick_l_x, messung_number) + 1
-    index_stop = index_messung(cycle_stop, blick_l_x, messung_number)
+    index_start = tls.index_messung(cycle_start, blick_l_x, messung_number) + 1
+    index_stop = tls.index_messung(cycle_stop, blick_l_x, messung_number)
     tmp = blick_l_x[index_start:index_stop]
 
     blick_l_y = blick_l_y[index_start:index_stop]
@@ -147,10 +89,10 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
         print('{}% abgeschlossen'.format(int(i * 100 / len(csv_dateien))))
         if csv_datei.lower().endswith('.txt'):
             csv_name = csv_datei.split('.')[0]
-            csv_name = remove_begin(eingabe_prefix, csv_name)
-            if not occurIn(cfg.exclude, csv_name):
+            csv_name = tls.remove_begin(eingabe_prefix, csv_name)
+            if not tls.occurIn(cfg.exclude, csv_name):
                 if eingabe_blick_suffix in csv_name:    #Kontroll, ob sich die Datei mit gaze endet
-                    csv_name = remove_end(eingabe_blick_suffix, csv_name)
+                    csv_name = tls.remove_end(eingabe_blick_suffix, csv_name)
                     inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = delim, names=['zeitstempel', 'blick_l_x', 'blick_l_y',
                                                                                                      'pupillen_grosse_l', 'pos_l_x', 'pos_l_y',
                                                                                                      'pos_entf_l', 'blick_r_x', 'blick_r_y',
@@ -207,7 +149,7 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
 
                 else:
                     file = eingabe_ordner + '/' + csv_datei
-                    sep = find_separator(seps, file)
+                    sep = tls.find_separator(seps, file)
                     inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = sep, names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x', 'deg_y'])
 
                     data1 = list(inhalt_datei['t_Tracker'])

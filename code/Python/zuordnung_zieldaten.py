@@ -2,35 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 from config import Config as cfg
-
-
-# Definitionen von Funktionen
-
-def finde_ersten_wert(zeitstempelliste, suchwert):
-    for anfang in zeitstempelliste:
-        try:
-            differenz = suchwert - anfang
-            if differenz < 0:
-                return anfang
-        except:
-            pass
-
-
-def finde_letzten_wert(zeitstempelliste, suchwert, anfang):
-    ende = 0
-    zeitstempelliste1 = list(zeitstempelliste[zeitstempelliste.index(anfang):])
-    for ende1 in zeitstempelliste1:
-        try:
-            differenz = suchwert - ende1
-            if differenz < 0:
-                return ende
-            else:
-                # in dem Fall möchten wir den Wert, vor dem Wert, der die Bedingung erfüllt haben
-                ende = ende1
-        except:
-            pass
-    return ende
-
+import tools as tls
 
 # Ausführung
 
@@ -64,8 +36,8 @@ for dateiname in dateinamen:
                     erster_zeitwert = messung_zeitstempel[0]
                     # das entfernt zwar den letzten Punkt in der Liste, allerdings benötigen wir die Liste auch nicht weiter
                     letzter_zeitwert = messung_zeitstempel.pop()
-                    erster_wert = finde_ersten_wert(ziel_zeitstempel, erster_zeitwert)
-                    letzter_wert = finde_letzten_wert(ziel_zeitstempel, letzter_zeitwert, erster_wert)
+                    erster_wert = tls.finde_ersten_wert(ziel_zeitstempel, erster_zeitwert)
+                    letzter_wert = tls.finde_letzten_wert(ziel_zeitstempel, letzter_zeitwert, erster_wert)
                     ergebnis_spalte1 = list(csv_df['t_tracker'])
                     ergebnis_spalte2 = list(csv_df['pix_x'])
                     ergebnis_spalte3 = list(csv_df['pix_y'])

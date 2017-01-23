@@ -4,52 +4,11 @@ import platform
 from random import randint
 import os
 from config import Config as cfg
+import tools as tls
 
 experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
 messungen = ['messung1', 'messung2', 'probe']
 cycles = ['cycle1', 'cycle2']
-
-def int_to_str(val, digit = 3):
-    char = str(val)
-    if len(char) >= digit:
-        return char
-    else:
-        if len(char) < digit:
-            j = digit - len(char)
-            for i in range(j):
-                char = '0' + char
-            return char
-
-def random_choice(elements):
-    ind = randint(0, len(elements) - 1)
-    return elements[ind]
-
-def percentage(n, N):
-    if ('linux' in platform.system().lower()):
-        os.system('clear')
-    if ('windows' in platform.system().lower()):
-        os.system('cls')
-    print('{}% abgeschlossen'.format(int(n * 100 / N)))
-
-def count_file(input_dir = cfg.datenZerlegungHome, ext = '', exp = ''):
-    d = os.walk(input_dir)
-    n = 0
-    for sd in d:
-        if len(sd[1]) == 0:
-            files = os.listdir(sd[0])
-            for file in files:
-                if ext != '' and exp != '':
-                    if file.lower().endswith('.' + ext) and exp.lower() in file.lower():
-                        n += 1
-                if ext != '' and exp == '':
-                    if file.lower().endswith('.' + ext):
-                        n += 1
-                if ext == '' and exp != '':
-                    if exp.lower() in file.lower():
-                        n += 1
-                else:
-                    n += 1
-    return n
 
 def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_schnell/messung2/cycle2/vp_045_gaze.csv',
           input_target = cfg.datenZerlegungHome + 'vp_045/liegende_acht_schnell/messung2/vp_045.csv',
@@ -102,13 +61,10 @@ def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_schnell/m
               min(np.min(link[:, 1]), np.min(recht[:, 1]), np.min(target_data_array[:, 1])) - tresh_y / div_y,
               max(np.max(link[:, 1]), np.max(recht[:, 1]), np.max(target_data_array[:, 1])) + tresh_y / div_y])
     plt.legend(loc='lower right', shadow=True, )
-    plt.title('Versuchperson {}, {}, {}, {}'.format(int_to_str(vp), exp, messung, cycle))
+    plt.title('Versuchperson {}, {}, {}, {}'.format(tls.int_to_str(vp), exp, messung, cycle))
     plt.ylabel('y')
     plt.xlabel('x')
 
-    #im_ani = animation.ArtistAnimation(fig, ims, interval=50, repeat_delay=3000,
-    #                                   blit=True)
-    plt.savefig(output_path + filename + '-{}-{}-{}.png'.format(exp, messung, cycle))
     plt.show()
     plt.close()
 
