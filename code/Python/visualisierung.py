@@ -3,15 +3,7 @@ import numpy as np
 import platform
 from random import randint
 import os
-import matplotlib.animation as animation
-from reportlab.lib.colors import *
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter, A4
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import cm, mm
-from reportlab.lib import pagesizes
-from reportlab.lib.utils import ImageReader
-from reportlab.lib import colors
+from config import Config as cfg
 
 experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
 messungen = ['messung1', 'messung2', 'probe']
@@ -39,7 +31,7 @@ def percentage(n, N):
         os.system('cls')
     print('{}% abgeschlossen'.format(int(n * 100 / N)))
 
-def count_file(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/', ext = '', exp = ''):
+def count_file(input_dir = cfg.datenZerlegungHome, ext = '', exp = ''):
     d = os.walk(input_dir)
     n = 0
     for sd in d:
@@ -59,8 +51,8 @@ def count_file(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1
                     n += 1
     return n
 
-def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_schnell/messung2/cycle2/vp_045_gaze.csv',
-          input_target = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_schnell/messung2/vp_045.csv',
+def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_schnell/messung2/cycle2/vp_045_gaze.csv',
+          input_target = cfg.datenZerlegungHome + 'vp_045/liegende_acht_schnell/messung2/vp_045.csv',
           output_path = './', vp = 45, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
 
 

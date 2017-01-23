@@ -1,8 +1,14 @@
 import numpy as np
 import pandas as pd
 import os
-import shutil
 import platform
+from config import Config as cfg
+
+def occurIn(exclude, str_name):
+    for exc in exclude:
+        if exc in str_name:
+            return True
+    return False
 
 def remove_begin(pattern, string):
     l_pattern = len(pattern)
@@ -111,8 +117,7 @@ def struktur_erstellung(begin, end, cycle_start, cycle_stop, messung, cycle, mes
     df = pd.DataFrame(data, columns = header)
     df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + ausgabe_blick_suffix + '.csv', index=False)
 
-def zerlegung(ausgabe_ordner = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung', eingabe_ordner = '''/home/herval/Documents/THB/Master/Semester1/Projekt1/
-												DataMining/ProjektAufgabe/Eyetracking/2016 - Data Mining Projekt/1 - Aufgabe/DatenTHB''',
+def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawDataHome,
 												eingabe_prefix = 'vp_', eingabe_blick_suffix = '_gaze', ausgabe_prefix = 'vp_', ausgabe_blick_suffix = '_gaze',
 												messung_ordner_prefix = 'messung', probe_ordner_prefix = 'probe', delim = ' '):
     err_ordner_not_exist = 'Der Ordner {} ist nicht vorhanden'
@@ -143,88 +148,89 @@ def zerlegung(ausgabe_ordner = '/home/herval/Documents/THB/Master/Semester1/Proj
         if csv_datei.lower().endswith('.txt'):
             csv_name = csv_datei.split('.')[0]
             csv_name = remove_begin(eingabe_prefix, csv_name)
-            if eingabe_blick_suffix in csv_name:    #Kontroll, ob sich die Datein mit gaze endet
-                csv_name = remove_end(eingabe_blick_suffix, csv_name)
-                inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = delim, names=['zeitstempel', 'blick_l_x', 'blick_l_y',
-                                                                                                 'pupillen_grosse_l', 'pos_l_x', 'pos_l_y',
-                                                                                                 'pos_entf_l', 'blick_r_x', 'blick_r_y',
-                                                                                                 'pupillen_grosse_r', 'pos_r_x', 'pos_r_y',
-                                                                                                 'pos_entf_r'])
-                erste_spalte = list(inhalt_datei['zeitstempel'])
-                zweite_spalte = list(inhalt_datei['blick_l_x'])
-                dritte_spalte = list(inhalt_datei['blick_l_y'])
-                vierte_spalte = list(inhalt_datei['blick_r_x'])
-                fuenfte_spalte = list(inhalt_datei['blick_r_y'])
+            if not occurIn(cfg.exclude, csv_name):
+                if eingabe_blick_suffix in csv_name:    #Kontroll, ob sich die Datei mit gaze endet
+                    csv_name = remove_end(eingabe_blick_suffix, csv_name)
+                    inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = delim, names=['zeitstempel', 'blick_l_x', 'blick_l_y',
+                                                                                                     'pupillen_grosse_l', 'pos_l_x', 'pos_l_y',
+                                                                                                     'pos_entf_l', 'blick_r_x', 'blick_r_y',
+                                                                                                     'pupillen_grosse_r', 'pos_r_x', 'pos_r_y',
+                                                                                                     'pos_entf_r'])
+                    erste_spalte = list(inhalt_datei['zeitstempel'])
+                    zweite_spalte = list(inhalt_datei['blick_l_x'])
+                    dritte_spalte = list(inhalt_datei['blick_l_y'])
+                    vierte_spalte = list(inhalt_datei['blick_r_x'])
+                    fuenfte_spalte = list(inhalt_datei['blick_r_y'])
 
-                #Beschränkung des Dateimatrixs
-                struktur_erstellung('PURSUIT:Cycles=1:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=1:Trajectory=lying_eight:T=8',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[2], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                      'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                      'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    #Beschränkung des Dateimatrix
+                    struktur_erstellung('PURSUIT:Cycles=1:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=1:Trajectory=lying_eight:T=8',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[2], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
+                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
+                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                      'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                      'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
+                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
+                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                      'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                      'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
-                struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                      'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                        experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
+                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
+                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                    struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
+                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
-            else:
-                file = eingabe_ordner + '/' + csv_datei
-                sep = find_separator(seps, file)
-                inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = sep, names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x', 'deg_y'])
+                else:
+                    file = eingabe_ordner + '/' + csv_datei
+                    sep = find_separator(seps, file)
+                    inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = sep, names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x', 'deg_y'])
 
-                data1 = list(inhalt_datei['t_Tracker'])
-                data2 = list(inhalt_datei['pix_x'])
-                data3 = list(inhalt_datei['pix_y'])
+                    data1 = list(inhalt_datei['t_Tracker'])
+                    data2 = list(inhalt_datei['pix_x'])
+                    data3 = list(inhalt_datei['pix_y'])
 
-                data1 = data1[1:]
-                data2 = data2[1:]
-                data3 = data3[1:]
+                    data1 = data1[1:]
+                    data2 = data2[1:]
+                    data3 = data3[1:]
 
-                data = np.concatenate((np.array([data1]).T,
-                                      np.array([data2]).T,
-                                        np.array([data3]).T), axis = 1)
-                ordner = ausgabe_ordner + '/' + ausgabe_prefix + csv_name
-                if os.path.exists(ordner) == False:
-                    os.mkdir(ordner)
+                    data = np.concatenate((np.array([data1]).T,
+                                          np.array([data2]).T,
+                                            np.array([data3]).T), axis = 1)
+                    ordner = ausgabe_ordner + '/' + ausgabe_prefix + csv_name
+                    if os.path.exists(ordner) == False:
+                        os.mkdir(ordner)
 
-                df = pd.DataFrame(data, columns=header_target)
-                df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + '.csv', index=False)
+                    df = pd.DataFrame(data, columns=header_target)
+                    df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + '.csv', index=False)
         i += 1
     print('Komplete Zerlegung abgeschlossen !!!')
-default_input = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/2016 - Data Mining Projekt/1 - Aufgabe/DatenTHB'
-default_output = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung'
+default_input = cfg.rawDataHome
+default_output = cfg.datenZerlegungHome
 
 input_path = input('Wo ist Ihr Datenordner ({})?_ '.format(default_input))
 output_path = input('Wo würden Sie die Zerlegung ablegen ({})?_ '.format(default_output))

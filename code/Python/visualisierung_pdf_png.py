@@ -3,14 +3,11 @@ import numpy as np
 import platform
 from random import randint
 import os
-from reportlab.lib.colors import *
+from config import Config as cfg
+from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter, A4
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import cm, mm
 from reportlab.lib import pagesizes
 from reportlab.lib.utils import ImageReader
-from reportlab.lib import colors
 
 experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
 messungen = ['messung1', 'messung2', 'probe']
@@ -38,7 +35,7 @@ def percentage(n, N):
         os.system('cls')
     print('{}% abgeschlossen'.format(int(n * 100 / N)))
 
-def count_file(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/', ext = '', exp = ''):
+def count_file(input_dir = cfg.datenZerlegungHome, ext = '', exp = ''):
     d = os.walk(input_dir)
     n = 0
     for sd in d:
@@ -58,9 +55,9 @@ def count_file(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1
                     n += 1
     return n
 
-def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_langsam/messung2/cycle2/vp_045_gaze.csv',
-          input_target = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/vp_045/liegende_acht_langsam/messung2/vp_045.csv',
-          output_path = './', vp = 1, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
+def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/messung2/cycle2/vp_045_gaze.csv',
+          input_target = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/messung2/vp_045.csv',
+          output_path = cfg.visualisierungBilderHome, vp = 1, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
 
 
     head, tail = os.path.split(input_target)
@@ -110,14 +107,11 @@ def plots(input_blick = '/home/herval/Documents/THB/Master/Semester1/Projekt1/Da
     #plt.show()
 
 
-def gen_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/daten_zerlegung/',
-               output_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/bilder/',
+def gen_images(input_dir = cfg.datenZerlegungHome,
+               output_dir = cfg.visualisierungBilderHome,
                n_images = 0, vp_list = [], vp_select = 1, acht = -1, messung = -1, cycle = -1):
-
-    test_acht = acht < 0 or acht > 2
-    test_messung = messung < 0 or messung > 2
-    test_cycle = cycle < 0 or cycle > 2
-
+    print('Generierung der Bilder in dem Ornder {}'.format(output_dir))
+    print('Bitte, haben Sie ein bisschen Geduld !')
     if os.path.exists(input_dir) == False:
         print('Der Inputsordner ist nicht vorhanden')
     else:
@@ -216,10 +210,12 @@ def vp_min_max(images):
         return 0, 0
 
 
-def gen_pdf_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/bilder/',
-            output_dir = '/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/ProjektAufgabe/Eyetracking/Dokumentation/pdf/',
+def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
+            output_dir = cfg.visualisierungPdfHome,
             pdf_name = 'visualisierung'):
 
+    print('\nGenerierung der PDF-dateien in dem Ornder {}'.format(output_dir))
+    print('Bitte, haben Sie ein bisschen Geduld !')
     if os.path.exists(output_dir) == False:
         os.mkdir(output_dir)
 
@@ -271,6 +267,9 @@ def gen_pdf_images(input_dir = '/home/herval/Documents/THB/Master/Semester1/Proj
                                     col += 1
         pages.save()
 
-
-gen_images(vp_select = 2)
+genBilder = ''
+while genBilder != 'J' and genBilder != 'n':
+    genBilder = input('Würden Sie erneut die zu den zu generierenden Pdf-Daten entsprechenden Bilder generieren? (J / n)')
+if genBilder == 'J':
+    gen_images(vp_select = 2)
 gen_pdf_images()
