@@ -3,8 +3,12 @@ import numpy as np
 import os
 from config import Config as cfg
 import tools as tls
+import ntpath
 
 def zuordnung_matched():
+    header_target = ['t_tracker', 'pix_x', 'pix_y']
+    header_blick = ['zeitstempel', 'blick_l_x', 'blick_l_y',
+                                                'blick_r_x', 'blick_r_y']
     all_folders = os.walk(cfg.datenZerlegungHome)
     for root, folders, files in all_folders:
         if len(folders) == 3 and len(files) == 1:
@@ -15,33 +19,44 @@ def zuordnung_matched():
                 output_folder = os.path.join(cfg.matchedHome, exp)
 
                 all_folders_2 = os.walk(os.path.join(root, exp))
+                data = np.zeros((1, len(header_target) + len(header_blick)))
+                stats = list()
+                header_stats = list()
                 for root_2, folders_2, files_2 in all_folders_2:
                     if len(folders_2) == 0 and len(files_2) == 2:
+                        parent, cycle = ntpath.split(root_2)
+                        parent, messung = ntpath.split(parent)
+                        #print(messung, cycle)
                         files_2.sort()
                         target = pd.read_csv(os.path.join(root_2, files_2[0]), sep=',',
-                                             names=['t_tracker', 'pix_x', 'pix_y'])
+                                             names=header_target)
                         blick = pd.read_csv(os.path.join(root_2, files_2[1]), sep=',',
-                                                names=['zeitstempel', 'blick_l_x', 'blick_l_y',
-                                                'blick_r_x', 'blick_r_y'])
+                                                names=header_blick)
                         target_array = target.values[1:, :]
                         blick_array = blick.values[1:, :]
                         j = 0
-                        already_assign = False
+                        count = 0
+
                         for i in np.arange(np.size(target_array, 0)):
                             while j < np.size(blick_array, 0) and blick_array[j, 0] < target_array[i, 0]:
                                 j += 1
                             matched_row = np.concatenate((target_array[i, :], blick_array[j, :]), axis = 0)
-                            if not already_assign:
-                                zero = np.zeros((1, matched_row.size))
-                                data = zero + matched_row.astype(float)
-                                already_assign = True
-                            else:
-                                data = np.concatenate((data,
-                                                    np.array([matched_row])), axis=0)
+                            data = np.concatenate((data,
+                                                np.array([matched_row])), axis=0)
+                            count += 1
+                        header_stats.append(messung + '_' + cycle)
+                        stats.append(count)
 
+                #print("End----------------------------------------------------------")
+                data = data[1:, :]
                 df = pd.DataFrame(data, columns=['t_tracker', 'pix_x', 'pix_y', 'zeitstempel', 'blick_l_x', 'blick_l_y',
-                                                'blick_r_x', 'blick_r_y'])
+                                               'blick_r_x', 'blick_r_y'])
                 filename = tls.remove_end('_gaze.csv', files_2[1])
+                stats = np.array([stats])
+                #print(stats)
+                stats_file = pd.DataFrame(stats, columns = header_stats)
+                #print(filename)
                 df.to_csv(os.path.join(output_folder, filename + '.csv'), index=False)
+                stats_file.to_csv(os.path.join(output_folder, filename + '_stats' + '.csv'), index=False)
 
 zuordnung_matched()
