@@ -9,10 +9,6 @@ from reportlab.lib import pagesizes
 from reportlab.lib.utils import ImageReader
 import tools as tls
 
-experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
-messungen = ['messung1', 'messung2', 'probe']
-cycles = ['cycle1', 'cycle2']
-
 def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/messung2/cycle2/vp_045_gaze.csv',
           input_target = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/messung2/vp_045.csv',
           output_path = cfg.visualisierungBilderHome, vp = 1, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
@@ -82,33 +78,33 @@ def gen_images(input_dir = cfg.datenZerlegungHome,
             if vp_select < 2:
                 for i in range(n_images):
                     if acht == 0:
-                        exp = experimente[0]
+                        exp = cfg.experimente[0]
                     if acht == 1:
-                        exp = experimente[1]
+                        exp = cfg.experimente[1]
                     if acht == 2:
-                        exp = experimente[2]
+                        exp = cfg.experimente[2]
 
                     if messung == 1:
-                        mess = messungen[0]
+                        mess = cfg.messungen[0]
                     if messung == 2:
-                        mess = messungen[1]
+                        mess = cfg.messungen[1]
 
                     if cycle == 1:
-                        cyc = cycles[0]
+                        cyc = cfg.cycles[0]
                     if cycle == 2:
-                        cyc = cycles[1]
+                        cyc = cfg.cycles[1]
 
                     if acht < 0 or acht > 2:
-                        exp = tls.random_choice(experimente)
+                        exp = tls.random_choice(cfg.experimente)
 
                     if messung < 0 or messung > 2:
-                        mess = tls.random_choice(messungen)
-                        while mess == messungen[2] and (exp == experimente[1] or exp == experimente[2]):
-                            mess = tls.random_choice(messungen)
+                        mess = tls.random_choice(cfg.messungen)
+                        while mess == cfg.messungen[2] and (exp == cfg.experimente[1] or exp == cfg.experimente[2]):
+                            mess = tls.random_choice(cfg.messungen)
                     if cycle < 0 or cycle > 2:
-                        cyc = tls.random_choice(cycles)
-                        if mess == messungen[2]:
-                            cyc = cycles[0]
+                        cyc = tls.random_choice(cfg.cycles)
+                        if mess == cfg.messungen[2]:
+                            cyc = cfg.cycles[0]
                     if vp_select == 1:
                         vp_num = tls.int_to_str(randint(1, 130))
                     else:
@@ -163,7 +159,7 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
         os.mkdir(input_dir)
 
     images = os.listdir(input_dir)
-    for exp in experimente:
+    for exp in cfg.experimente:
         pages = canvas.Canvas(output_dir + pdf_name + '_' + exp + '.pdf', pagesize=A4)
         pW, pH = pagesizes.A4
         n_col = 3
@@ -176,7 +172,7 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
         n_current_page = 1
         n_page = tls.count_file(input_dir, ext = 'png', exp = exp) / (n_col * n_lig)
 
-        if exp == experimente[0]:
+        if exp == cfg.experimente[0]:
             n_page /= 5
         else:
             n_page /= 4
@@ -187,9 +183,9 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
 
         vp_min, vp_max = tls.vp_min_max(images)
         for i in range(vp_min, vp_max + 1):
-            for mess in messungen:
-                if not(exp != experimente[0] and mess == messungen[2]):
-                    for cyc in cycles:
+            for mess in cfg.messungen:
+                if not(exp != cfg.experimente[0] and mess == cfg.messungen[2]):
+                    for cyc in cfg.cycles:
                         image = 'vp_{}-{}-{}-{}.png'.format(tls.int_to_str(i), exp, mess, cyc)
                         if os.path.exists(input_dir + image) == True:
                             if exp in image:

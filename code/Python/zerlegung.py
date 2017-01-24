@@ -65,10 +65,7 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
     err_ordner_not_exist = 'Der Ordner {} ist nicht vorhanden'
     header = ['zeitstempel', 'blick_l_x', 'blick_l_y', 'blick_r_x', 'blick_r_y']
     header_target = ['t_tracker', 'pix_x', 'pix_y']
-    experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
     seps = [';', ' ', ',']
-    messungen = ['messung1', 'messung2', 'probe']
-    cycles = ['cycle1', 'cycle2']
 
     if os.path.exists(eingabe_ordner) == False:
         print(err_ordner_not_exist.format(eingabe_ordner))
@@ -106,46 +103,46 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
 
                     #Beschränkung des Dateimatrix
                     struktur_erstellung('PURSUIT:Cycles=1:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=1:Trajectory=lying_eight:T=8',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[2], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[2], cfg.cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[0], cfg.cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:2:START', 'Cycle:2:STOP', cfg.messungen[0], cfg.cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[1], cfg.cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=8', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=8',
-                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:2:START', 'Cycle:2:STOP', cfg.messungen[1], cfg.cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[0], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[0], cfg.cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:2:START', 'Cycle:2:STOP', cfg.messungen[0], cfg.cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[1], cfg.cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=lying_eight:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=lying_eight:T=4',
-                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:2:START', 'Cycle:2:STOP', cfg.messungen[1], cfg.cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[1], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[0], cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[0], cfg.cycles[0], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[0], cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:2:START', 'Cycle:2:STOP', cfg.messungen[0], cfg.cycles[1], 0, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                          'Cycle:1:START', 'Cycle:1:STOP', messungen[1], cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:1:START', 'Cycle:1:STOP', cfg.messungen[1], cfg.cycles[0], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
                     struktur_erstellung('PURSUIT:Cycles=2:Trajectory=line_linear:T=4', 'PURSUIT_FINISHED:Cycles=2:Trajectory=line_linear:T=4',
-                                          'Cycle:2:START', 'Cycle:2:STOP', messungen[1], cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
-                                            experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
+                                          'Cycle:2:START', 'Cycle:2:STOP', cfg.messungen[1], cfg.cycles[1], 1, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte,
+                                        cfg.experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
                 else:
                     file = eingabe_ordner + '/' + csv_datei

@@ -4,6 +4,13 @@ import platform
 import os
 from config import Config as cfg
 
+
+def list_str_to_int(l):
+    ll = list()
+    for e in l:
+        ll.append(int(e))
+    return ll
+
 def int_to_str(val, digit = 3):
     char = str(val)
     if len(char) >= digit:
