@@ -8,6 +8,7 @@ class Config:
     finalHome = root + 'figures/final/'
     processedHome = root + 'data/processed/'
     matchedHome = processedHome + 'matched/'
+    extendedHome = processedHome + 'extended/'
     datenZerlegungHome = processedHome + 'daten_zerlegung/'
     visualisierungBilderHome = exploratoryHome + 'visualisierungBilder/'
     visualisierungPdfHome = exploratoryHome + 'visualisierungPdf/'
