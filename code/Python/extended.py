@@ -13,7 +13,7 @@ def berechne_Abweichungsrichtung(start_target, aktuell_target, blick):
     blick_values = blick.values
     ergebnis = list()
     for i in range(len(akt_values)):
-        richtung = int(wert1 - akt_values[i])
+        richtung = int((wert1 - akt_values[i]) * 1000)
     # Fall1:    Die Bewegung geht in Richtung aufsteigende Werte
     #           Der Blick ist vor dem Ziel
         if (richtung < 0) and (akt_values[i] < blick_values[i]):
