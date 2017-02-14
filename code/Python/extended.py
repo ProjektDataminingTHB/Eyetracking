@@ -7,6 +7,17 @@ import ntpath
 from shutil import copyfile
 import math
 
+def berechne_Mitte(links, rechts):
+    links_values = links.values
+    rechts_values = rechts.values
+    ergebnis = list()
+    for i in range(len(rechts_values)):
+        if rechts_values[i] != 0 and links_values[i] != 0:
+            ergebnis.append((rechts_values[i] + links_values[i]) / 2)
+        else:
+            ergebnis.append(0)
+    return ergebnis
+
 def berechne_Geschwindigkeit(y, x, t):
     y_values = y.values
     x_values = x.values
@@ -16,7 +27,7 @@ def berechne_Geschwindigkeit(y, x, t):
     y1 = 0.0
     t1 = 0.0
     rechnen = False
-    for i in range(len(t.values)):
+    for i in range(len(t_values)):
         # Berechnung der Zeitstempeldifferenz, die nicht 0 sein darf, wegen der Division
         dif_t = t1 - t_values[i]
         # Kriterien, wann gerechnet werden darf:
@@ -44,29 +55,32 @@ def berechne_Abweichungsrichtung(start_target, aktuell_target, blick):
     blick_values = blick.values
     ergebnis = list()
     for i in range(len(akt_values)):
-        richtung = int((wert1 - akt_values[i]) * 1000)
-    # Fall1:    Die Bewegung geht in Richtung aufsteigende Werte
-    #           Der Blick ist vor dem Ziel
-        if (richtung < 0) and (akt_values[i] < blick_values[i]):
-            ergebnis.append(1)
-    # Fall2:    Die Bewegung geht in Richtung absteigende Werte
-    #           Der Blick ist hinter dem Ziel
-        if (richtung > 0) and (akt_values[i] < blick_values[i]):
-            ergebnis.append(-1)
-    # Fall3:    Die Bewegug geht in Richtung aufsteigende Werte
-    #           Der Blick ist hinter dem Ziel
-        if (richtung < 0) and (akt_values[i] > blick_values[i]):
-            ergebnis.append(-1)
-    # Fall4:    Die Bewegung geht in Richtung absteigende Werte
-    #           Der Blick ist vor dem Ziel
-        if (richtung > 0) and (akt_values[i] > blick_values[i]):
-            ergebnis.append(1)
-    # Fall5:    Die richtung ist 0 --> Der Targetwert aendert sich nicht --> dadurch ist es egal, wie sich der Blickwert aendert --> Ergebnis ist 0
-        if richtung == 0:
-            ergebnis.append(0)
+        if blick_values[i] != 0:
+            richtung = int((wert1 - akt_values[i]) * 1000)
+            # Fall1:    Die Bewegung geht in Richtung aufsteigende Werte
+            #           Der Blick ist vor dem Ziel
+            if (richtung < 0) and (akt_values[i] < blick_values[i]):
+                ergebnis.append(1)
+            # Fall2:    Die Bewegung geht in Richtung absteigende Werte
+            #           Der Blick ist hinter dem Ziel
+            if (richtung > 0) and (akt_values[i] < blick_values[i]):
+                ergebnis.append(-1)
+            # Fall3:    Die Bewegug geht in Richtung aufsteigende Werte
+            #           Der Blick ist hinter dem Ziel
+            if (richtung < 0) and (akt_values[i] > blick_values[i]):
+                ergebnis.append(-1)
+            # Fall4:    Die Bewegung geht in Richtung absteigende Werte
+            #           Der Blick ist vor dem Ziel
+            if (richtung > 0) and (akt_values[i] > blick_values[i]):
+                ergebnis.append(1)
+            # Fall5:    Die richtung ist 0 --> Der Targetwert aendert sich nicht --> dadurch ist es egal, wie sich der Blickwert aendert --> Ergebnis ist 0
+            if richtung == 0:
+                ergebnis.append(0)
 
-    # Umsetzen des startpunktes
-        wert1 = akt_values[i]
+            # Umsetzen des startpunktes
+            wert1 = akt_values[i]
+        else:
+            ergebnis.append(0)
     return ergebnis
 
 
@@ -89,7 +103,7 @@ def extend_files():
             else:
                 source = pd.read_csv(os.path.join(source_path, source_file), sep=',', names = header_source).ix[1:]
                 #Erweiterung um die Mittelposition der Blickwerte der Augen
-                middle_eyes = source.assign(blick_m_x = pd.to_numeric(source.blick_l_x) / 2 + pd.to_numeric(source.blick_r_x) / 2, blick_m_y = pd.to_numeric(source.blick_l_y) / 2 + pd.to_numeric(source.blick_r_y) / 2, pix_x_translation = pd.to_numeric(source.pix_x).add(640), pix_y_translation = (pd.to_numeric(source.pix_y) * -1).add(512))
+                middle_eyes = source.assign(blick_m_x = berechne_Mitte(pd.to_numeric(source.blick_l_x), pd.to_numeric(source.blick_r_x)), blick_m_y = berechne_Mitte(pd.to_numeric(source.blick_l_y), pd.to_numeric(source.blick_r_y)), pix_x_translation = pd.to_numeric(source.pix_x).add(640), pix_y_translation = (pd.to_numeric(source.pix_y) * -1).add(512))
 
                 # Erweiterung um die Werte der Distanz der Blickposition zur Targetposition
                 distanz = middle_eyes.assign(delta_l_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_l_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_l_y) - pd.to_numeric(x.pix_y_translation),2)), delta_r_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_r_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_r_y) - pd.to_numeric(x.pix_y_translation),2)), delta_m_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_m_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_m_y) - pd.to_numeric(x.pix_y_translation),2)))
