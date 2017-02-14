@@ -5,6 +5,37 @@ from config import Config as cfg
 import tools as tls
 import ntpath
 from shutil import copyfile
+import math
+
+def berechne_Geschwindigkeit(y, x, t):
+    y_values = y.values
+    x_values = x.values
+    t_values = t.values
+    ergebnis = list()
+    x1 = 0.0
+    y1 = 0.0
+    t1 = 0.0
+    rechnen = False
+    for i in range(len(t.values)):
+        # Berechnung der Zeitstempeldifferenz, die nicht 0 sein darf, wegen der Division
+        dif_t = t1 - t_values[i]
+        # Kriterien, wann gerechnet werden darf:
+        # es muessen gueltige Werte vorliegen, also keine 0 bei den Blickdaten
+        # die Division muss moeglich sein
+        if int(x1) != 0 and int(y1) != 0 and dif_t != 0:
+            rechnen = True
+        else:
+            rechnen = False
+        if rechnen:
+            dif_x = x1 - x_values[i]
+            dif_y = y1 - y_values[i]
+            ergebnis.append(math.sqrt(math.pow(dif_x, 2) + math.pow(dif_y, 2)) / math.pow(dif_t, 2))
+        else:
+            ergebnis.append(0)
+        x1 = x_values[i]
+        y1 = y_values[i]
+        t1 = t_values[i]
+    return ergebnis
 
 def berechne_Abweichungsrichtung(start_target, aktuell_target, blick):
     # Da der erste Wert bei der Differenzbildung immer weitergehen muss, hier die Wertuebergabe
@@ -63,13 +94,16 @@ def extend_files():
                 # Erweiterung um die Werte der Distanz der Blickposition zur Targetposition
                 distanz = middle_eyes.assign(delta_l_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_l_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_l_y) - pd.to_numeric(x.pix_y_translation),2)), delta_r_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_r_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_r_y) - pd.to_numeric(x.pix_y_translation),2)), delta_m_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_m_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_m_y) - pd.to_numeric(x.pix_y_translation),2)))
 
+                # Erweiterung um die Geschwindigkeiten
+                geschwindigkeit = distanz.assign(geschwindigkeit_l = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_l_y), pd.to_numeric(distanz.blick_l_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_r = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_r_y), pd.to_numeric(distanz.blick_r_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_m = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_m_y), pd.to_numeric(distanz.blick_m_x), pd.to_numeric(distanz.zeitstempel)))
+
                 #Berechnung, ob die Blickposition hinterher ist, oder voraus.
                 # 1 = voraus
                 # -1 = hinterher
-                # n = Keine Aenderung in Zielwert (Betrifft y-Position in Versuch: horizontal)
+                # 0 = Keine Aenderung in Zielwert (Betrifft y-Position in Versuch: horizontal)
                 start_x = 640.0
                 start_y = 512.0
-                result = distanz.assign(richtung_delta_l_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_l_x)), richtung_delta_r_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_r_x)), richtung_delta_l_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_l_y)), richtung_delta_r_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_r_y)), richtung_delta_m_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_m_x)), richtung_delta_m_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_m_y)))
+                result = geschwindigkeit.assign(richtung_delta_l_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_l_x)), richtung_delta_r_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_r_x)), richtung_delta_l_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_l_y)), richtung_delta_r_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_r_y)), richtung_delta_m_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_m_x)), richtung_delta_m_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_m_y)))
 
                 # Ergebnis in CSV-Datei schreiben
                 result.to_csv(os.path.join(destination_path, source_file), index=False)
