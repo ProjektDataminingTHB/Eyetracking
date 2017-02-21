@@ -61,7 +61,7 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     yield header 
 
 def make_result_file():
-    header_source =['t_tracker','pix_x','pix_y','zeitstempel','blick_l_x','blick_l_y','blick_r_x','blick_r_y','blick_m_x','blick_m_y','pix_x_translation','pix_y_translation','delta_l_t','delta_m_t','delta_r_t','geschwindigkeit_l','geschwindigkeit_m','geschwindigkeit_r','richtung_delta_l_x','richtung_delta_l_y','richtung_delta_m_x','richtung_delta_m_y','richtung_delta_r_x','richtung_delta_r_y']
+    header_source =['t_tracker','pix_x','pix_y','zeitstempel','blick_l_x','blick_l_y','blick_r_x','blick_r_y','blick_m_x','blick_m_y','pix_x_translation','pix_y_translation','delta_l_t','delta_m_t','delta_r_t','geschwindigkeit_l','geschwindigkeit_m','geschwindigkeit_r','richtung_delta_l_x','richtung_delta_l_y','richtung_delta_m_x','richtung_delta_m_y','richtung_delta_r_x','richtung_delta_r_y', 'tendenz_l', 'tendenz_r', 'tendenz_m']
     header_destination = ['person']
     source_folders = os.listdir(cfg.extendedHome)
     
