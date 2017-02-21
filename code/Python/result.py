@@ -57,7 +57,27 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
 
     header = np.append(header, [versuch_name + '_min_delta_l', versuch_name + '_min_delta_r', versuch_name + '_min_delta_m', versuch_name + '_min_geschwindigkeit_l', versuch_name + '_min_geschwindigkeit_r', versuch_name + '_min_geschwindigkeit_m'])
 
-    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m]]
+    # Standardabweichungen berechnen
+    std_delta_l = delta_l_values.std()
+    std_delta_r = delta_r_values.std()
+    std_delta_m = delta_m_values.std()
+    std_geschwindigkeit_l = geschwindigkeit_l_values.std()
+    std_geschwindigkeit_r = geschwindigkeit_r_values.std()
+    std_geschwindigkeit_m = geschwindigkeit_m_values.std()
+
+    header = np.append(header, [versuch_name + '_standardabweichung_delta_l', versuch_name + '_standardabweichung_delta_r', versuch_name + '_standardabweichung_delta_m', versuch_name + '_standardabweichung_geschwindigkeit_l', versuch_name + '_standardabweichung_geschwindigkeit_r', versuch_name + '_standardabweichung_geschwindigkeit_m'])
+    
+    # Varianzen berechnen
+    var_delta_l = delta_l_values.var()
+    var_delta_r = delta_r_values.var()
+    var_delta_m = delta_m_values.var()
+    var_geschwindigkeit_l = geschwindigkeit_l_values.var()
+    var_geschwindigkeit_r = geschwindigkeit_r_values.var()
+    var_geschwindigkeit_m = geschwindigkeit_m_values.var()
+
+    header = np.append(header, [versuch_name + '_varianz_delta_l', versuch_name + '_varianz_delta_r', versuch_name + '_varianz_delta_m', versuch_name + '_varianz_geschwindigkeit_l', versuch_name + '_varianz_geschwindigkeit_r', versuch_name + '_varianz_geschwindigkeit_m'])
+
+    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m]]
     yield header 
 
 def make_result_file():
@@ -84,9 +104,18 @@ def make_result_file():
             source_h = pd.read_csv(os.path.join(source_path_h, source_file), sep=',', names = header_source).ix[1:] # horizontal
             source_l8 = pd.read_csv(os.path.join(source_path_l8, source_file), sep=',', names = header_source).ix[1:] # langsame 8
             source_s8 = pd.read_csv(os.path.join(source_path_s8, source_file), sep=',', names = header_source).ix[1:] # schnelle 8
-
+            
+            # Horizontal
             werte = [[source_file[:-4]]]
             neu, header = versuch_auswerten(source_h, 'Horizontal', header_destination)
+            werte = np.append(werte, neu)
+
+            # langsame 8
+            neu, header = versuch_auswerten(source_h, 'Liegende_8_langsam', header)
+            werte = np.append(werte, neu)
+            
+            # schnelle 8
+            neu, header = versuch_auswerten(source_h, 'Liegende_8_schnell', header)
             werte = np.append(werte, neu)
             
             df = pd.DataFrame([werte], columns=header)
