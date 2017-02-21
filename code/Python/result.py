@@ -16,6 +16,9 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     geschwindigkeit_l_values = pd.to_numeric(versuch_werte.geschwindigkeit_l).values
     geschwindigkeit_r_values = pd.to_numeric(versuch_werte.geschwindigkeit_r).values
     geschwindigkeit_m_values = pd.to_numeric(versuch_werte.geschwindigkeit_m).values
+    tendenz_l_values = pd.to_numeric(versuch_werte.tendenz_l).values
+    tendenz_r_values = pd.to_numeric(versuch_werte.tendenz_r).values
+    tendenz_m_values = pd.to_numeric(versuch_werte.tendenz_m).values
 
     # Mittelkwerte bestimmen
     mean_delta_l = delta_l_values.mean()
@@ -77,7 +80,45 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
 
     header = np.append(header, [versuch_name + '_varianz_delta_l', versuch_name + '_varianz_delta_r', versuch_name + '_varianz_delta_m', versuch_name + '_varianz_geschwindigkeit_l', versuch_name + '_varianz_geschwindigkeit_r', versuch_name + '_varianz_geschwindigkeit_m'])
 
-    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m]]
+    # Tendenz auswerten
+    condition_voraus_l = np.equal(tendenz_l_values,1)
+    num_voraus_l = len(np.extract(condition_voraus_l, tendenz_l_values))
+    condition_voraus_r = np.equal(tendenz_r_values,1)
+    num_voraus_r = len(np.extract(condition_voraus_r, tendenz_r_values))
+    condition_voraus_m = np.equal(tendenz_m_values,1)
+    num_voraus_m = len(np.extract(condition_voraus_m, tendenz_m_values))
+    condition_hinter_l = np.equal(tendenz_l_values,-1)
+    num_hinter_l = len(np.extract(condition_hinter_l, tendenz_l_values))
+    condition_hinter_r = np.equal(tendenz_r_values,-1)
+    num_hinter_r = len(np.extract(condition_hinter_r, tendenz_r_values))
+    condition_hinter_m = np.equal(tendenz_m_values,-1)
+    num_hinter_m = len(np.extract(condition_hinter_m, tendenz_m_values))
+
+    if num_voraus_l > num_hinter_l:
+        tendenz_l = 1
+    else:
+        if num_hinter_l > num_voraus_l:
+            tendenz_l = -1
+        else:
+            tendenz_l = 0
+    if num_voraus_r > num_hinter_r:
+            tendenz_r = 1
+    else:
+        if num_hinter_r > num_voraus_r:
+            tendenz_r = -1
+        else:
+            tendenz_r = 0
+    if num_voraus_m > num_hinter_m:
+            tendenz_m = 1
+    else:
+        if num_hinter_m > num_voraus_m:
+            tendenz_m = -1
+        else:
+            tendenz_m = 0
+
+    header = np.append(header, [versuch_name + '_tendenz_l', versuch_name + '_tendenz_r', versuch_name + '_tendenz_m'])
+
+    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m]]
     yield header 
 
 def make_result_file():
