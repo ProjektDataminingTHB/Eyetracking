@@ -19,6 +19,10 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     tendenz_l_values = pd.to_numeric(versuch_werte.tendenz_l).values
     tendenz_r_values = pd.to_numeric(versuch_werte.tendenz_r).values
     tendenz_m_values = pd.to_numeric(versuch_werte.tendenz_m).values
+    blick_l_x_values = pd.to_numeric(versuch_werte.blick_l_x).values
+    blick_l_y_values = pd.to_numeric(versuch_werte.blick_l_y).values
+    blick_r_x_values = pd.to_numeric(versuch_werte.blick_r_x).values
+    blick_r_y_values = pd.to_numeric(versuch_werte.blick_r_y).values
 
     # Mittelkwerte bestimmen
     mean_delta_l = delta_l_values.mean()
@@ -118,7 +122,13 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
 
     header = np.append(header, [versuch_name + '_tendenz_l', versuch_name + '_tendenz_r', versuch_name + '_tendenz_m'])
 
-    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m]]
+    # Berechnung der Kovarianz vom linken und rechten Auge
+    cov_x = np.cov(blick_l_x_values, blick_r_x_values)[0][1]
+    cov_y = np.cov(blick_l_y_values, blick_r_y_values)[0][1]
+
+    header = np.append(header, [versuch_name + '_Kovarianz_blick_x', versuch_name + '_Kovarianz_blick_y'])
+
+    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m, cov_x, cov_y]]
     yield header 
 
 def make_result_file():
