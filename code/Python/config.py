@@ -7,6 +7,7 @@ class Config:
     exploratoryHome = root + 'figures/exploratory/'
     finalHome = root + 'figures/final/'
     processedHome = root + 'data/processed/'
+    resultHome = processedHome + 'result/'
     matchedHome = processedHome + 'matched/'
     extendedHome = processedHome + 'extended/'
     datenZerlegungHome = processedHome + 'daten_zerlegung/'

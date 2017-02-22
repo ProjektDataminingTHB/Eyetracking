@@ -83,6 +83,19 @@ def berechne_Abweichungsrichtung(start_target, aktuell_target, blick):
             ergebnis.append(0)
     return ergebnis
 
+def berechne_tendenz(x, y):
+    x_values = x.values
+    y_values = y.values
+    ergebnis = list()
+    for i in range(len(x_values)):
+        if ((x_values[i] == 1) and (y_values[i] == 1)) or ((x_values[i] == 0) and (y_values[i] == 1)) or ((x_values[i] == 1) and (y_values[i] == 0)):
+            ergebnis.append(1)
+        else:
+            if (x_values[i] == 0) and (y_values[i] == 0):
+                ergebnis.append(0)
+            else:
+                ergebnis.append(-1)
+    return ergebnis
 
 def extend_files():
     header_source = ['t_tracker', 'pix_x', 'pix_y', 'zeitstempel', 'blick_l_x', 'blick_l_y', 'blick_r_x', 'blick_r_y']
@@ -103,7 +116,7 @@ def extend_files():
             else:
                 source = pd.read_csv(os.path.join(source_path, source_file), sep=',', names = header_source).ix[1:]
                 #Erweiterung um die Mittelposition der Blickwerte der Augen
-                middle_eyes = source.assign(blick_m_x = berechne_Mitte(pd.to_numeric(source.blick_l_x), pd.to_numeric(source.blick_r_x)), blick_m_y = berechne_Mitte(pd.to_numeric(source.blick_l_y), pd.to_numeric(source.blick_r_y)), pix_x_translation = pd.to_numeric(source.pix_x).add(640), pix_y_translation = (pd.to_numeric(source.pix_y) * -1).add(512))
+                middle_eyes = source.assign(blick_m_x = berechne_Mitte(pd.to_numeric(source.blick_l_x), pd.to_numeric(source.blick_r_x)), blick_m_y = berechne_Mitte(pd.to_numeric(source.blick_l_y), pd.to_numeric(source.blick_r_y)), pix_x_translation = pd.to_numeric(source.pix_x).add(cfg.o_prim[0]), pix_y_translation = (pd.to_numeric(source.pix_y) * -1).add(cfg.o_prim[1]))
 
                 # Erweiterung um die Werte der Distanz der Blickposition zur Targetposition
                 distanz = middle_eyes.assign(delta_l_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_l_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_l_y) - pd.to_numeric(x.pix_y_translation),2)), delta_r_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_r_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_r_y) - pd.to_numeric(x.pix_y_translation),2)), delta_m_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_m_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_m_y) - pd.to_numeric(x.pix_y_translation),2)))
@@ -115,9 +128,12 @@ def extend_files():
                 # 1 = voraus
                 # -1 = hinterher
                 # 0 = Keine Aenderung in Zielwert (Betrifft y-Position in Versuch: horizontal)
-                start_x = 640.0
-                start_y = 512.0
-                result = geschwindigkeit.assign(richtung_delta_l_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_l_x)), richtung_delta_r_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_r_x)), richtung_delta_l_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_l_y)), richtung_delta_r_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_r_y)), richtung_delta_m_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_m_x)), richtung_delta_m_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_m_y)))
+                start_x = cfg.o_prim[0]
+                start_y = cfg.o_prim[1]
+                richtung = geschwindigkeit.assign(richtung_delta_l_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_l_x)), richtung_delta_r_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_r_x)), richtung_delta_l_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_l_y)), richtung_delta_r_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_r_y)), richtung_delta_m_x = berechne_Abweichungsrichtung(start_x, pd.to_numeric(distanz.pix_x_translation), pd.to_numeric(distanz.blick_m_x)), richtung_delta_m_y = berechne_Abweichungsrichtung(start_y, pd.to_numeric(distanz.pix_y_translation), pd.to_numeric(distanz.blick_m_y)))
+
+                #Werte das Voraussein fuer den Blick insgesamt aus
+                result = richtung.assign(tendenz_l = berechne_tendenz(pd.to_numeric(richtung.richtung_delta_l_x), pd.to_numeric(richtung.richtung_delta_l_y)), tendenz_r = berechne_tendenz(pd.to_numeric(richtung.richtung_delta_r_x), pd.to_numeric(richtung.richtung_delta_r_y)), tendenz_m = berechne_tendenz(pd.to_numeric(richtung.richtung_delta_m_x), pd.to_numeric(richtung.richtung_delta_m_y)))
 
                 # Ergebnis in CSV-Datei schreiben
                 result.to_csv(os.path.join(destination_path, source_file), index=False)
