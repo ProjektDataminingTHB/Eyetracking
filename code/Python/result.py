@@ -25,12 +25,13 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     blick_r_y_values = pd.to_numeric(versuch_werte.blick_r_y).values
 
     # Mittelkwerte bestimmen
-    mean_delta_l = delta_l_values.mean()
-    mean_delta_r = delta_r_values.mean()
-    mean_delta_m = delta_m_values.mean()
-    mean_geschwindigkeit_l = geschwindigkeit_l_values.mean()
-    mean_geschwindigkeit_r = geschwindigkeit_r_values.mean()
-    mean_geschwindigkeit_m = geschwindigkeit_m_values.mean()
+    # Kein Exceptionhandling, da ein leeres Array dazu fuehrt, dass np.mean() nan zurueckgibt und keine Exception
+    mean_delta_l = np.mean(delta_l_values[np.nonzero(delta_l_values)])
+    mean_delta_r = np.mean(delta_r_values[np.nonzero(delta_r_values)])
+    mean_delta_m = np.mean(delta_m_values[np.nonzero(delta_m_values)])
+    mean_geschwindigkeit_l = np.mean(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
+    mean_geschwindigkeit_r = np.mean(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
+    mean_geschwindigkeit_m = np.mean(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
 
     header = np.append(header, [versuch_name + '_mean_delta_l', versuch_name + '_mean_delta_r', versuch_name + '_mean_delta_m', versuch_name + '_mean_geschwindigkeit_l', versuch_name + '_mean_geschwindigkeit_r', versuch_name + '_mean_geschwindigkeit_m'])
 
@@ -45,10 +46,19 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     header = np.append(header, [versuch_name + '_max_delta_l', versuch_name + '_max_delta_r', versuch_name + '_max_delta_m', versuch_name + '_max_geschwindigkeit_l', versuch_name + '_max_geschwindigkeit_r', versuch_name + '_max_geschwindigkeit_m'])
 
     # Minima bestimmen
-    min_delta_l = np.min(delta_l_values[np.nonzero(delta_l_values)])
-    min_delta_r = np.min(delta_r_values[np.nonzero(delta_r_values)])
-    min_delta_m = np.min(delta_m_values[np.nonzero(delta_m_values)])
     #Exceptionhandling fuer die Versuchspersonen, bei denen nur ein Auge gemessen wurde
+    try:
+        min_delta_l = np.min(delta_l_values[np.nonzero(delta_l_values)])
+    except ValueError:
+        min_delta_l = np.nan
+    try:
+        min_delta_r = np.min(delta_r_values[np.nonzero(delta_r_values)])
+    except ValueError:
+        min_delta_r = np.nan
+    try:
+        min_delta_m = np.min(delta_m_values[np.nonzero(delta_m_values)])
+    except ValueError:
+        min_delta_m = np.nan
     try:
         min_geschwindigkeit_l = np.min(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
     except ValueError:
