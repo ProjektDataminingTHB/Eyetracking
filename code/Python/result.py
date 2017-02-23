@@ -26,12 +26,30 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
 
     # Mittelkwerte bestimmen
     # Kein Exceptionhandling, da ein leeres Array dazu fuehrt, dass np.mean() nan zurueckgibt und keine Exception
-    mean_delta_l = np.mean(delta_l_values[np.nonzero(delta_l_values)])
-    mean_delta_r = np.mean(delta_r_values[np.nonzero(delta_r_values)])
-    mean_delta_m = np.mean(delta_m_values[np.nonzero(delta_m_values)])
-    mean_geschwindigkeit_l = np.mean(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
-    mean_geschwindigkeit_r = np.mean(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
-    mean_geschwindigkeit_m = np.mean(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
+    if delta_l_values[np.nonzero(delta_l_values)].size == 0:
+        mean_delta_l = 0
+    else:
+        mean_delta_l = np.mean(delta_l_values[np.nonzero(delta_l_values)])
+    if delta_r_values[np.nonzero(delta_r_values)].size == 0:
+        mean_delta_r = 0
+    else:
+        mean_delta_r = np.mean(delta_r_values[np.nonzero(delta_r_values)])
+    if delta_m_values[np.nonzero(delta_m_values)].size == 0:
+        mean_delta_m = 0
+    else:
+        mean_delta_m = np.mean(delta_m_values[np.nonzero(delta_m_values)])
+    if geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)].size == 0:
+        mean_geschwindigkeit_l = 0
+    else:
+        mean_geschwindigkeit_l = np.mean(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
+    if geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)].size == 0:
+        mean_geschwindigkeit_r = 0
+    else:
+        mean_geschwindigkeit_r = np.mean(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
+    if geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)].size == 0:
+        mean_geschwindigkeit_m = 0
+    else:
+        mean_geschwindigkeit_m = np.mean(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
 
     header = np.append(header, [versuch_name + '_mean_delta_l', versuch_name + '_mean_delta_r', versuch_name + '_mean_delta_m', versuch_name + '_mean_geschwindigkeit_l', versuch_name + '_mean_geschwindigkeit_r', versuch_name + '_mean_geschwindigkeit_m'])
 
@@ -50,15 +68,15 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     try:
         min_delta_l = np.min(delta_l_values[np.nonzero(delta_l_values)])
     except ValueError:
-        min_delta_l = np.nan
+        min_delta_l = 0
     try:
         min_delta_r = np.min(delta_r_values[np.nonzero(delta_r_values)])
     except ValueError:
-        min_delta_r = np.nan
+        min_delta_r = 0
     try:
         min_delta_m = np.min(delta_m_values[np.nonzero(delta_m_values)])
     except ValueError:
-        min_delta_m = np.nan
+        min_delta_m = 0
     try:
         min_geschwindigkeit_l = np.min(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
     except ValueError:
@@ -108,8 +126,9 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     condition_hinter_m = np.equal(tendenz_m_values,-1)
     num_hinter_m = len(np.extract(condition_hinter_m, tendenz_m_values))
 
+    # -100 steht fuer keinen errechneten Wert, sondern fuer nich vorhanden.
     if num_voraus_l == 0 and num_hinter_l == 0:
-        tendenz_l = np.nan
+        tendenz_l = -100
     else:
         if num_voraus_l > num_hinter_l:
             tendenz_l = 1
@@ -120,7 +139,7 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
                 tendenz_l = 0
     
     if num_voraus_r == 0 and num_hinter_r == 0:
-        tendenz_r = np.nan
+        tendenz_r = -100
     else:
         if num_voraus_r > num_hinter_r:
                 tendenz_r = 1
@@ -131,7 +150,7 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
                 tendenz_r = 0
 
     if num_voraus_m == 0 and num_hinter_m == 0:
-        tendenz_m = np.nan
+        tendenz_m = -100
     else:
         if num_voraus_m > num_hinter_m:
                 tendenz_m = 1
