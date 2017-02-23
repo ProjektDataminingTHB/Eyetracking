@@ -18,6 +18,19 @@ def berechne_Mitte(links, rechts):
             ergebnis.append(0)
     return ergebnis
 
+def berechne_Abstand(blick_x, target_x, blick_y, target_y):
+    blick_x_values = blick_x.values
+    target_x_values = target_x.values
+    blick_y_values = blick_y.values
+    target_y_values = target_y.values
+    ergebnis = list()
+    for i in range(len(blick_x_values)):
+        if blick_x_values[i] == 0 or blick_y_values[i] == 0:
+            ergebnis.append(0)
+        else:
+            ergebnis.append(math.sqrt(math.pow(blick_x_values[i] - target_x_values[i],2) + math.pow(blick_y_values[i] - target_y_values[i],2)))
+    return ergebnis
+
 def berechne_Geschwindigkeit(y, x, t):
     y_values = y.values
     x_values = x.values
@@ -119,7 +132,7 @@ def extend_files():
                 middle_eyes = source.assign(blick_m_x = berechne_Mitte(pd.to_numeric(source.blick_l_x), pd.to_numeric(source.blick_r_x)), blick_m_y = berechne_Mitte(pd.to_numeric(source.blick_l_y), pd.to_numeric(source.blick_r_y)), pix_x_translation = pd.to_numeric(source.pix_x).add(cfg.o_prim[0]), pix_y_translation = (pd.to_numeric(source.pix_y) * -1).add(cfg.o_prim[1]))
 
                 # Erweiterung um die Werte der Distanz der Blickposition zur Targetposition
-                distanz = middle_eyes.assign(delta_l_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_l_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_l_y) - pd.to_numeric(x.pix_y_translation),2)), delta_r_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_r_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_r_y) - pd.to_numeric(x.pix_y_translation),2)), delta_m_t = lambda x : np.sqrt(np.power(pd.to_numeric(x.blick_m_x) - pd.to_numeric(x.pix_x_translation),2) + np.power(pd.to_numeric(x.blick_m_y) - pd.to_numeric(x.pix_y_translation),2)))
+                distanz = middle_eyes.assign(delta_l_t = berechne_Abstand(pd.to_numeric(middle_eyes.blick_l_x), pd.to_numeric(middle_eyes.pix_x_translation), pd.to_numeric(middle_eyes.blick_l_y), pd.to_numeric(middle_eyes.pix_y_translation)), delta_r_t = berechne_Abstand(pd.to_numeric(middle_eyes.blick_r_x), pd.to_numeric(middle_eyes.pix_x_translation), pd.to_numeric(middle_eyes.blick_r_y), pd.to_numeric(middle_eyes.pix_y_translation)), delta_m_t = berechne_Abstand(pd.to_numeric(middle_eyes.blick_m_x), pd.to_numeric(middle_eyes.pix_x_translation), pd.to_numeric(middle_eyes.blick_m_y), pd.to_numeric(middle_eyes.pix_y_translation)))
 
                 # Erweiterung um die Geschwindigkeiten
                 geschwindigkeit = distanz.assign(geschwindigkeit_l = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_l_y), pd.to_numeric(distanz.blick_l_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_r = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_r_y), pd.to_numeric(distanz.blick_r_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_m = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_m_y), pd.to_numeric(distanz.blick_m_x), pd.to_numeric(distanz.zeitstempel)))
