@@ -108,27 +108,38 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     condition_hinter_m = np.equal(tendenz_m_values,-1)
     num_hinter_m = len(np.extract(condition_hinter_m, tendenz_m_values))
 
-    if num_voraus_l > num_hinter_l:
-        tendenz_l = 1
+    if num_voraus_l == 0 and num_hinter_l == 0:
+        tendenz_l = np.nan
     else:
-        if num_hinter_l > num_voraus_l:
-            tendenz_l = -1
+        if num_voraus_l > num_hinter_l:
+            tendenz_l = 1
         else:
-            tendenz_l = 0
-    if num_voraus_r > num_hinter_r:
-            tendenz_r = 1
+            if num_hinter_l > num_voraus_l:
+                tendenz_l = -1
+            else:
+                tendenz_l = 0
+    
+    if num_voraus_r == 0 and num_hinter_r == 0:
+        tendenz_r = np.nan
     else:
-        if num_hinter_r > num_voraus_r:
-            tendenz_r = -1
+        if num_voraus_r > num_hinter_r:
+                tendenz_r = 1
         else:
-            tendenz_r = 0
-    if num_voraus_m > num_hinter_m:
-            tendenz_m = 1
+            if num_hinter_r > num_voraus_r:
+                tendenz_r = -1
+            else:
+                tendenz_r = 0
+
+    if num_voraus_m == 0 and num_hinter_m == 0:
+        tendenz_m = np.nan
     else:
-        if num_hinter_m > num_voraus_m:
-            tendenz_m = -1
+        if num_voraus_m > num_hinter_m:
+                tendenz_m = 1
         else:
-            tendenz_m = 0
+            if num_hinter_m > num_voraus_m:
+                tendenz_m = -1
+            else:
+                tendenz_m = 0
 
     header = np.append(header, [versuch_name + '_tendenz_l', versuch_name + '_tendenz_r', versuch_name + '_tendenz_m'])
 
@@ -142,7 +153,7 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     yield header 
 
 def make_result_file():
-    header_source =['t_tracker','pix_x','pix_y','zeitstempel','blick_l_x','blick_l_y','blick_r_x','blick_r_y','blick_m_x','blick_m_y','pix_x_translation','pix_y_translation','delta_l_t','delta_m_t','delta_r_t','geschwindigkeit_l','geschwindigkeit_m','geschwindigkeit_r','richtung_delta_l_x','richtung_delta_l_y','richtung_delta_m_x','richtung_delta_m_y','richtung_delta_r_x','richtung_delta_r_y', 'tendenz_l', 'tendenz_r', 'tendenz_m']
+    header_source =['t_tracker','pix_x','pix_y','zeitstempel','blick_l_x','blick_l_y','blick_r_x','blick_r_y','blick_m_x','blick_m_y','pix_x_translation','pix_y_translation','delta_l_t','delta_m_t','delta_r_t','geschwindigkeit_l','geschwindigkeit_m','geschwindigkeit_r','richtung_delta_l_x','richtung_delta_l_y','richtung_delta_m_x','richtung_delta_m_y','richtung_delta_r_x','richtung_delta_r_y', 'tendenz_l', 'tendenz_m', 'tendenz_r']
     header_destination = ['person']
     source_folders = os.listdir(cfg.extendedHome)
     
@@ -158,7 +169,7 @@ def make_result_file():
     source_file_list = os.listdir(source_path_h)
 
     for source_file in source_file_list:
-        #Die Dateien mit den Informationen zu der Anzahl werden ignoriert. Allerdings werden sie in dem else-Zweig trotzdem geoeffnet.
+        #Die Dateien mit den Informationen zu der Anzahl werden ignoriert. Diese koennen genutzt werden, um ein detaillierteres Ergebnis zu erhalten.
         if 'stats' in source_file:
             pass
         else:
@@ -172,11 +183,11 @@ def make_result_file():
             werte = np.append(werte, neu)
 
             # langsame 8
-            neu, header = versuch_auswerten(source_h, 'Liegende_8_langsam', header)
+            neu, header = versuch_auswerten(source_l8, 'Liegende_8_langsam', header)
             werte = np.append(werte, neu)
             
             # schnelle 8
-            neu, header = versuch_auswerten(source_h, 'Liegende_8_schnell', header)
+            neu, header = versuch_auswerten(source_s8, 'Liegende_8_schnell', header)
             werte = np.append(werte, neu)
             
             df = pd.DataFrame([werte], columns=header)
