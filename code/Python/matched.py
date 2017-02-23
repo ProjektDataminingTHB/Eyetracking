@@ -9,13 +9,18 @@ def zuordnung_matched():
     header_target = ['t_tracker', 'pix_x', 'pix_y']
     header_blick = ['zeitstempel', 'blick_l_x', 'blick_l_y',
                                                 'blick_r_x', 'blick_r_y']
+
+    #nimmt eine Liste von Listen, die alle Ordner und Unterordner in einer Liste von Länge 3 darstellen Wurzel, alle Ordner, alle dateien darstellen.
     all_folders = os.walk(cfg.datenZerlegungHome)
     for root, folders, files in all_folders:
+        #überprüft, ob wir in dem Ordner einer Versuchsperson (mit 3 oexperimenten und eine Targetdatei) in Daten_zerlegung sind
         if len(folders) == 3 and len(files) == 1:
             for exp in folders:
+                #Wenn ja, wird für jedes Expereriment ein Ordner festgelegt
                 if os.path.exists(os.path.join(cfg.matchedHome, exp)) == False:
                     os.makedirs(os.path.join(cfg.matchedHome, exp))
 
+                #Ordner zur Erstellung des Matching wird festgelegt
                 output_folder = os.path.join(cfg.matchedHome, exp)
 
                 all_folders_2 = os.walk(os.path.join(root, exp))
@@ -26,7 +31,6 @@ def zuordnung_matched():
                     if len(folders_2) == 0 and len(files_2) == 2:
                         parent, cycle = ntpath.split(root_2)
                         parent, messung = ntpath.split(parent)
-                        #print(messung, cycle)
                         files_2.sort()
                         target = pd.read_csv(os.path.join(root_2, files_2[0]), sep=',',
                                              names=header_target)
@@ -47,15 +51,12 @@ def zuordnung_matched():
                         header_stats.append(messung + '_' + cycle)
                         stats.append(count)
 
-                #print("End----------------------------------------------------------")
                 data = data[1:, :]
                 df = pd.DataFrame(data, columns=['t_tracker', 'pix_x', 'pix_y', 'zeitstempel', 'blick_l_x', 'blick_l_y',
                                                'blick_r_x', 'blick_r_y'])
                 filename = tls.remove_end('_gaze.csv', files_2[1])
                 stats = np.array([stats])
-                #print(stats)
                 stats_file = pd.DataFrame(stats, columns = header_stats)
-                #print(filename)
                 df.to_csv(os.path.join(output_folder, filename + '.csv'), index=False)
                 stats_file.to_csv(os.path.join(output_folder, filename + '_stats' + '.csv'), index=False)
 
