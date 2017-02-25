@@ -53,7 +53,7 @@ def berechne_Geschwindigkeit(y, x, t):
         if rechnen:
             dif_x = x1 - x_values[i]
             dif_y = y1 - y_values[i]
-            ergebnis.append(math.sqrt(math.pow(dif_x, 2) + math.pow(dif_y, 2)) / math.pow(dif_t, 2))
+            ergebnis.append(math.sqrt(math.pow(dif_x, 2) + math.pow(dif_y, 2)) / dif_t)
         else:
             ergebnis.append(0)
         x1 = x_values[i]

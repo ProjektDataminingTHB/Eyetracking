@@ -27,39 +27,57 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     # Mittelkwerte bestimmen
     # Kein Exceptionhandling, da ein leeres Array dazu fuehrt, dass np.mean() nan zurueckgibt und keine Exception
     if delta_l_values[np.nonzero(delta_l_values)].size == 0:
-        mean_delta_l = 0
+        mean_delta_l = -1
     else:
         mean_delta_l = np.mean(delta_l_values[np.nonzero(delta_l_values)])
     if delta_r_values[np.nonzero(delta_r_values)].size == 0:
-        mean_delta_r = 0
+        mean_delta_r = -1
     else:
         mean_delta_r = np.mean(delta_r_values[np.nonzero(delta_r_values)])
     if delta_m_values[np.nonzero(delta_m_values)].size == 0:
-        mean_delta_m = 0
+        mean_delta_m = -1
     else:
         mean_delta_m = np.mean(delta_m_values[np.nonzero(delta_m_values)])
     if geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)].size == 0:
-        mean_geschwindigkeit_l = 0
+        mean_geschwindigkeit_l = -1
     else:
         mean_geschwindigkeit_l = np.mean(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
     if geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)].size == 0:
-        mean_geschwindigkeit_r = 0
+        mean_geschwindigkeit_r = -1
     else:
         mean_geschwindigkeit_r = np.mean(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
     if geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)].size == 0:
-        mean_geschwindigkeit_m = 0
+        mean_geschwindigkeit_m = -1
     else:
         mean_geschwindigkeit_m = np.mean(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
 
     header = np.append(header, [versuch_name + '_mean_delta_l', versuch_name + '_mean_delta_r', versuch_name + '_mean_delta_m', versuch_name + '_mean_geschwindigkeit_l', versuch_name + '_mean_geschwindigkeit_r', versuch_name + '_mean_geschwindigkeit_m'])
 
     # Maxima bestimmen
-    max_delta_l = delta_l_values.max()
-    max_delta_r = delta_r_values.max()
-    max_delta_m = delta_m_values.max()
-    max_geschwindigkeit_l = geschwindigkeit_l_values.max()
-    max_geschwindigkeit_r = geschwindigkeit_r_values.max()
-    max_geschwindigkeit_m = geschwindigkeit_m_values.max()
+    try:
+        max_delta_l = np.max(delta_l_values[np.nonzero(delta_l_values)])
+    except ValueError:
+        max_delta_l = -1
+    try:
+        max_delta_r = np.max(delta_r_values[np.nonzero(delta_r_values)])
+    except ValueError:
+        max_delta_r = -1
+    try:
+        max_delta_m = np.max(delta_m_values[np.nonzero(delta_m_values)])
+    except ValueError:
+        max_delta_m = -1
+    try:
+        max_geschwindigkeit_l = np.max(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
+    except ValueError:
+        max_geschwindigkeit_l = -1
+    try:
+        max_geschwindigkeit_r = np.max(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
+    except ValueError:
+        max_geschwindigkeit_r = -1
+    try:
+        max_geschwindigkeit_m = np.max(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
+    except ValueError:
+        max_geschwindigkeit_m = -1
 
     header = np.append(header, [versuch_name + '_max_delta_l', versuch_name + '_max_delta_r', versuch_name + '_max_delta_m', versuch_name + '_max_geschwindigkeit_l', versuch_name + '_max_geschwindigkeit_r', versuch_name + '_max_geschwindigkeit_m'])
 
@@ -68,47 +86,84 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     try:
         min_delta_l = np.min(delta_l_values[np.nonzero(delta_l_values)])
     except ValueError:
-        min_delta_l = 0
+        min_delta_l = -1
     try:
         min_delta_r = np.min(delta_r_values[np.nonzero(delta_r_values)])
     except ValueError:
-        min_delta_r = 0
+        min_delta_r = -1
     try:
         min_delta_m = np.min(delta_m_values[np.nonzero(delta_m_values)])
     except ValueError:
-        min_delta_m = 0
+        min_delta_m = -1
     try:
         min_geschwindigkeit_l = np.min(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
     except ValueError:
-        min_geschwindigkeit_l = 0
+        min_geschwindigkeit_l = -1
     try:
         min_geschwindigkeit_r = np.min(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
     except ValueError:
-        min_geschwindigkeit_r = 0
+        min_geschwindigkeit_r = -1
     try:
         min_geschwindigkeit_m = np.min(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
     except ValueError:
-        min_geschwindigkeit_m = 0
+        min_geschwindigkeit_m = -1
 
     header = np.append(header, [versuch_name + '_min_delta_l', versuch_name + '_min_delta_r', versuch_name + '_min_delta_m', versuch_name + '_min_geschwindigkeit_l', versuch_name + '_min_geschwindigkeit_r', versuch_name + '_min_geschwindigkeit_m'])
 
     # Standardabweichungen berechnen
-    std_delta_l = delta_l_values.std()
-    std_delta_r = delta_r_values.std()
-    std_delta_m = delta_m_values.std()
-    std_geschwindigkeit_l = geschwindigkeit_l_values.std()
-    std_geschwindigkeit_r = geschwindigkeit_r_values.std()
-    std_geschwindigkeit_m = geschwindigkeit_m_values.std()
+    if delta_l_values[np.nonzero(delta_l_values)].size == 0:
+        std_delta_l = -1
+    else:
+        std_delta_l = np.std(delta_l_values[np.nonzero(delta_l_values)])
+    if delta_r_values[np.nonzero(delta_r_values)].size == 0:
+        std_delta_r = -1
+    else:
+        std_delta_r = np.std(delta_r_values[np.nonzero(delta_r_values)])
+    if delta_m_values[np.nonzero(delta_m_values)].size == 0:
+        std_delta_m = -1
+    else:
+        std_delta_m = np.std(delta_m_values[np.nonzero(delta_m_values)])
+    if geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)].size == 0:
+        std_geschwindigkeit_l = -1
+    else:
+        std_geschwindigkeit_l = np.std(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
+    if geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)].size == 0:
+        std_geschwindigkeit_r = -1
+    else:
+        std_geschwindigkeit_r = np.std(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
+    if geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)].size == 0:
+        std_geschwindigkeit_m = -1
+    else:
+        std_geschwindigkeit_m = np.std(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
 
     header = np.append(header, [versuch_name + '_standardabweichung_delta_l', versuch_name + '_standardabweichung_delta_r', versuch_name + '_standardabweichung_delta_m', versuch_name + '_standardabweichung_geschwindigkeit_l', versuch_name + '_standardabweichung_geschwindigkeit_r', versuch_name + '_standardabweichung_geschwindigkeit_m'])
     
     # Varianzen berechnen
-    var_delta_l = delta_l_values.var()
-    var_delta_r = delta_r_values.var()
-    var_delta_m = delta_m_values.var()
-    var_geschwindigkeit_l = geschwindigkeit_l_values.var()
-    var_geschwindigkeit_r = geschwindigkeit_r_values.var()
-    var_geschwindigkeit_m = geschwindigkeit_m_values.var()
+    if delta_l_values[np.nonzero(delta_l_values)].size == 0:
+        var_delta_l = -1
+    else:
+        var_delta_l = np.var(delta_l_values[np.nonzero(delta_l_values)])
+    if delta_r_values[np.nonzero(delta_r_values)].size == 0:
+        var_delta_r = -1
+    else:
+        var_delta_r = np.var(delta_r_values[np.nonzero(delta_r_values)])
+    if delta_m_values[np.nonzero(delta_m_values)].size == 0:
+        var_delta_m = -1
+    else:
+        var_delta_m = np.var(delta_m_values[np.nonzero(delta_m_values)])
+    if geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)].size == 0:
+        var_geschwindigkeit_l = -1
+    else:
+        var_geschwindigkeit_l = np.var(geschwindigkeit_l_values[np.nonzero(geschwindigkeit_l_values)])
+    if geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)].size == 0:
+        var_geschwindigkeit_r = -1
+    else:
+        var_geschwindigkeit_r = np.var(geschwindigkeit_r_values[np.nonzero(geschwindigkeit_r_values)])
+    if geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)].size == 0:
+        var_geschwindigkeit_m = -1
+    else:
+        var_geschwindigkeit_m = np.var(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
+
 
     header = np.append(header, [versuch_name + '_varianz_delta_l', versuch_name + '_varianz_delta_r', versuch_name + '_varianz_delta_m', versuch_name + '_varianz_geschwindigkeit_l', versuch_name + '_varianz_geschwindigkeit_r', versuch_name + '_varianz_geschwindigkeit_m'])
 
