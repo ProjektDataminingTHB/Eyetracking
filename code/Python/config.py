@@ -15,7 +15,7 @@ class Config:
     visualisierungPdfHome = exploratoryHome + 'visualisierungPdf/'
 
     #Excludes
-    exclude = ['131']
+    exclude = ['131', '071', '090']
 
     #Origin
     o_prim = np.array([640, 512])
@@ -25,3 +25,9 @@ class Config:
     experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
     messungen = ['messung1', 'messung2', 'probe']
     cycles = ['cycle1', 'cycle2']
+
+    #prefix
+    prefix = 'vp_'
+
+    #suffix
+    suffix = '_gaze.csv'
