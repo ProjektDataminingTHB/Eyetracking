@@ -42,7 +42,7 @@ def berechne_Geschwindigkeit(y, x, t):
     rechnen = False
     for i in range(len(t_values)):
         # Berechnung der Zeitstempeldifferenz, die nicht 0 sein darf, wegen der Division
-        dif_t = t1 - t_values[i]
+        dif_t = t_values[i] - t1
         # Kriterien, wann gerechnet werden darf:
         # es muessen gueltige Werte vorliegen, also keine 0 bei den Blickdaten
         # die Division muss moeglich sein
@@ -51,8 +51,8 @@ def berechne_Geschwindigkeit(y, x, t):
         else:
             rechnen = False
         if rechnen:
-            dif_x = x1 - x_values[i]
-            dif_y = y1 - y_values[i]
+            dif_x = x_values[i] - x1
+            dif_y = y_values[i] - y1
             ergebnis.append(math.sqrt(math.pow(dif_x, 2) + math.pow(dif_y, 2)) / dif_t)
         else:
             ergebnis.append(0)
