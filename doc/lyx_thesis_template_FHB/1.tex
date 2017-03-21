@@ -1,0 +1,16 @@
+
+\subsection{Ausgelagerter Unterabschnitt}
+
+\LyX{} sorgt bei eingebundenen Dateien automatisch dafür, dass die
+richtige Nummerierung bei den Überschriften verwendet wird. Auch Quellenangaben
+mit Quellen aus dem Hauptdokument sind leicht möglich: \cite{Harel1987}.
+
+Wird eine augelagerte Datei als \texttt{Input} eingebunden, wird der
+Quelltext der Datei vor dem kompilieren in das Hauptdokument übernommen.
+Bei großen Dokumenten kann das zu Performance-Problemen führen. Aus
+diesem Grund sollten ganze Kapitel besser als \texttt{Include} eingebunden
+werden. Dabei wird erst das Ergebnis der Kompilierung zusammengeführt.
+Der Nachteil ist, dass per \texttt{Include} eingebundene Dateien immer
+auf einer neuen Seite beginnen und auch am Ende der eingebundenen
+Datei eine neue Seite begonnen wird. Bei ganzen Kapiteln ist das jedoch
+unerheblich, da diese sowieso auf einer neuen Seite beginnen.

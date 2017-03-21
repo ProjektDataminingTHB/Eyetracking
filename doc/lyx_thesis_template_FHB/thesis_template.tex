@@ -1,0 +1,560 @@
+%% LyX 1.6.5 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english,ngerman,pointlessnumbers, abstraction, headsepline]{scrreprt}
+\usepackage{lmodern}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{listings}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=2.75cm,headheight=1cm,headsep=0.666cm,footskip=1cm}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{setspace}
+\setstretch{1.4}
+\usepackage[unicode=true, 
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{pdftitle={Warum die Welt eine Scheibe ist},
+ pdfauthor={Max Mustermann}}
+ 
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand{\LyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newenvironment{lyxcode}
+{\par\begin{list}{}{
+\setlength{\rightmargin}{\leftmargin}
+\setlength{\listparindent}{0pt}% needed for AMS classes
+\raggedright
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\normalfont\ttfamily}%
+ \item[]}
+{\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%% Flexibles Seitenlayout
+\usepackage[automark]{scrpage2}
+
+%% Mehrspaltenlayout ermöglichen
+\usepackage{multicol}
+
+%% Unterstützung für Farben
+\usepackage{color}
+
+%% Schönere Tabellen
+\usepackage{booktabs, longtable}
+
+%% Schönerer Blocksatz
+\usepackage{microtype}
+
+%% Mehr Platz zwischen Überschrift und Tabelle
+\newcommand{\@ldtable}{}
+\let\@ldtable\table
+\renewcommand{\table}{ %
+    \setlength{\@tempdima}{\abovecaptionskip} %
+    \setlength{\abovecaptionskip}{\belowcaptionskip} %
+    \setlength{\belowcaptionskip}{\@tempdima} %
+    \@ldtable %
+}
+
+%% Verschiedene Symbole und Zeichen wie (c), ¤
+\usepackage{textcomp}
+
+%% Fehlerkorrektur für Marginalien
+\usepackage{fixltx2e, mparhack}
+
+%% Deutsche Kurzfassung und englisches Abstract auf eine Seite
+\renewenvironment{abstract}{
+    \@beginparpenalty\@lowpenalty
+        \begin{center}
+            \normalfont\sectfont\nobreak\abstractname
+        \end{center}
+    \@endparpenalty\@M
+}{
+    \par
+}
+
+%% Alle Seiten vor dem Inhaltsverzeichnis sind römisch nummeriert
+\pagenumbering{roman}
+\let\myTOC\tableofcontents
+\renewcommand\tableofcontents{
+    \begin{spacing}{1.1}
+    \myTOC
+    \end{spacing}
+    \clearpage
+    \pagenumbering{arabic}
+}
+
+%% Kopfzeile um Logo ergänzen
+\clearscrheadfoot
+\ohead{\\\headmark}
+\ihead{\includegraphics[scale=0.25]{pics/FH-Logo-only-gray}}%\pagemark}
+\ofoot[\pagemark]{\pagemark}
+
+%% Randnotizen anpassen
+\setlength{\marginparwidth}{22mm}
+\let \oldmarginpar = \marginpar
+\renewcommand{\marginpar}[1]{%
+    \-\oldmarginpar[\raggedleft\footnotesize\sf #1]%
+        {\raggedright\footnotesize\sf #1%
+    }}
+
+%% Zitate am Kapitelanfang
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{9cm}
+
+%% Code-Block-Formatierung
+\lstdefinestyle{default}{ %
+    backgroundcolor={\color[rgb]{0.95,0.95,0.95}}, %
+    basicstyle={\small\ttfamily}, %
+    breaklines=true, %
+    frame=l, %
+    language={[Sharp]C}, %
+    lineskip=-0.1pt, %
+    numbers=left, %
+    rulecolor={\color[rgb]{0.5,0.5,0.5}}, %
+    xleftmargin={0.75cm}, %
+    xrightmargin={0cm} %
+}
+
+\makeatother
+
+\begin{document}
+\titlepage
+
+\begin{center}
+\includegraphics[width=5cm]{pics/FH-Logo}\vspace{0.5cm}
+
+\par\end{center}
+
+\noindent \begin{center}
+\textsf{\textbf{\Large Fachbereich Informatik und Medien}}\\
+\textsf{\large }\\
+\vspace{1cm}
+
+\par\end{center}
+
+\noindent \begin{center}
+\textsf{\textbf{\huge MASTERARBEIT}}\textsf{}\\
+\textsf{}\\
+\textsf{\Large Warum die Welt eine Scheibe ist}
+\par\end{center}{\Large \par}
+
+\vspace{2cm}
+
+
+\noindent \begin{center}
+{\huge }\begin{tabular}{rl}
+Vorgelegt von: & Muster Klausmann\tabularnewline
+am: & 01.01.2009\tabularnewline
+\end{tabular}
+\par\end{center}{\huge \par}
+
+\vspace{1cm}
+
+
+\noindent \begin{center}
+zum \\
+Erlangen des akademischen Grades\textsf{}\\
+\textsf{\smallskip{}
+}
+\par\end{center}
+
+\noindent \begin{center}
+\textsf{\textbf{\huge MASTER OF SCIENCE}}\textsf{\textbf{\LARGE }}\\
+\textsf{\textbf{(M.Sc.)}}
+\par\end{center}
+
+\noindent \begin{center}
+\medskip{}
+\begin{tabular}{rl}
+Erstbetreuer: & Bruno Giordano\tabularnewline
+Zweitbetreuer: & Prof. Jens Haberblatt\tabularnewline
+\end{tabular}
+\par\end{center}
+
+\newpage{}
+
+%
+\begin{comment}
+leere Seite nach dem Titelblatt
+
+dann Aufgabenstellung
+\end{comment}
+{}
+
+%\pagestyle{scrheadings}    %Kopfzeile ein
+
+\noindent \begin{center}
+\textsf{\textbf{\large Selbstständigkeitserklärung}}
+\par\end{center}{\large \par}
+
+\noindent Hiermit erkläre ich, dass ich die vorliegende Arbeit zum
+Thema
+
+\smallskip{}
+
+
+\noindent \begin{center}
+\textsf{Warum die Welt eine Scheibe ist}
+\par\end{center}
+
+\smallskip{}
+
+
+\noindent vollkommen selbstständig verfasst und keine anderen als
+die angegebenen Quellen und Hilfsmittel benutzt sowie Zitate kenntlich
+gemacht habe. Die Arbeit wurde in dieser oder ähnlicher Form noch
+keiner anderen Prüfungsbehörde vorgelegt.
+
+\medskip{}
+
+
+\noindent Brandenburg/Havel, den 11.11.2011
+
+\vspace{1.7cm}
+
+
+\noindent Unterschrift 
+
+\selectlanguage{ngerman}
+
+\newpage{}
+
+\noindent \begin{center}
+\textsf{\textbf{\large Danksagung}}
+\par\end{center}{\large \par}
+
+Eine Danksagung dient dazu den Menschen oder Organisationen zu danken,
+die das Arbeitsumfeld für den Autor ermöglicht und oder bereichert
+haben. Häufig werden geduldige Familienmitglieder oder besonders unterstützende
+Professoren genannt.
+
+\newpage{}
+\begin{abstract}
+Immer schon haben sich Menschen ein Bild von der Erde und vom Weltall
+gemacht. Ägyptische Idee: die Scheibenform. Ganz früher, vor Tausenden
+von Jahren, stellten sich die Ägypter zum Beispiel die Erde als Scheibe
+vor. Dieses Bild von der Welt hatten sie, weil sie mit ihren eigenen
+Augen die Kugelform der Erde nicht sehen konnten.(...)
+\end{abstract}
+
+\selectlanguage{english}%
+\begin{abstract}
+This is a second abstract in english.
+
+\newpage{}
+\end{abstract}
+\selectlanguage{ngerman}%
+\tableofcontents{}
+
+\pagestyle{scrheadings}    %Kopfzeile ein
+
+
+\chapter{Einleitung}
+
+Diese Vorlage dient der Einführung in \LaTeX{} und \LyX{}. Sie kann
+als Ausgangspunkt für das Schreiben einer Abschlussarbeit dienen das
+Layout und die Formatierung ist jedoch nicht als verbindlich zu betrachten.
+
+Sie sind als Autor einer Abschlussarbeit sowohl für deren Erscheinungsbild
+als auch für deren Struktur und Inhalt selbst verantwortlich.
+
+
+\section{Gestaltungsmittel}
+
+Neben reinem Text enthält eine Arbeit oft noch viele weitere Gestaltungselemente
+wie Grafiken, Formeln oder Tabellen.
+
+
+\subsection{Abbildungen}
+
+Grafiken (Fotos oder Diagramme) werden in wissenschaftlichen Arbeiten
+als Abbildungen bezeichnet. Üblicherweise werden Abbildungen als Gleitobjekte
+eingefügt. Gleitobjekte werden von \LaTeX{} automatisch an geeigneter
+Stelle in den Text eingefügt. Falls notwendig, kann man für jedes
+Gleitobjekt angeben, ob es genau an der eingefügten Stelle, am Seitenanfang
+oder am Seitenende erscheinen soll. Abbildungen erhalten eine Beschriftung
+unterhalb. Wenn ein Verweis auf eine Abbildung möglich sein soll,
+muss die Beschriftung der Abbildung mit einer Marke (Label) versehen
+werden.
+
+%
+\begin{figure}[H]
+\noindent \begin{centering}
+\includegraphics[width=6cm]{pics/lohner-porsche}
+\par\end{centering}
+
+\caption{\label{fig:Porsche}Ein altes Bild}
+
+\end{figure}
+
+
+
+\subsection{Tabellen}
+
+Nicht nur Grafiken können als Gleitobjekte eingebunden werden. Auch
+Tabellen werden üblicherweise nicht direkt im Text sondern als Gleitobjekt
+geführt. Aber beachten Sie, dass sich Gleitobjekte nicht über mehrere
+Seiten erstrecken können. Ist eine Tabelle länger als eine Seite,
+passt sie nicht mehr in ein Gleitobjekt und sollte vieleicht in den
+Anhang. Bei Tabellen ist es nicht unüblich die Beschriftung über der
+Tabelle einzufügen.
+
+%
+\begin{table}[H]
+\caption{Überschrift - Die Beschreibung für Tabellen befindet sich oberhalb}
+
+
+\noindent \centering{}\begin{tabular}{cc}
+\hline 
+\noalign{\vskip\doublerulesep}
+Planet & Form\tabularnewline[\doublerulesep]
+\hline
+\noalign{\vskip\doublerulesep}
+ Erde & Scheibe\tabularnewline[\doublerulesep]
+\noalign{\vskip\doublerulesep}
+Mond & Brocken \tabularnewline[\doublerulesep]
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Formeln}
+
+Auch Formeln werden in Abschlussarbeiten häufig verwendet. \LaTeX{}
+bietet eine sehr gute Unterstützung für Formeln und der Formeleditor
+von \LyX{} ist auch nicht der schlechteste. Formeln können mitten
+im Text verwendet werden z.B. ist $e=mc^{2}$ eine sehr berühmte Formel.
+Größere Formeln wie Formel \ref{eq:Beispielformel} sollten abgesetzt
+werden:\begin{equation}
+f\left(x\right)=\sum_{i=1}^{\infty}x\frac{\sin\sqrt{i}}{i^{2}}\label{eq:Beispielformel}\end{equation}
+Solche abgesetzten Formeln können auch mit einer Nummerierung und
+einer Marke versehen werden, um Rückverweise im Text zu ermöglichen.
+
+
+\subsection{Quellenangaben}
+
+Sehr wichtig sind Quellenangaben. Diese werden üblicherweise in Form
+einer BibTe{}X-Datei verwaltet und können z.B. komfortabel mit JabRef%
+\footnote{\url{http://sourceforge.net/projects/jabref/}%
+} bearbeitet werden. Eingebunden wird eine BibTe{}X-Datei mit dem
+Anlegen eines Literaturverzeichnisses am Ende der Arbeit. Die Quellen
+aller in das Literaturverzeichnis eingebundenen BibTe{}X-Dateien
+stehen in der gesamten Arbeit für Verweise zur Verfügung.
+
+Im Folgenden ein paar Referenzen: 
+\begin{itemize}
+\item ein Hyperlink (ohne Eintrag ins Literaturverzeichnis) \href{htp://dynamiknodes.mastersign.de}{DynamicNodes}
+\item einige BibTe{}X-Einträge \cite{Chamma2004}, eine elektronische Quelle
+\cite{DN2009}, und noch ein paar Quellen: \cite{Chilenski1994,Harel1987},
+\cite{Liggesmeyer2001,Liggesmeyer2002}, \cite{Kutter2006}, \cite{ManMatlab2001,ManMatlab2005}
+\item eine Wikipedia-Quelle zur Literatur \cite{wiki:Literatur}\\
+Verwenden Sie den Link \emph{Seite zitieren} in der linken Spalte
+der Wikipedia-Seite und kopieren Sie den BibTe{}X-Eintrag ohne Verwendung
+der \texttt{\textbackslash{}url\{...\}}-Auszeichnung. In JabRef legen
+Sie einen neuen Eintrag vom Typ \emph{Electronic} an, wechseln auf
+den Karteireiter \emph{BibTe{}X source} und fügen den kopierten Eintrag
+ein. Korrigieren Sie den Anfang von \texttt{@misc} auf \texttt{@ELECTRONIC}
+und vergeben Sie einen sinnvollen BibTe{}X-Key. In diesem Beispiel
+\texttt{wiki:Literatur} an Stelle von \texttt{wiki:xxx}.
+\end{itemize}
+
+\subsection{Fußnoten}
+
+Eine Fußnote%
+\footnote{Das ist eine Anmerkung, welche für die Argumentation im Text nicht
+erforderlich ist, aber dennoch in die Arbeit gehört.%
+} darf nicht für das Auslagern von Quellenangaben missbraucht werden.
+Auch URLs die eine Quelle darstellen gehören als ordentlicher BibTe{}X-Eintrag
+in das Literaturverzeichnis. Falls eine Firma genannt wird, könnte
+man die Homepage der Firma%
+\footnote{\url{http://www.cia.gov/}%
+} in die Fußnote schreiben. Sprechen Sie mit Ihrem Betreuer über den
+sinnvollen Einsatz von Fußnoten und gehen Sie sparsam damit um.
+
+
+\section{Ein weiterer Abschnitt im ersten Kapitel}
+
+In Abb. \ref{fig:Porsche} ist ein schönes Auto zu sehen. Ganz früher,
+vor Tausenden von Jahren, stellten sich die Ägypter zum Beispiel die
+Erde als Scheibe vor. Dieses Bild von der Welt hatten sie, weil sie
+mit ihren eigenen Augen die Kugelform der Erde nicht sehen konnten.
+Diese Scheibe stellten sie sich in drei Stockwerke aufgeteilt vor:
+in eine Unterwelt, in der lagen die Toten, in ein mittleres Stockwerk,
+in dem wohnten die Menschen und schließlich in ein oberes Stockwerk
+als Ort für die Götter \textendash{} das war der Himmel.Ganz früher,
+vor Tausenden von Jahren, stellten sich die Ägypter zum Beispiel die
+Erde als Scheibe vor. Dieses Bild von der Welt hatten sie, weil sie
+mit ihren eigenen Augen die Kugelform der Erde nicht sehen konnten.
+Diese Scheibe stellten sie sich in drei Stockwerke aufgeteilt vor:
+in eine Unterwelt, in der lagen die Toten, in ein mittleres Stockwerk,
+in dem wohnten die Menschen und schließlich in ein oberes Stockwerk
+als Ort für die Götter \textendash{} das war der Himmel.
+
+
+\chapter{Implementierung}
+
+
+\section{Dateien einbinden}
+
+Es muss nicht die gesamte Arbeit in einer einzigen Datei verfasst
+werden. Einzelne Kapitel können sehr schön in eigene Dateien ausgelagert
+und in das Hauptdokument eingebunden werden.\input{1.tex}
+
+
+\subsection{Quelltexte}
+
+Neben den für Menschen bestimmten Texten arbeiten Informatiker auch
+mit Quelltexten die für den Computer bestimmt sind. Quelltexte können
+direkt in die Arbeit eingefügt werden:
+\begin{lyxcode}
+\noindent int~main(String{[}{]}~argv)~\{
+\begin{lyxcode}
+\noindent return~0;~//~Alles~ist~in~Ordnung
+\end{lyxcode}
+\noindent \}
+\end{lyxcode}
+Oder man bindet eine Quelltextdatei als komplette Datei ein, was in
+den meisten Fällen der bessere Weg ist:
+
+\lstinputlisting[caption={Das ist ein Quelltext},label={code:Listing1},style=default]{code/ShellDialog.cs}
+
+In welchem Format Quelltexte angezeigt werden, kann mit dem \LaTeX{}-Paket
+\texttt{listings} bestimmt werden. Im \LaTeX{}-Vorspann können wie
+in dieser Vorlage demonstriert, mehrere Stile z.B. für verschiedene
+Programmiersprachen definiert und im eingebundenen Listing, hier Listing
+\ref{code:Listing1}, über den Zusatzparameter \texttt{style=<Stilname>}
+verwendet werden.
+
+
+\chapter{Noch ein Kapitel}
+
+\epigraph{\textit{\textquotedbl{}For some Web2.0 symbolizes the start
+of a new era of the Web, for others it is merely a marketing buzzword
+designed to hook unaware venture capitalists on the Web2.0 hype.\textquotedbl{}}}{
+Petko D. Petkov }
+
+Der folgende Text ist ein Platzhalter der mit Hilfe von \cite{LoremIpsum}
+generiert wurde und zum Einschätzen des Textflusses dient.
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+sed diam voluptua. At vero eos et accusam et justo duo dolores et
+ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+molestie consequat, vel illum dolore eu feugiat nulla facilisis at
+vero eros et accumsan et iusto odio dignissim qui blandit praesent
+luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+volutpat. 
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem
+vel eum iriure dolor in hendrerit in vulputate velit esse molestie
+consequat, vel illum dolore eu feugiat nulla facilisis at vero eros
+et accumsan et iusto odio dignissim qui blandit praesent luptatum
+zzril delenit augue duis dolore te feugait nulla facilisi. 
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet
+doming id quod mazim placerat facer possim assum. Lorem ipsum dolor
+sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim
+ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
+nisl ut aliquip ex ea commodo consequat. 
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing
+elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos
+erat, et nonumy sed tempor et et invidunt justo labore Stet clita
+ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut
+vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et dolore magna aliquyam erat. 
+
+Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+sanctus. 
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+sed diam voluptua. At vero eos et accusam et justo duo dolores et
+ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+
+\appendix
+
+
+\chapter{Anhang}
+
+
+\section{Ein Kapitel des Anhangs}
+
+Im Anhang finden sich häufig längere Tabellen oder umfangreichere
+Quelltexte. Auch eine größere Sammlung von Grafiken, die den Textfluss
+zu sehr stören würden, können in den Anhang ausgelagert werden.
+
+\newpage{}
+
+\bibliographystyle{alphadin}
+\clearpage\addcontentsline{toc}{chapter}{\bibname}\bibliography{bibtex/lit_verz,bibtex/test}
+
+
+\listoffigures
+
+
+\listoftables
+
+\end{document}
