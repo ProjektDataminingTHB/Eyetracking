@@ -15,3 +15,5 @@ pdf/
 *.out
 *.synctex.gz
 *.toc
+
+*.~lock.*#
