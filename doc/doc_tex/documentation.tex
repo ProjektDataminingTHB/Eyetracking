@@ -1,0 +1,224 @@
+%% LyX 1.6.5 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english,ngerman,pointlessnumbers, abstraction, headsepline]{scrreprt}
+\usepackage{lmodern}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{listings}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=2.75cm,headheight=1cm,headsep=0.666cm,footskip=1cm}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{setspace}
+\setstretch{1.4}
+\usepackage[unicode=true, 
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{pdftitle={Warum die Welt eine Scheibe ist},
+ pdfauthor={Max Mustermann}}
+ 
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand{\LyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newenvironment{lyxcode}
+{\par\begin{list}{}{
+\setlength{\rightmargin}{\leftmargin}
+\setlength{\listparindent}{0pt}% needed for AMS classes
+\raggedright
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\normalfont\ttfamily}%
+ \item[]}
+{\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%% Flexibles Seitenlayout
+\usepackage[automark]{scrpage2}
+
+%% Mehrspaltenlayout ermöglichen
+\usepackage{multicol}
+
+%% Unterstützung für Farben
+\usepackage{color}
+
+%% Schönere Tabellen
+\usepackage{booktabs, longtable}
+
+%% Schönerer Blocksatz
+\usepackage{microtype}
+
+%% Mehr Platz zwischen Überschrift und Tabelle
+\newcommand{\@ldtable}{}
+\let\@ldtable\table
+\renewcommand{\table}{ %
+    \setlength{\@tempdima}{\abovecaptionskip} %
+    \setlength{\abovecaptionskip}{\belowcaptionskip} %
+    \setlength{\belowcaptionskip}{\@tempdima} %
+    \@ldtable %
+}
+
+%% Verschiedene Symbole und Zeichen wie (c), ¤
+\usepackage{textcomp}
+
+%% Fehlerkorrektur für Marginalien
+\usepackage{fixltx2e, mparhack}
+
+%% Deutsche Kurzfassung und englisches Abstract auf eine Seite
+\renewenvironment{abstract}{
+    \@beginparpenalty\@lowpenalty
+        \begin{center}
+            \normalfont\sectfont\nobreak\abstractname
+        \end{center}
+    \@endparpenalty\@M
+}{
+    \par
+}
+
+%% Alle Seiten vor dem Inhaltsverzeichnis sind römisch nummeriert
+\pagenumbering{roman}
+\let\myTOC\tableofcontents
+\renewcommand\tableofcontents{
+    \begin{spacing}{1.1}
+    \myTOC
+    \end{spacing}
+    \clearpage
+    \pagenumbering{arabic}
+}
+
+%% Kopfzeile um Logo ergänzen
+\clearscrheadfoot
+\ohead{\\\headmark}
+\ihead{\includegraphics[scale=0.25]{pics/FH-Logo-only-gray}}%\pagemark}
+\ofoot[\pagemark]{\pagemark}
+
+%% Randnotizen anpassen
+\setlength{\marginparwidth}{22mm}
+\let \oldmarginpar = \marginpar
+\renewcommand{\marginpar}[1]{%
+    \-\oldmarginpar[\raggedleft\footnotesize\sf #1]%
+        {\raggedright\footnotesize\sf #1%
+    }}
+
+%% Zitate am Kapitelanfang
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{9cm}
+
+%% Code-Block-Formatierung
+\lstdefinestyle{default}{ %
+    backgroundcolor={\color[rgb]{0.95,0.95,0.95}}, %
+    basicstyle={\small\ttfamily}, %
+    breaklines=true, %
+    frame=l, %
+    language={[Sharp]C}, %
+    lineskip=-0.1pt, %
+    numbers=left, %
+    rulecolor={\color[rgb]{0.5,0.5,0.5}}, %
+    xleftmargin={0.75cm}, %
+    xrightmargin={0cm} %
+}
+
+\makeatother
+
+\begin{document}
+\titlepage
+
+\begin{center}
+\includegraphics[width=5cm]{pics/FH-Logo}\vspace{0.5cm}
+
+\par\end{center}
+
+\noindent \begin{center}
+\textsf{\textbf{\Large Fachbereich Informatik und Medien}}\\
+\textsf{\large }\\
+\vspace{1cm}
+
+\par\end{center}
+
+\noindent \begin{center}
+\textsf{\textbf{\huge MASTERARBEIT}}\textsf{}\\
+\textsf{}\\
+\textsf{\Large Warum die Welt eine Scheibe ist}
+\par\end{center}{\Large \par}
+
+\vspace{2cm}
+
+
+\noindent \begin{center}
+{\huge }\begin{tabular}{rl}
+Vorgelegt von: & Muster Klausmann\tabularnewline
+am: & 01.01.2009\tabularnewline
+\end{tabular}
+\par\end{center}{\huge \par}
+
+\vspace{1cm}
+
+
+\noindent \begin{center}
+zum \\
+Erlangen des akademischen Grades\textsf{}\\
+\textsf{\smallskip{}
+}
+\par\end{center}
+
+\noindent \begin{center}
+\textsf{\textbf{\huge MASTER OF SCIENCE}}\textsf{\textbf{\LARGE }}\\
+\textsf{\textbf{(M.Sc.)}}
+\par\end{center}
+
+\noindent \begin{center}
+\medskip{}
+\begin{tabular}{rl}
+Erstbetreuer: & Bruno Giordano\tabularnewline
+Zweitbetreuer: & Prof. Jens Haberblatt\tabularnewline
+\end{tabular}
+\par\end{center}
+
+\newpage{}
+
+%
+\begin{comment}
+leere Seite nach dem Titelblatt
+
+dann Aufgabenstellung
+\end{comment}
+{}
+
+\selectlanguage{ngerman}%
+\tableofcontents{}
+
+\pagestyle{scrheadings}    %Kopfzeile ein
+
+
+\include{chapters/Aufgabenstellung}
+\include{chapters/Fragen}
+\include{chapters/ZusammenfuehrungDerDaten}
+\include{chapters/Merkmalserzeugung}
+
+\newpage{}
+
+\bibliographystyle{alphadin}
+\clearpage\addcontentsline{toc}{chapter}{\bibname}\bibliography{bibtex/lit_verz,bibtex/test}
+
+
+\listoffigures
+
+
+\listoftables
+
+\end{document}
