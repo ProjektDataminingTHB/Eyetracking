@@ -4,3 +4,14 @@ daten_zerlegung/
 2016 - Data Mining Projekt/
 bilder/
 pdf/
+
+# Dateien ignorieren, die beim Erstellen eines PDFs mit LaTex entstehen
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
