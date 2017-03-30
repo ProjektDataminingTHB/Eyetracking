@@ -5,21 +5,30 @@ Ein Merkmal innerhalb der Zeitreihen ist zum Beispiel die Mitte zwischen Blickpo
 
 Nachfolgend sind die Merkmale, die erzeugt werden k\"onnen aufgelistet.
 
-\begin{table} [H]
-	\caption{Merkmale innerhalb der Zeitreihe}
-	\begin{tabular}[cc]{|l|l|}
-		\hline
+\begin{table}[H]
+	\caption{\label{tab:Events}Eventeintr\"age}
+	
+	
+	\noindent \centering{}
+	\bgroup
+	\def\arraystretch{2}  %  1 ist der Standardwert
+	\begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+		\hline 
 		\textbf{Merkmal} & \textbf{Berechnung}\\ \hline
 		Mitte Augenpositionen & \begin{tabular}{c|c}
 			$x=\frac{x_{links} + x_{rechts}}{2}$  & $y=\frac{y_{links} + y_{rechts}}{2}$ 
 		\end{tabular} \\ \hline
-		Abweichung Augenposition linkes Auge zu Targetpunkt & $s_l=\sqrt{{\left(x_{links}-x_{target}\right)}^2+{\left(y_{links}-y_{target}\right)}^2}$ \\ \hline
-		Abweichung Augenposition rechtes Auge zu Targetpunkt & $s_r=\sqrt{{\left(x_{rechts}-x_{target}\right)}^2+{\left(y_{rechts}-y_{target}\right)}^2}$ \\ \hline
-		Abweichung Mitte Augenposition zu Targetpunkt & $s_m=\sqrt{{\left(x_{mitte}-x_{target}\right)}^2+{\left(y_{mitte}-y_{target}\right)}^2}$ \\ \hline
+		Abweichung Augenposition\newline linkes Auge zu Targetpunkt & $s_l=\sqrt{{\left(x_{links}-x_{target}\right)}^2+{\left(y_{links}-y_{target}\right)}^2}$ \\ \hline
+		Abweichung Augenposition\newline rechtes Auge zu Targetpunkt & $s_r=\sqrt{{\left(x_{rechts}-x_{target}\right)}^2+{\left(y_{rechts}-y_{target}\right)}^2}$ \\ \hline
+		Abweichung Mitte\newline Augenposition zu Targetpunkt & $s_m=\sqrt{{\left(x_{mitte}-x_{target}\right)}^2+{\left(y_{mitte}-y_{target}\right)}^2}$ \\ \hline
 		Geschwindigkeit linkes Auge & $v_l=\frac{\sqrt{{\left(x_{links_1}-x_{links_2}\right)}^2+{\left(y_{links_1}-y_{links_2}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
 		Geschwindigkeit rechtes Auge & $v_r=\frac{\sqrt{{\left(x_{rechts_1}-x_{rechts_2}\right)}^2+{\left(y_{rechts_1}-y_{rechts_2}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
 		Geschwindigkeit Mittelposition Augen & $v_m=\frac{\sqrt{{\left(x_{mitte_1}-x_{mitte_2}\right)}^2+{\left(y_{mitte}-y_{mitte}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
-		
 	\end{tabular}
+	\egroup
 \end{table}
+
+Des Weiteren kann bestimmt werden, ob das Auge hinter dem Targetpunkt ist, oder davor. Dazu wird aus der Differenz eines Targetpunkts und seines Vorg\"angers bestimmt, ob sich der Punkt pro Achse in aufsteigende Richtung oder in absteigende Richtung bewegt. Wenn sich der Punkt beispielsweise in auf der x-Achse in Richtung aufsteigende Werte bewegt, dann bedeutet ein Blickpunkt mit einem gr\"oßeren x-Wert, dass der Blick vor dem Targetpunkt ist.
+Wenn sich die Werte f\"ur einen Targetpunkt nicht \"andern, z.B. bei dem Versuch horizontal, auf der y-Achse, dann kann dieser Wert nicht bestimmt werden.
+
 \section{Merkmale Versuchsperson}
