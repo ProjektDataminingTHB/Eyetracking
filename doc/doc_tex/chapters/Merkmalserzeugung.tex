@@ -20,7 +20,7 @@ Tabelle \ref{tab:MerkmaleZeitreihe} zeigt die Merkmale, die erzeugt werden k\"on
 		Abweichung Augenposition\newline linkes Auge zu Targetpunkt & $s_l=\sqrt{{\left(x_{links}-x_{target}\right)}^2+{\left(y_{links}-y_{target}\right)}^2}$ \\ \hline
 		Abweichung Augenposition\newline rechtes Auge zu Targetpunkt & $s_r=\sqrt{{\left(x_{rechts}-x_{target}\right)}^2+{\left(y_{rechts}-y_{target}\right)}^2}$ \\ \hline
 		Abweichung Mitte\newline Augenposition zu Targetpunkt & $s_m=\sqrt{{\left(x_{mitte}-x_{target}\right)}^2+{\left(y_{mitte}-y_{target}\right)}^2}$ \\ \hline
-		Geschwindigkeit linkes Auge & $v_l=\frac{\sqrt{{\left(x_{links_1}-x_{links_2}\right)}^2+{\left(y_{links_1}-y_{links_2}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
+		Geschwindigkeit linkes Auge & $v_l=\frac{\sqrt{{\left(x_{links_1}-x_{links_2}\right)}^2+{\left(y_{links\_1}-y_{links_2}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
 		Geschwindigkeit rechtes Auge & $v_r=\frac{\sqrt{{\left(x_{rechts_1}-x_{rechts_2}\right)}^2+{\left(y_{rechts_1}-y_{rechts_2}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
 		Geschwindigkeit Mittelposition Augen & $v_m=\frac{\sqrt{{\left(x_{mitte_1}-x_{mitte_2}\right)}^2+{\left(y_{mitte}-y_{mitte}\right)}^2}}{\left(zeitstempel_1-zeitestempel_2 \right) }$ \\ \hline
 	\end{tabular}
@@ -42,4 +42,84 @@ erzeugt.
 
 Au"serdem k\"onnen die Merkmale unterschieden werden in Merkmale, die ausschlie"slich aus den Blickdaten gewonnen werden. Diese enthalten dann auch Werte, die zwischen den einzelnen Versuchen entstanden sind. Und die Merkmale, die beim Vergleich zwischen Targetdaten und Blickdaten entstehen. Diese enthalten dann ausschlie"slich Daten, die w\"ahrend den Versuchen entstanden sind.
 
-Die folgende Tabelle benennt die Merkmale und gibt eine Beschreibung dazu. Die Tabelle enth\"alt nur die Merkmale f\"ur den Versuch Horizontal, da die weiteren Merkmale, die gleichen Merkmale sind, die allerdings f\"ur die anderen beiden Versuche erzeugt wurden.
+Die Tabelle \ref{tab:MerkmaleVP} benennt die Merkmale und gibt eine Beschreibung dazu. Die Tabelle enth\"alt nur die Merkmale f\"ur den Versuch Horizontal, da die weiteren Merkmale, die gleichen Merkmale sind, die allerdings f\"ur die anderen beiden Versuche erzeugt wurden.
+
+\begin{longtable}{|p{7cm}|p{7.4cm}|}
+	\hline
+	Person &
+	Bezeichnung der Versuchsperson\\ \hline
+	Horizontal\_mean\_delta\_l &
+	Arithmetischer Mittelwert der Abst\"ande des Blickpunkts vom linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_mean\_delta\_r &
+	Arithmetischer Mittelwert der Abst\"ande des Blickpunkts vom rechten Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_mean\_delta\_m &
+	Arithmetischer Mittelwert der Abst\"ande der Mittelung der Blickpunkte vom rechten und linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_mean\_geschwindigkeit\_l &
+	Arithmetischer Mittelwert der Geschwindigkeit des linken Auges im Versuch Horizontal\\ \hline
+	Horizontal\_mean\_geschwindigkeit\_r &
+	Arithmetischer Mittelwert der Geschwindigkeit des rechten Auges im Versuch Horizontal\\ \hline
+	Horizontal\_mean\_geschwindigkeit\_m &
+	Arithmetischer Mittelwert der Geschwindigkeit der Mittelung der Augen im Versuch Horizontal\\ \hline
+	Horizontal\_max\_delta\_l &
+	Maximaler Abstand zwischen Blickposition des linken Auges und dem Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_max\_delta\_r &
+	Maximaler Abstand zwischen Blickposition des rechten Auges und dem Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_max\_delta\_m &
+	Maximaler Abstand zwischen Blickposition der Mittelung der Augenpositionen und dem Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_max\_geschwindigkeit\_l &
+	Maximale Geschwindigkeit des linken Auges im Versuch Horizontal\\ \hline
+	Horizontal\_max\_geschwindigkeit\_r &
+	Maximale Geschwindigkeit des rechten Auges im Versuch Horizontal\\ \hline
+	Horizontal\_max\_geschwindigkeit\_m &
+	Maximale Geschwindigkeit der Mittelung der Augen im Versuch Horizontal\\ \hline
+	Horizontal\_min\_delta\_l &
+	Minimaler Abstand zwischen Blickposition des linken Auges und dem Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_min\_delta\_r &
+	Minimaler Abstand zwischen Blickposition des rechten Auges und dem Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_min\_delta\_m &
+	Minimaler Abstand zwischen Blickposition der Mittelung der Augenpositionen und dem Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_min\_geschwindigkeit\_l &
+	Minimale Geschwindigkeit des linken Auges im Versuch Horizontal\\ \hline
+	Horizontal\_min\_geschwindigkeit\_r &
+	Minimale Geschwindigkeit des rechten Auges im Versuch Horizontal\\ \hline
+	Horizontal\_min\_geschwindigkeit\_m &
+	Minimale Geschwindigkeit der Mittelung der Augen im Versuch Horizontal\\ \hline
+	Horizontal\_standardabweichung\_delta\_l &
+	Standardabweichung der Abst\"ande des Blickpunkts vom linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_standardabweichung\_delta\_r &
+	Standardabweichung der Abst\"ande des Blickpunkts vom rechten Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_standardabweichung\_delta\_m &
+	Standardabweichung der Abst\"ande der Mittelung der Blickpunkte vom rechten und linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_standardabweichung\newline\_geschwindigkeit\_l &
+	Standardabweichung der Geschwindigkeit des linken Auges im Versuch Horizontal\\ \hline
+	Horizontal\_standardabweichung\newline\_geschwindigkeit\_r &
+	Standardabweichung der Geschwindigkeit des rechten Auges im Versuch Horizontal\\ \hline
+	Horizontal\_standardabweichung\newline\_geschwindigkeit\_m &
+	Standardabweichung der Geschwindigkeit der Mittelung der Augen im Versuch Horizontal\\ \hline
+	Horizontal\_varianz\_delta\_l &
+	Varianz der Abst\"ande des Blickpunkts vom linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_varianz\_delta\_r &
+	Varianz der Abst\"ande des Blickpunkts vom rechten Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_varianz\_delta\_m &
+	Varianz der Abst\"ande der Mittelung der Blickpunkte vom rechten und linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_varianz\_geschwindigkeit\_l &
+	Varianz der Abst\"ande des Blickpunkts vom linken Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_varianz\_geschwindigkeit\_r &
+	Varianz der Abst\"ande des Blickpunkts vom rechten Auge zum Targetpunkt im Versuch Horizontal\\ \hline
+	Horizontal\_varianz\_geschwindigkeit\_m &
+	Varianz der Geschwindigkeit der Mittelung der Augen im Versuch Horizontal\\ \hline
+	Horizontal\_tendenz\_l &
+	Tendenz des linken Auges voraus (1), oder hinterher (-1) zu sein, im Versuch Horizontal\\ \hline
+	Horizontal\_tendenz\_r &
+	Tendenz des rechten Auges voraus (1), oder hinterher (-1) zu sein, im Versuch Horizontal\\ \hline
+	Horizontal\_tendenz\_m &
+	Tendenz der Mittelung der Augenpositionen voraus (1), oder hinterher(-1) zu sein, im Versuch Horizontal\\ \hline
+	Horizontal\_Kovarianz\_blick\_x &
+	Kovarianz der Blickpositionen beider Augen in x-Richtung im Versuch Horizontal\\ \hline
+	Horizontal\_Kovarianz\_blick\_y &
+	Kovarianz der Blickpositionen beider Augen in y-Richtung im Versuch Horizontal\\ \hline
+	
+	\caption{\label{tab:MerkmaleVP}Merkmale einer Versuchsperson}
+	
+\end{longtable}
+
