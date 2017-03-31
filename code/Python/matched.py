@@ -60,4 +60,6 @@ def zuordnung_matched():
                 df.to_csv(os.path.join(output_folder, filename + '.csv'), index=False)
                 stats_file.to_csv(os.path.join(output_folder, filename + '_stats' + '.csv'), index=False)
 
+tls.showInfo('Beginn', 'Datenmatching')
 zuordnung_matched()
+tls.showInfo('Ende', 'Datenmatching')

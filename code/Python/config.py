@@ -1,18 +1,19 @@
 import numpy as np
+import os
 
 class Config:
     #Paths
-    root = './../../'
-    rawDataHome = root + 'data/raw/DatenTHB/'
-    exploratoryHome = root + 'figures/exploratory/'
-    finalHome = root + 'figures/final/'
-    processedHome = root + 'data/processed/'
-    resultHome = processedHome + 'result/'
-    matchedHome = processedHome + 'matched/'
-    extendedHome = processedHome + 'extended/'
-    datenZerlegungHome = processedHome + 'daten_zerlegung/'
-    visualisierungBilderHome = exploratoryHome + 'visualisierungBilder/'
-    visualisierungPdfHome = exploratoryHome + 'visualisierungPdf/'
+    root = os.path.abspath('./../../')
+    rawDataHome = os.path.join(root, 'data/raw/DatenTHB/')
+    exploratoryHome = os.path.join(root, 'figures/exploratory/')
+    finalHome = os.path.join(root, 'figures/final/')
+    processedHome = os.path.join(root, 'data/processed/')
+    resultHome = os.path.join(processedHome, 'result/')
+    matchedHome = os.path.join(processedHome, 'matched/')
+    extendedHome = os.path.join(processedHome, 'extended/')
+    datenZerlegungHome = os.path.join(processedHome, 'daten_zerlegung/')
+    visualisierungBilderHome = os.path.join(exploratoryHome, 'visualisierungBilder/')
+    visualisierungPdfHome = os.path.join(exploratoryHome, 'visualisierungPdf/')
 
     #Excludes
     exclude = ['131', '071', '090']

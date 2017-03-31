@@ -9,13 +9,15 @@ from reportlab.lib import pagesizes
 from reportlab.lib.utils import ImageReader
 import tools as tls
 
-def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/messung2/cycle2/vp_045_gaze.csv',
-          input_target = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/messung2/vp_045.csv',
+ext = 'pdf'
+
+def plots(input_blick = os.path.join(cfg.datenZerlegungHome, 'vp_045/liegende_acht_langsam/messung2/cycle2/vp_045_gaze.csv'),
+          input_target = os.path.join(cfg.datenZerlegungHome, 'vp_045/liegende_acht_langsam/messung2/cycle2/target.csv'),
           output_path = cfg.visualisierungBilderHome, vp = 1, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
 
 
-    head, tail = os.path.split(input_target)
-    filename = tail.split('.')[0]
+    head, tail = os.path.split(input_blick)
+    filename = tls.remove_end('_gaze', tail.split('.')[0])
 
     data = np.genfromtxt(
             input_blick,
@@ -56,7 +58,7 @@ def plots(input_blick = cfg.datenZerlegungHome + 'vp_045/liegende_acht_langsam/m
     plt.ylabel('y')
     plt.xlabel('x')
 
-    plt.savefig(output_path + filename + '-{}-{}-{}.png'.format(exp, messung, cycle))
+    plt.savefig(os.path.join(output_path, filename + '-{}-{}-{}.{}'.format(exp, messung, cycle, ext)))
     plt.close()
     #plt.show()
 
@@ -124,21 +126,21 @@ def gen_images(input_dir = cfg.datenZerlegungHome,
                     n = 1
                     for sd in d:
                         if sd[1] == []:
-                            parent = sd[0].split('/')
-                            parent = '/'.join(parent[0:len(parent) - 1])
+                            parent = sd[0]
                             files = os.listdir(parent + '/')
-
                             for file in files:
-                                if file.endswith(".csv"):
+                                if 'vp' in file:
+                                    gaze = file
+                                else:
                                     target = file
-                            vp_num = target.split('_')[1]
+                            vp_num = gaze.split('_')[1]
                             exp = sd[0].split('/')[len(sd[0].split('/')) - 3]
                             mess = sd[0].split('/')[len(sd[0].split('/')) - 2]
                             cyc = sd[0].split('/')[len(sd[0].split('/')) - 1]
-                            plots(input_blick = sd[0] + '/' + sd[2][0],
-                                      input_target = parent + '/' + target,
-                                      output_path=output_dir, vp=vp_num, exp=exp, messung=mess, cycle=cyc,
-                                      delim=',')
+                            plots(input_blick = os.path.join(parent, gaze),
+                                          input_target = os.path.join(parent, target),
+                                          output_path=output_dir, vp=vp_num, exp=exp, messung=mess, cycle=cyc,
+                                          delim=',')
                         n += 1
                         #plt.savefig(output_dir + 'bilder.png')
                         #pp = PdfPages('multipage.pdf')
@@ -160,7 +162,7 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
 
     images = os.listdir(input_dir)
     for exp in cfg.experimente:
-        pages = canvas.Canvas(output_dir + pdf_name + '_' + exp + '.pdf', pagesize=A4)
+        pages = canvas.Canvas(os.path.join(output_dir, pdf_name + '_' + exp + '.' + ext), pagesize=A4)
         pW, pH = pagesizes.A4
         n_col = 3
         n_lig = 8
@@ -170,7 +172,7 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
         col = 0
         lig = 0
         n_current_page = 1
-        n_page = tls.count_file(input_dir, ext = 'png', exp = exp) / (n_col * n_lig)
+        n_page = tls.count_file(input_dir, ext = ext, exp = exp) / (n_col * n_lig)
 
         if exp == cfg.experimente[0]:
             n_page /= 5
@@ -186,10 +188,10 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
             for mess in cfg.messungen:
                 if not(exp != cfg.experimente[0] and mess == cfg.messungen[2]):
                     for cyc in cfg.cycles:
-                        image = 'vp_{}-{}-{}-{}.png'.format(tls.int_to_str(i), exp, mess, cyc)
+                        image = 'vp_{}-{}-{}-{}.{}'.format(tls.int_to_str(i), exp, mess, cyc, ext)
                         if os.path.exists(input_dir + image) == True:
                             if exp in image:
-                                if image.lower().endswith('.png'):
+                                if image.lower().endswith('.' + ext):
                                     if col == n_col:
                                         col = 0
                                         lig += 1
@@ -199,13 +201,17 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
                                         #                '{} / {}'.format(n_current_page, n_page))
                                         pages.showPage()
                                         n_current_page += 1
-                                    pages.drawImage(ImageReader(input_dir + '/' + image), space + col * iW, pH - (space + lig * iH + iH), iW, iH)
+                                    
+                                    pages.drawImage(ImageReader(os.path.join(input_dir,  image)), space + col * iW, pH - (space + lig * iH + iH), iW, iH)
                                     col += 1
         pages.save()
 
+
+tls.showInfo('Beginn', 'Erstellung PDF-Daten zur Dokumentation')
 genBilder = ''
 while genBilder != 'J' and genBilder != 'n':
     genBilder = input('Würden Sie erneut die zu den zu generierenden Pdf-Daten entsprechenden Bilder generieren? (J / n)')
 if genBilder == 'J':
     gen_images(vp_select = 2)
 gen_pdf_images()
+tls.showInfo('Ende', 'Erstellung PDF-Daten zur Dokumentation')

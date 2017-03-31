@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.animation as animation
 from config import Config as cfg
 import tools as tls
+import os
 
 vp = tls.int_to_str(77)
 
@@ -10,9 +11,9 @@ fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
 def animate(i):
-    data = np.genfromtxt(cfg.datenZerlegungHome + 'vp_{}/liegende_acht_langsam/messung2/cycle2/vp_{}_gaze.csv'.format(vp, vp),
+    data = np.genfromtxt(os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_acht_langsam/messung2/cycle2/vp_{}_gaze.csv'.format(vp, vp)),
         delimiter=',')
-    target_data = np.genfromtxt(cfg.datenZerlegungHome + 'vp_{}/liegende_acht_langsam/messung2/cycle2/target.csv'.format(vp, vp),
+    target_data = np.genfromtxt(os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_acht_langsam/messung2/cycle2/target.csv'.format(vp, vp)),
         delimiter=',')
 
     data_array = np.array(data[1:, :])

@@ -268,4 +268,7 @@ def make_result_file():
             result = result.append(df)
 
     result.to_csv(os.path.join(cfg.resultHome, "result.csv"), index=False)
+
+tls.showInfo('Beginn', 'Ausgangsdaten')
 make_result_file()
+tls.showInfo('Ende', 'Ausgangsdaten')

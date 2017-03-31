@@ -153,3 +153,6 @@ def finde_letzten_wert(zeitstempelliste, suchwert, anfang):
                 ende = ende1
         except:
             pass
+
+def showInfo(status, op):
+    print('\n==================== {} {} ====================\n'.format(status, op))

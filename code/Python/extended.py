@@ -151,4 +151,7 @@ def extend_files():
                 # Ergebnis in CSV-Datei schreiben
                 result.to_csv(os.path.join(destination_path, source_file), index=False)
 
+
+tls.showInfo('Beginn', 'Datenexpandieren')
 extend_files()
+tls.showInfo('Ende', 'Datenexpandieren')

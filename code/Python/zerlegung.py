@@ -40,24 +40,25 @@ def struktur_erstellung(begin, end, cycle_start, cycle_stop, messung, cycle, mes
                                         header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name):
 
     data = gaze_zerlegung(begin, end, cycle_start, cycle_stop, erste_spalte, zweite_spalte, dritte_spalte, vierte_spalte, fuenfte_spalte, messung_number = messung_number)
-    ordner = ausgabe_ordner + '/' + ausgabe_prefix + csv_name
+    ordner = os.path.join(ausgabe_ordner,
+                 ausgabe_prefix + csv_name)
     if os.path.exists(ordner) == False:
         os.mkdir(ordner)
 
-    ordner = ordner + '/' + experiment
+    ordner = os.path.join(ordner, experiment)
     if os.path.exists(ordner) == False:
         os.mkdir(ordner)
 
-    ordner = ordner + '/' + messung
+    ordner = os.path.join(ordner, messung)
     if os.path.exists(ordner) == False:
         os.mkdir(ordner)
 
-    ordner = ordner + '/' + cycle
+    ordner = os.path.join(ordner, cycle)
     if os.path.exists(ordner) == False:
         os.mkdir(ordner)
 
     df = pd.DataFrame(data, columns = header)
-    df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + ausgabe_blick_suffix + '.csv', index=False)
+    df.to_csv(os.path.join(ordner, ausgabe_prefix + csv_name + ausgabe_blick_suffix + '.csv'), index=False)
 
 def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawDataHome,
 												eingabe_prefix = 'vp_', eingabe_blick_suffix = '_gaze', ausgabe_prefix = 'vp_', ausgabe_blick_suffix = '_gaze',
@@ -90,7 +91,7 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
             if not tls.occurIn(cfg.exclude, csv_name):
                 if eingabe_blick_suffix in csv_name:    #Kontroll, ob sich die Datei mit gaze endet
                     csv_name = tls.remove_end(eingabe_blick_suffix, csv_name)
-                    inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = delim, names=['zeitstempel', 'blick_l_x', 'blick_l_y',
+                    inhalt_datei = pd.read_csv(os.path.join(eingabe_ordner, csv_datei), sep = delim, names=['zeitstempel', 'blick_l_x', 'blick_l_y',
                                                                                                      'pupillen_grosse_l', 'pos_l_x', 'pos_l_y',
                                                                                                      'pos_entf_l', 'blick_r_x', 'blick_r_y',
                                                                                                      'pupillen_grosse_r', 'pos_r_x', 'pos_r_y',
@@ -145,9 +146,9 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
                                         cfg.experimente[2], header, ausgabe_ordner, ausgabe_prefix, ausgabe_blick_suffix, csv_name)
 
                 else:
-                    file = eingabe_ordner + '/' + csv_datei
+                    file = os.path.join(eingabe_ordner, csv_datei)
                     sep = tls.find_separator(seps, file)
-                    inhalt_datei = pd.read_csv(eingabe_ordner + '/' + csv_datei, sep = sep, names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x', 'deg_y'])
+                    inhalt_datei = pd.read_csv(os.path.join(eingabe_ordner, csv_datei), sep = sep, names=['t_Tracker', 't_soll', 't_ist', 'pix_x', 'pix_y', 'deg_x', 'deg_y'])
 
                     data1 = list(inhalt_datei['t_Tracker'])
                     data2 = list(inhalt_datei['pix_x'])
@@ -160,12 +161,13 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
                     data = np.concatenate((np.array([data1]).T,
                                           np.array([data2]).T,
                                             np.array([data3]).T), axis = 1)
-                    ordner = ausgabe_ordner + '/' + ausgabe_prefix + csv_name
+                    ordner = os.path.join(ausgabe_ordner , ausgabe_prefix + csv_name)
+
                     if os.path.exists(ordner) == False:
                         os.mkdir(ordner)
 
                     df = pd.DataFrame(data, columns=header_target)
-                    df.to_csv(ordner + '/' + ausgabe_prefix + csv_name + '.csv', index=False)
+                    df.to_csv(os.path.join(ordner , ausgabe_prefix + csv_name + '.csv'), index=False)
         i += 1
     print('Komplete Zerlegung abgeschlossen !!!')
 default_input = cfg.rawDataHome
@@ -180,4 +182,6 @@ if input_path == '':
 if output_path == '':
     output_path = default_output
 
+tls.showInfo('Beginn', 'Datenzerlegung')
 zerlegung(eingabe_ordner = input_path, ausgabe_ordner = output_path)
+tls.showInfo('Ende', 'Datenzerlegung')

@@ -38,4 +38,6 @@ def zuordnung():
                         df = pd.DataFrame(data, columns=['t_tracker', 'pix_x', 'pix_y'])
                         df.to_csv(os.path.join(root_2, 'target.csv'), index=False)
 
+tls.showInfo('Beginn', 'Datenzuordnung')
 zuordnung()
+tls.showInfo('Ende', 'Datenzuordnung')
