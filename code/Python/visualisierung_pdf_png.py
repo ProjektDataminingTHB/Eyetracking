@@ -201,7 +201,7 @@ def gen_pdf_images(input_dir = cfg.visualisierungBilderHome,
                                         #                '{} / {}'.format(n_current_page, n_page))
                                         pages.showPage()
                                         n_current_page += 1
-                                    
+
                                     pages.drawImage(ImageReader(os.path.join(input_dir,  image)), space + col * iW, pH - (space + lig * iH + iH), iW, iH)
                                     col += 1
         pages.save()
