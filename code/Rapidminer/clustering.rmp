@@ -12,8 +12,8 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="read_csv" compatibility="7.2.003" expanded="true" height="68" name="Read CSV" width="90" x="112" y="34">
-        <parameter key="csv_file" value="/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/Eyetracking/data/processed/result/result_ohne_vp_name.csv"/>
+      <operator activated="true" class="read_csv" compatibility="7.2.003" expanded="true" height="68" name="Read CSV" width="90" x="45" y="34">
+        <parameter key="csv_file" value="/media/herval/Save/School/THB/Master/Semester1/Projekt1/Eyetracking/data/processed/result/result_ohne_vp_name.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
@@ -35,7 +35,7 @@
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
       </operator>
-      <operator activated="true" class="normalize" compatibility="7.2.003" expanded="true" height="103" name="Normalize" width="90" x="313" y="34">
+      <operator activated="true" class="normalize" compatibility="7.2.003" expanded="true" height="103" name="Normalize" width="90" x="179" y="136">
         <parameter key="return_preprocessing_model" value="false"/>
         <parameter key="create_view" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
@@ -54,7 +54,7 @@
         <parameter key="min" value="-1.0"/>
         <parameter key="max" value="1.0"/>
       </operator>
-      <operator activated="true" class="x_means" compatibility="7.2.003" expanded="true" height="82" name="X-Means" width="90" x="514" y="34">
+      <operator activated="true" class="x_means" compatibility="7.2.003" expanded="true" height="82" name="X-Means" width="90" x="380" y="85">
         <parameter key="add_cluster_attribute" value="true"/>
         <parameter key="add_as_label" value="false"/>
         <parameter key="remove_unlabeled" value="false"/>
@@ -81,8 +81,14 @@
         <parameter key="use_local_random_seed" value="false"/>
         <parameter key="local_random_seed" value="1992"/>
       </operator>
-      <operator activated="true" class="write_csv" compatibility="7.2.003" expanded="true" height="82" name="Write CSV" width="90" x="715" y="136">
-        <parameter key="csv_file" value="/home/herval/Documents/THB/Master/Semester1/Projekt1/DataMining/Eyetracking/data/processed/clustering/cluster.csv"/>
+      <operator activated="true" class="cluster_distance_performance" compatibility="7.2.003" expanded="true" height="103" name="Performance" width="90" x="514" y="85">
+        <parameter key="main_criterion" value="Avg. within centroid distance"/>
+        <parameter key="main_criterion_only" value="false"/>
+        <parameter key="normalize" value="false"/>
+        <parameter key="maximize" value="false"/>
+      </operator>
+      <operator activated="false" class="write_csv" compatibility="7.2.003" expanded="true" height="82" name="Write CSV" width="90" x="715" y="136">
+        <parameter key="csv_file" value="/media/herval/Save/School/THB/Master/Semester1/Projekt1/Eyetracking/data/processed/clustering/cluster.csv"/>
         <parameter key="column_separator" value=","/>
         <parameter key="write_attribute_names" value="true"/>
         <parameter key="quote_nominal_values" value="true"/>
@@ -92,13 +98,16 @@
       </operator>
       <connect from_op="Read CSV" from_port="output" to_op="Normalize" to_port="example set input"/>
       <connect from_op="Normalize" from_port="example set output" to_op="X-Means" to_port="example set"/>
-      <connect from_op="X-Means" from_port="cluster model" to_port="result 2"/>
-      <connect from_op="X-Means" from_port="clustered set" to_op="Write CSV" to_port="input"/>
-      <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
+      <connect from_op="X-Means" from_port="cluster model" to_op="Performance" to_port="cluster model"/>
+      <connect from_op="X-Means" from_port="clustered set" to_op="Performance" to_port="example set"/>
+      <connect from_op="Performance" from_port="performance" to_port="result 1"/>
+      <connect from_op="Performance" from_port="example set" to_port="result 2"/>
+      <connect from_op="Performance" from_port="cluster model" to_port="result 3"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
       <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
     </process>
   </operator>
 </process>

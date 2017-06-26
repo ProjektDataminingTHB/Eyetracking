@@ -3,6 +3,7 @@ import pandas as pd
 import platform
 import os
 from config import Config as cfg
+import tools as tls
 
 
 def list_str_to_int(l):
@@ -156,3 +157,13 @@ def finde_letzten_wert(zeitstempelliste, suchwert, anfang):
 
 def showInfo(status, op):
     print('\n==================== {} {} ====================\n'.format(status, op))
+
+def get_number(string):
+    number = tls.remove_begin(cfg.prefix, string)
+    number = tls.remove_end('.txt', number)
+    if cfg.gaze in number:
+        number = tls.remove_end(cfg.gaze, number)
+
+    number = int(number)
+
+    return number

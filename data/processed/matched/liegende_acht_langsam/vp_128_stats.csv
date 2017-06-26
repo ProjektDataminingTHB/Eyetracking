@@ -1,2 +1,2 @@
-probe_cycle1,messung1_cycle1,messung1_cycle2,messung2_cycle1,messung2_cycle2
-480,480,478,479,479
+messung1_cycle1,messung1_cycle2,messung2_cycle1,messung2_cycle2,probe_cycle1
+480,478,479,479,480
