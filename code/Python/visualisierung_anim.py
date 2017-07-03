@@ -47,7 +47,7 @@ def animate(i):
                   -1 * cfg.o_prim[1] +min(np.min(mitte[:, 1]), np.min(z_target_data_array[:, 1])),
                   cfg.o_prim[1] + max(np.max(mitte[:, 1]), np.max(z_target_data_array[:, 1]))])
 
-ani = animation.FuncAnimation(fig, animate, interval = 3000)
+ani = animation.FuncAnimation(fig, animate, interval = 0.0003)
 print("Animation started")
 plt.show()
 print("Animation finished")

@@ -17,6 +17,8 @@ class Config:
     datenZerlegungHome = os.path.join(processedHome, 'daten_zerlegung/')
     visualisierungBilderHome = os.path.join(exploratoryHome, 'visualisierungBilder/')
     visualisierungPdfHome = os.path.join(exploratoryHome, 'visualisierungPdf/')
+    clusteringHome = os.path.join(processedHome, 'clustering/')
+    clusterName = os.path.join(clusteringHome, 'cluster.csv')
 
     #Excludes
     exclude = ['131', '071', '090']

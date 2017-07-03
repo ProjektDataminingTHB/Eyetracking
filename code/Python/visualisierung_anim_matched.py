@@ -8,7 +8,7 @@ import os
 
 exp = 'liegende_acht_langsam'
 experiment = os.path.join(cfg.matchedHome, exp)
-vp = tls.int_to_str(75)
+vp = tls.int_to_str(302)
 stats = pd.read_csv(os.path.join(experiment, 'vp_{}_stats.csv'.format(vp)), sep=',')
 header_stats = list(stats.columns.values)
 print(header_stats)

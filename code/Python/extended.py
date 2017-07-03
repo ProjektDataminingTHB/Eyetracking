@@ -7,6 +7,7 @@ import ntpath
 from shutil import copyfile
 import math
 
+
 def berechne_Mitte(links, rechts):
     links_values = links.values
     rechts_values = rechts.values
