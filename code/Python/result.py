@@ -222,8 +222,15 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     cov_y = np.cov(blick_l_y_values, blick_r_y_values)[0][1]
 
     header = np.append(header, [versuch_name + '_Kovarianz_blick_x', versuch_name + '_Kovarianz_blick_y'])
+    
+    verhaeltnis_l_x_da = blick_l_x_values[np.nonzero(blick_l_x_values)].size / blick_l_x_values.size
+    verhaeltnis_l_y_da = blick_l_y_values[np.nonzero(blick_l_y_values)].size / blick_l_y_values.size
+    verhaeltnis_r_x_da = blick_r_x_values[np.nonzero(blick_r_x_values)].size / blick_r_x_values.size
+    verhaeltnis_r_y_da = blick_r_y_values[np.nonzero(blick_r_y_values)].size / blick_r_y_values.size
+    
+    header = np.append(header, [versuch_name + '_links_verhaeltnis_x', versuch_name + '_links_verhaeltnis_y', versuch_name + '_rechts_verhaeltnis_x', versuch_name + '_rechts_verhaeltnis_y'])
 
-    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m, cov_x, cov_y]]
+    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m, cov_x, cov_y, verhaeltnis_l_x_da, verhaeltnis_l_y_da, verhaeltnis_r_x_da, verhaeltnis_r_y_da]]
     yield header 
 
 def make_result_file():
