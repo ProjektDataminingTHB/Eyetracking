@@ -5,7 +5,7 @@ from config import Config as cfg
 import tools as tls
 import os
 
-vp = tls.int_to_str(77)
+vp = tls.int_to_str(300)
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)

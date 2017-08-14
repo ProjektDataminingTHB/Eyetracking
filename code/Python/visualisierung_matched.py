@@ -5,7 +5,7 @@ import tools as tls
 import pandas as pd
 import os
 
-vp = 75
+vp = 300
 exp = 'liegende_acht_langsam'
 experiment = os.path.join(cfg.matchedHome, exp)
 stats = pd.read_csv(os.path.join(experiment, 'vp_{}_stats.csv'.format(tls.int_to_str(vp))), sep=',')

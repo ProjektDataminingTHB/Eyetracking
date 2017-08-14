@@ -4,7 +4,7 @@ from config import Config as cfg
 import tools as tls
 import os
 
-vp = 68
+vp = 77
 
 def plots(input_blick = os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_acht_schnell/messung2/cycle2/vp_{}_gaze.csv'.format(tls.int_to_str(vp), tls.int_to_str(vp))),
           input_target = os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_acht_schnell/messung2/cycle2/target.csv'.format(tls.int_to_str(vp))),
