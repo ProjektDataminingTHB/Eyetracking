@@ -150,7 +150,7 @@ Die Versuchspersonen sollen so geclustert werden, dass die entstehenden Cluster 
 \end{table}
 
 \section*{Daten}
-Die erhobenen Eye-Trackingdaten sind Zeitreihen. Zu 302 Versuchsperson gibt es je eine Datei mit den Blickpunktdaten der Person und eine Datei mit den Koordinaten des Punkts, der verfolgt werden sollte. Von den Blickpunktdaten einer Person sollten nur die Blickposition des linken und des rechten Auges genutzt werden. Die anderen Daten, sollten vernachlässigt werden.
+Die erhobenen Eye-Trackingdaten sind Zeitreihen. Zu 302 Versuchsperson gibt es je eine Datei mit den Blickpunktdaten der Person und eine Datei mit den Koordinaten des Punkts, der verfolgt werden sollte. Von den Blickpunktdaten einer Person sollten nur die Blickposition des linken und des rechten Auges genutzt werden. Die anderen Daten, sollten vernachl\"assigt werden.
 Mittels dieser Zeitreihen werden personenbezogene Merkmale erzeugt, die zur Clusterung der Versuchspersonen genutzt werden k\"onnen.
 Abbildung \ref{fig:rohdaten} zeigt, die Rohdaten einer Durchf\"uhrung der liegenden Acht. Daraus wird deutlich, dass die Koordinatensysteme zueinander verschoben sind. Die Verschiebung betr\"agt 640 px in X-Richtung und 512 px in Y-Richtung. Um die Abst\"ande zu den Targetpunkten berechnen zu k\"onnen, wurden die Targetpunkte entsprechend verschoben.
 
@@ -163,8 +163,11 @@ Au\ss{}erdem wurden die Werte der Blickpunktkoordinaten untersucht. Dabei fiel a
 
 \subsection*{Merkmalsgenerierung}
 Die neu erzeugten Merkmale sind in Merkmale innerhalb der Zeitreihen und Merkmale zur Beschreibung einer Versuchsperson zu unterscheiden. Die Merkmale innerhalb der Zeitreihen sind die Mittelwerte der Augenpositionen und die Abst\"ande (euklidischer Abstand) der Augenpositionen zum Targetpunkt, au\ss{}erdem die Geschwindigkeiten der Augen.\\
+Bei den Eigenschaften, die eine Versuchsperson beschreiben handelt es sich um statistische Kenngr\"o\ss{}en, wie das arithmetische Mittel, das Maximum und die Varianz, der Zeitreihenwerte f\"ur die einzelnen Versuche einer Versuchsperson. Die weiteren Eigenschaften werden im folgenden genauer beschrieben.\\
 In einem Versuch mit 55 Kindern mit Dyslexie und je 55 Kindern im gleichen Alter und 55 Kindern mit der selben Lesestufe, aber ohne Dyslexie, wurde gezeigt, dass Kinder mit Dyslexie Probleme bei der Fixation haben \cite{Tiadi2016}. Aus diesem Grund vermuten wir, dass das Merkmal der Abweichung zum Targetpunkt ein aussagekr\"aftiges Merkmal ist.\\
-Wichtige Merkmale f\"ur Augenbewegungen sind Fixationen und Sakkaden. Sakkaden sind dadurch gekennzeichnet, dass sich die Augen schnell bewegen und \"uber einem Geschwindigkeits\-schwellwert liegen \cite[p.~152]{EyeTracking}. Die Abbildung \ref{fig:DiagrammSakkaden} zeigt f\"ur eine Versuchsperson den Verlauf der Augenbewegungen des rechten Auges. Damit wurde das Merkmal erzeugt,wie viele Sakkaden es pro Durchlauf und pro Auge gab.
+Wichtige Merkmale f\"ur Augenbewegungen sind Fixationen und Sakkaden. Sakkaden sind dadurch gekennzeichnet, dass sich die Augen schnell bewegen und \"uber einem Geschwindigkeits\-schwellwert liegen \cite[p.~152]{EyeTracking}. Die Abbildung \ref{fig:DiagrammSakkaden} zeigt f\"ur eine Versuchsperson den Verlauf der Augenbewegungen des rechten Auges. Damit wurde das Merkmal erzeugt,wie viele Sakkaden es pro Durchlauf und pro Auge gab.\\
+Als weitere Eigenschaft wurde ausgewertet, wie hoch der Anteil der echten Messungen ist, also der Messungen der Augenposition, die nicht Null sind. Dieser Wert k\"onnte Auskunft dar\"uber geben, wie gut sich die Versuchsperson konzentrieren konnte, oder ob es von der Aufgabe \"uberfordert war. Vorausgesetzt, dass die Technik in Ordnung war, was wir als sehr wahrscheinlich einsch\"atzen.
+
 
 \subsection*{Clustern}
 
