@@ -17,6 +17,8 @@
 
 \usepackage{graphicx}
 
+\usepackage{lscape }
+
 % The preamble here sets up a lot of new/revised commands and
 % environments.  It's annoying, but please do *not* try to strip these
 % out into a separate .sty file (which could lead to the loss of some
@@ -152,13 +154,6 @@ Die erhobenen Eye-Trackingdaten sind Zeitreihen. Zu 302 Versuchsperson gibt es j
 Mittels dieser Zeitreihen werden personenbezogene Merkmale erzeugt, die zur Clusterung der Versuchspersonen genutzt werden k\"onnen.
 Abbildung \ref{fig:rohdaten} zeigt, die Rohdaten einer Durchf\"uhrung der liegenden Acht. Daraus wird deutlich, dass die Koordinatensysteme zueinander verschoben sind. Die Verschiebung betr\"agt 640 px in X-Richtung und 512 px in Y-Richtung. Um die Abst\"ande zu den Targetpunkten berechnen zu k\"onnen, wurden die Targetpunkte entsprechend verschoben.
 
-\begin{figure}[h]
-	\noindent \begin{centering}
-		\includegraphics[width=17cm]{Bilder/AufzeichnungVP77.pdf}
-		\par\end{centering}
-	\caption{\label{fig:rohdaten}Beispiel liegende Acht von Versuchsperson 77: in rot sieht man die aufgezeichneten Zielpunkte, in blau die aufgezeichneten Punkte der Blickpositionen des linken Auges und in gr\"un die Blickpositionen des rechten Auges. In schwarz sind die transponierten Targetpunkte dargestellt.}
-\end{figure}
-
 \section*{Methoden}
 Das Vorgehen untergliedert sich in vier Phasen. Die erste ist die explorative Analyse. Dabei werden die Daten auf Besonderheiten und ihre Wertebereiche untersucht. Die zweite Phase ist die Merkmalsgenerierung, dabei werden aus den Zeitreihen Merkmale zur Beschreibung der Versuchspersonen generiert. In der dritten Phase werden die Cluster erstellt und die G\"ute mittels Silhouettenkoeffizient bestimmt. In der vierten Phase wird ein transparentes Modell zur Beschreibung der Cluster erstellt.
 
@@ -171,13 +166,25 @@ Die neu erzeugten Merkmale sind in Merkmale innerhalb der Zeitreihen und Merkmal
 In einem Versuch mit 55 Kindern mit Dyslexie und je 55 Kindern im gleichen Alter und 55 Kindern mit der selben Lesestufe, aber ohne Dyslexie, wurde gezeigt, dass Kinder mit Dyslexie Probleme bei der Fixation haben \cite{Tiadi2016}. Aus diesem Grund vermuten wir, dass das Merkmal der Abweichung zum Targetpunkt ein aussagekr\"aftiges Merkmal ist.\\
 Wichtige Merkmale f\"ur Augenbewegungen sind Fixationen und Sakkaden. Sakkaden sind dadurch gekennzeichnet, dass sich die Augen schnell bewegen und \"uber einem Geschwindigkeits\-schwellwert liegen \cite[p.~152]{EyeTracking}. Die Abbildung \ref{fig:DiagrammSakkaden} zeigt f\"ur eine Versuchsperson den Verlauf der Augenbewegungen des rechten Auges. Damit wurde das Merkmal erzeugt,wie viele Sakkaden es pro Durchlauf und pro Auge gab.
 
+\subsection*{Clustern}
 
-\begin{figure}[h]
+\begin{landscape}
+\begin{figure}[t]
+	\begin{minipage}[ht]{10cm}
+	\noindent \begin{centering}	
+		\includegraphics[width=10cm]{Bilder/AufzeichnungVP77.pdf}
+		\par\end{centering}
+	\caption{\label{fig:rohdaten}Beispiel liegende Acht von Versuchsperson 77: in rot sieht man die aufgezeichneten Zielpunkte, in blau die aufgezeichneten Punkte der Blickpositionen des linken Auges und in gr\"un die Blickpositionen des rechten Auges. In schwarz sind die transponierten Targetpunkte dargestellt.}
+    \end{minipage}
+	\qquad
+    \begin{minipage}[ht]{10cm}	
 	\noindent \begin{centering}
-		\includegraphics[width=17cm]{Bilder/figure_saccade_vp_77.png}
+		\includegraphics[width=10cm]{Bilder/figure_saccade_vp_77.png}
 		\par\end{centering}
 	\caption{\label{fig:DiagrammSakkaden}Beispiel Versuchsperson 77: Die rote Linie ist der Schwellwert, f\"ur die Geschwindigkeit, damit eine Augenbewegung als Sakkade gez\"ahlt wird. Die gr\"une Kurve ist der Verlauf der Augenbewegungen des rechten Auges w\"ahrend eines Versuchs liegende Acht.}
+    \end{minipage}
 \end{figure}
+\end{landscape}
 
 \bibliography{quellen}
 
