@@ -65,7 +65,7 @@
 
 % Include your paper's title here
 
-\title{Clustern von Eye-Trackingdaten zur Unterstützung bei der Früherkennung von Dyslexie} 
+\title{Clustern von Eye-Trackingdaten zur Unterst\"utzung bei der Fr\"uherkennung von Dyslexie} 
 
 
 % Place the author information here.  Please hand-code the contact
@@ -106,7 +106,7 @@
 % Place your abstract within the special {sciabstract} environment.
 
 \begin{sciabstract}
-  In dieser Arbeit werden Versuchspersonen mittels Eye-Trackingdaten geclustert. Diese Versuchspersonen sollten bei der Datenerfassung drei Versuche nacheinander durchf\"uhren. Bei diesen Versuchen sollte ein Punkt mit dem Blick verfolgt werden. Bei der Clusterung soll sich herausbilden, wie gut die Versuchspersonen diese Aufgabe gel\"ost haben. Die Bemessung der G\"ute der Cluster erfolgt mit Hilfe des Silhouettenkoeffizienten.
+  In dieser Arbeit werden Versuchspersonen mittels Eye-Trackingdaten geclustert. Diese Versuchspersonen sollten bei der Datenerfassung drei Versuche nacheinander durchf\"uhren. Bei diesen Versuchen sollte ein Punkt mit dem Blick verfolgt werden. Bei der Clusterung soll sich herausbilden, wie gut die Versuchspersonen diese Aufgabe gel\"ost haben. Die Bemessung der G\"ute der Cluster erfolgt mit Hilfe des Silhouettenkoeffizienten. Die Cluster sollen bei der Fr\"uherkennung von Dyslexie zum Einsatz kommen.
 \end{sciabstract}
 
 
@@ -123,6 +123,7 @@
 
 \section*{Einf\"uhrung}
 
+Dyslexie zeigt sich durch signiﬁkante Schwierigkeiten W\"orter schnell und korrekt zu lesen und zu verstehen \cite{Handlere818, Siegel2006}.
 In einem Experiment wurden Eyetracking-Daten erhoben, bei denen die Versuchspersonen drei verschiedene Versuche durchf\"uhren sollten. Dabei sollten die Versuchspersonen mit den Augen einem Punkt folgen, der eine spezielle Figur zeichnete. Diese Figuren sind eine liegende Acht und eine horizontale Linie. F\"ur jeden Versuch wurden zwei Durchl\"aufe gemacht. Pro Durchlauf wurde die entsprechende Figur zwei mal gezeichnet. F\"ur die liegende Acht langsam wurde zus\"atzlich vorher ein Probedurchlauf gemacht, bei dem die Figur nur einmal gezeichnet wurde.
 Die Tabelle \ref{tab:Versuche} zeigt die Versuche, die durchgef\"uhrt wurden.\\
 Die Versuchspersonen sollen so geclustert werden, dass die entstehenden Cluster zur Klassiﬁzierung neuer Daten genutzt werden k\"onnen. Diese Cluster sollen durch eine transparente Darstellung zur Entscheidungsfindung beitragen, ob ein Kind an Dyslexie leidet.
@@ -147,42 +148,39 @@ Die Versuchspersonen sollen so geclustert werden, dass die entstehenden Cluster 
 \end{table}
 
 \section*{Daten}
-Die erhobenen Eye-Trackingdaten sind Zeitreihen. Zu 302 Versuchsperson gibt es je eine Datei mit den Blickpunktdaten der Person und eine Datei mit den Koordinaten des Punkts, der verfolgt werden sollte.
+Die erhobenen Eye-Trackingdaten sind Zeitreihen. Zu 302 Versuchsperson gibt es je eine Datei mit den Blickpunktdaten der Person und eine Datei mit den Koordinaten des Punkts, der verfolgt werden sollte. Von den Blickpunktdaten einer Person sollten nur die Blickposition des linken und des rechten Auges genutzt werden. Die anderen Daten, sollten vernachlässigt werden.
 Mittels dieser Zeitreihen werden personenbezogene Merkmale erzeugt, die zur Clusterung der Versuchspersonen genutzt werden k\"onnen.
-Abbildung \ref{fig:rohdaten} zeigt, die Rohdaten einer Durchführung der liegenden Acht. Daraus wird deutlich, dass die Koordinatensysteme zueinander verschoben sind. Die Verschiebung betr\"agt 640 px in X-Richtung und 512 px in Y-Richtung.
+Abbildung \ref{fig:rohdaten} zeigt, die Rohdaten einer Durchf\"uhrung der liegenden Acht. Daraus wird deutlich, dass die Koordinatensysteme zueinander verschoben sind. Die Verschiebung betr\"agt 640 px in X-Richtung und 512 px in Y-Richtung. Um die Abst\"ande zu den Targetpunkten berechnen zu k\"onnen, wurden die Targetpunkte entsprechend verschoben.
 
 \begin{figure}[h]
 	\noindent \begin{centering}
-		\includegraphics[width=17cm]{Bilder/bspRohdaten.png}
+		\includegraphics[width=17cm]{Bilder/AufzeichnungVP77.pdf}
 		\par\end{centering}
-	\caption{\label{fig:rohdaten}Beispiel liegende Acht: in rot sieht man die aufgezeichneten Zielpunkte, in blau die aufgezeichneten Punkte der Blickpositionen des linken Auges und in gr\"un die Blickpositionen des rechten Auges.}
+	\caption{\label{fig:rohdaten}Beispiel liegende Acht von Versuchsperson 77: in rot sieht man die aufgezeichneten Zielpunkte, in blau die aufgezeichneten Punkte der Blickpositionen des linken Auges und in gr\"un die Blickpositionen des rechten Auges. In schwarz sind die transponierten Targetpunkte dargestellt.}
 \end{figure}
 
 \section*{Methoden}
 Das Vorgehen untergliedert sich in vier Phasen. Die erste ist die explorative Analyse. Dabei werden die Daten auf Besonderheiten und ihre Wertebereiche untersucht. Die zweite Phase ist die Merkmalsgenerierung, dabei werden aus den Zeitreihen Merkmale zur Beschreibung der Versuchspersonen generiert. In der dritten Phase werden die Cluster erstellt und die G\"ute mittels Silhouettenkoeffizient bestimmt. In der vierten Phase wird ein transparentes Modell zur Beschreibung der Cluster erstellt.
+
+\subsection*{Explorative Analyse}
+Bei der explorativen Analyse wurden die Zeitstempel der zu einer Person geh\"orenden Dateien untersucht, wobei festgestellt wurde, dass die Anzahl, der gleichen Zeitstempel gegen Null geht. Darum wurde das Zusammenf\"uhren der beiden Dateien so gestaltet, dass immer der Targetpunkt mit dem Blickpunkt zusammengef\"uhrt wurde, der den n\"achsten gr\"o\ss{}eren oder gleichen Zeitstempel hat.\\
+Au\ss{}erdem wurden die Werte der Blickpunktkoordinaten untersucht. Dabei fiel auf, dass diese entweder Null sind oder einen von Null unterschiedlichen positiven Wert haben. Die Null hat die Bedeutung, dass die Augenposition nicht gemessen werden konnte. Zum Beispiel, wenn das Auge geschlossen war, oder zu weit weg war vom Messsensor. Bei zwei Versuchspersonen (VP71 und VP90) viel auf, dass f\"ur diese nur ein Auge gemessen wurde. Aus diesem Grund wurden diese beiden Versuchspersonen nicht ber\"ucksichtigt. Desweiteren wurde Versuchsperson 131 nicht ber\"ucksichtigt, da diese in den Messdaten Eventeintr\"age enthielt, die nicht zu den Standardeventeintr\"agen geh\"oren.
+
+\subsection*{Merkmalsgenerierung}
+Die neu erzeugten Merkmale sind in Merkmale innerhalb der Zeitreihen und Merkmale zur Beschreibung einer Versuchsperson zu unterscheiden. Die Merkmale innerhalb der Zeitreihen sind die Mittelwerte der Augenpositionen und die Abst\"ande (euklidischer Abstand) der Augenpositionen zum Targetpunkt, au\ss{}erdem die Geschwindigkeiten der Augen.\\
+In einem Versuch mit 55 Kindern mit Dyslexie und je 55 Kindern im gleichen Alter und 55 Kindern mit der selben Lesestufe, aber ohne Dyslexie, wurde gezeigt, dass Kinder mit Dyslexie Probleme bei der Fixation haben \cite{Tiadi2016}. Aus diesem Grund vermuten wir, dass das Merkmal der Abweichung zum Targetpunkt ein aussagekr\"aftiges Merkmal ist.\\
+Wichtige Merkmale f\"ur Augenbewegungen sind Fixationen und Sakkaden. Sakkaden sind dadurch gekennzeichnet, dass sich die Augen schnell bewegen und \"uber einem Geschwindigkeits\-schwellwert liegen \cite[p.~152]{EyeTracking}. Die Abbildung \ref{fig:DiagrammSakkaden} zeigt f\"ur eine Versuchsperson den Verlauf der Augenbewegungen des rechten Auges. Damit wurde das Merkmal erzeugt,wie viele Sakkaden es pro Durchlauf und pro Auge gab.
+
+
+\begin{figure}[h]
+	\noindent \begin{centering}
+		\includegraphics[width=17cm]{Bilder/figure_saccade_vp_77.png}
+		\par\end{centering}
+	\caption{\label{fig:DiagrammSakkaden}Beispiel Versuchsperson 77: Die rote Linie ist der Schwellwert, f\"ur die Geschwindigkeit, damit eine Augenbewegung als Sakkade gez\"ahlt wird. Die gr\"une Kurve ist der Verlauf der Augenbewegungen des rechten Auges w\"ahrend eines Versuchs liegende Acht.}
+\end{figure}
 
 \bibliography{quellen}
 
 \bibliographystyle{apalike}
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
