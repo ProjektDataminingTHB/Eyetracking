@@ -170,6 +170,11 @@ Als weitere Eigenschaft wurde ausgewertet, wie hoch der Anteil der echten Messun
 
 
 \subsection*{Clustern}
+Der Silhouettenkoeffizient wird durch die Beziehung jedes Datenpunkts zu den Datenpunkten innerhalb des eigenen Clusters, sowie seiner Beziehung zu den Datenpunkten des n\"achsten anderen Clusters bestimmt \cite{Rousseeuw1987}. Die Formel \ref{for:silhouette} zeigt die Berechnung f\"ur einen Datenpunkt \(a_i\) aus dem Cluster \(A\). Wobei \(dist(a)\) der Mittelwert der Abst\"ande innerhalb des Clusters \(A\) ist und \(dist(b)\) der Mittelwert der Abst\"ande zum n\"achsten Cluster ist. Die Werte k\"onnen im Intervall \([-1;1]\) liegen. Je n\"aher der Wert an 1 ist, desto besser.
+\begin{equation}\label{for:silhouette}
+	\frac{dist(b)_i - dist(a)_i}{\max{\{dist(a)_i, dist(b)_i\}}} = a_i
+\end{equation}
+Um die Bewertung eines Clusters zu bekommen wird der Mittelwert f\"ur die Punkte innerhalb des Clusters gebildet.
 
 \begin{landscape}
 \begin{figure}[t]

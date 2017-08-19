@@ -37,12 +37,26 @@
   pages         = {581--587},
   month         = nov,
   issn          = {1205-7088},
-  __markedentry = {[Mario:6]},
+  __markedentry = {[Mario:]},
   abstract      = {Dyslexia, or a reading disability, occurs when an individual has significant difficulty with speed and accuracy of word decoding. Comprehension of text and spelling are also affected. The diagnosis of dyslexia involves the use of reading tests, but the continuum of reading performance means that any cutoff point is arbitrary. The IQ score does not play a role in the diagnosis of dyslexia. The cognitive difficulties of dyslexics include problems with speech perception, recognizing and manipulating the basic sounds in a language, language memory, and learning the sounds of letters. Dyslexia is a neurological condition with a genetic basis. There are abnormalities in the brains of dyslexic individuals. There are also differences in the electrophysiological and structural characteristics of the brains of dyslexics. Physicians play a particularly important role in recognizing children who are at risk for dyslexia and helping their parents obtain the proper assessment.},
   comment       = {pch11581[PII] 19030329[pmid]},
   database      = {PMC},
   publisher     = {Pulsus Group Inc},
   url           = {http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2528651/},
+}
+
+@Article{Tiadi2016,
+  author        = {Tiadi, Aimé and Gérard, Christophe-Loïc and Peyre, Hugo and Bui-Quoc, Emmanuel and Bucci, Maria Pia},
+  title         = {Immaturity of Visual Fixations in Dyslexic Children},
+  journal       = {Frontiers in Human Neuroscience},
+  year          = {2016},
+  volume        = {10},
+  pages         = {58},
+  issn          = {1662-5161},
+  __markedentry = {[Mario:6]},
+  abstract      = {To our knowledge, behavioral studies recording visual fixations abilities in dyslexic children are scarce. The object of this paper is to explore further the visual fixation ability in dyslexics compared to chronological age-matched and reading age-matched non-dyslexic children. Fifty-five dyslexic children from 7 to 14 years old, fifty-five chronological age-matched non-dyslexic children and fifty-five reading age-matched non-dyslexic children participated to this study. Eye movements from both eyes were recorded horizontally and vertically by a video-oculography system (EyeBrain® T2). The fixation task consisted in fixating a white-filled circle appearing in the centre of the screen for 30 seconds. Results showed that dyslexic children produced a significantly higher number of unwanted saccades than both groups of non-dyslexic children. Moreover, the number of unwanted saccades significantly decreased with age in both groups of non-dyslexic children, but not in dyslexics. Furthermore, dyslexics made more saccades during the last 15 sec of fixation period with respect to both groups of non-dyslexic children. Such poor visual fixation capability in dyslexic children could be due to impaired attention abilities, as well as to an immaturity of the cortical areas controlling the fixation system.},
+  doi           = {10.3389/fnhum.2016.00058},
+  url           = {http://journal.frontiersin.org/article/10.3389/fnhum.2016.00058},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
