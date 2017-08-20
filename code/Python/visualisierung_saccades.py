@@ -8,11 +8,11 @@ from sklearn.cluster import DBSCAN
 from sklearn import metrics
 from sklearn import preprocessing
 
-vp = 77
+vp = 87
 
-def plots(input_blick = os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_acht_schnell/messung2/cycle2/vp_{}_gaze.csv'.format(tls.int_to_str(vp), tls.int_to_str(vp))),
-          input_target = os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_acht_schnell/messung2/cycle2/target.csv'.format(tls.int_to_str(vp))),
-          output_path = './', vp = vp, exp = 'liegende_acht_langsam', messung = 'messung2', cycle = 'cycle2', delim = ','):
+def plots(input_blick = os.path.join(cfg.datenZerlegungHome, 'vp_{}/horizontal/messung2/cycle2/vp_{}_gaze.csv'.format(tls.int_to_str(vp), tls.int_to_str(vp))),
+          input_target = os.path.join(cfg.datenZerlegungHome, 'vp_{}/horizontal/messung2/cycle2/target.csv'.format(tls.int_to_str(vp))),
+          output_path = './', vp = vp, exp = 'horizontal', messung = 'messung2', cycle = 'cycle2', delim = ','):
 
     title = 'Versuchperson {}, {}, {}, {}'.format(tls.int_to_str(vp), exp, messung, cycle)
     data = np.genfromtxt(
@@ -31,7 +31,7 @@ def plots(input_blick = os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_ach
     recht = data_array[:, 3:]
     # link_axis = get_eye_data_axis(link)
     recht_axis = get_eye_data_axis(recht)
-    r = get_saccades_fixations(time_axis[1:], recht, target_data_array)
+    r = get_saccades_fixations1(time_axis[1:], recht, target_data_array)
     print(r)
 
     # plt.plot(time_axis, link_axis, 'b', label='Blick., l. Auge')
@@ -60,7 +60,7 @@ def get_eye_data_axis(data):
 
     return data_distance
 
-def get_saccades_fixations(x, Y, T):
+def get_saccades_fixations1(x, Y, T):
 
     r = list()
     recht_axis = get_eye_data_axis(Y)
@@ -71,4 +71,13 @@ def get_saccades_fixations(x, Y, T):
     r.append(threshold)
     return r
 
-plots()
+def get_saccades_fixations(Y, threshold):
+
+    r = list()
+    axis = get_eye_data_axis(Y)
+    r.append(np.sum(axis < threshold))
+    r.append(np.sum(axis > threshold))
+    r.append(threshold)
+    return r
+
+#plots()

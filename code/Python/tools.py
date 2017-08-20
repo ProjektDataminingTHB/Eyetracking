@@ -9,7 +9,7 @@ import tools as tls
 def list_str_to_int(l):
     ll = list()
     for e in l:
-        ll.append(int(e))
+        ll.append(float(e))
     return ll
 
 def int_to_str(val, digit = 3):

@@ -36,10 +36,12 @@ import numpy as np
 import pandas as pd
 
 from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
 from sklearn import metrics
 from sklearn import preprocessing
 
-df = pd.read_csv(cfg.resultOhneName)
+#df = pd.read_csv(cfg.resultOhneName)
+df = pd.read_csv('/media/herval/Save/School/THB/Master/Semester1/Projekt1/Eyetracking/data/processed/result/result_ohne_korrelierte_merkmale.csv')
 X = df.values
 
 scaler = preprocessing.MaxAbsScaler()
@@ -51,60 +53,61 @@ sil_max = -100
 
 performance = list()
 
-for eps in np.arange(0.01, 10, 0.01):
-    for min_sample in np.arange(2, 150, 1):
-        db = DBSCAN(eps=eps, min_samples=min_sample).fit(X)
-        core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-        core_samples_mask[db.core_sample_indices_] = True
+#for eps in np.arange(0.01, 10, 0.01):
+for min_sample in np.arange(2, 20, 1):
+    db = KMeans(n_clusters=min_sample, max_iter=10000, init='random', algorithm='elkan', n_init=50).fit(X)
+    #core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+    #core_samples_mask[db.core_sample_indices_] = True
+    labels = db.labels_
+
+    # Number of clusters in labels, ignoring noise if present.
+    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+
+    # print('Estimated number of clusters: %d' % n_clusters_)
+    #
+    try:
+        #print("Silhouette Coefficient: %0.3f"
+        #       % metrics.silhouette_score(X, labels))
+        if sil_max < metrics.silhouette_score(X, labels):
+            #e = eps
+            s = min_sample
+            sil_max = metrics.silhouette_score(X, labels)
+        #print("Eps: {}, min_samples: {}".format(e, s))
+        db = KMeans(n_clusters=min_sample, max_iter=10000, init='random', algorithm='elkan', n_init=50).fit(X)
+        #db = DBSCAN(eps=e, min_samples=s).fit(X)
+        #core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+        #core_samples_mask[db.core_sample_indices_] = True
         labels = db.labels_
 
         # Number of clusters in labels, ignoring noise if present.
         n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 
-        # print('Estimated number of clusters: %d' % n_clusters_)
-        #
-        try:
-            #print("Silhouette Coefficient: %0.3f"
-            #       % metrics.silhouette_score(X, labels))
-            if sil_max < metrics.silhouette_score(X, labels):
-                e = eps
-                s = min_sample
-                sil_max = metrics.silhouette_score(X, labels)
-            #print("Eps: {}, min_samples: {}".format(e, s))
-            db = DBSCAN(eps=e, min_samples=s).fit(X)
-            core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-            core_samples_mask[db.core_sample_indices_] = True
-            labels = db.labels_
+        #print('Estimated number of clusters: %d' % n_clusters_)
 
-            # Number of clusters in labels, ignoring noise if present.
-            n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-
-            #print('Estimated number of clusters: %d' % n_clusters_)
-
-            #print("Silhouette Coefficient: %0.3f"
-            #      % metrics.silhouette_score(X, labels))
-            performance.append([e, s, n_clusters_, metrics.silhouette_score(X, labels)])
-        except:
-            pass
+        #print("Silhouette Coefficient: %0.3f"
+        #      % metrics.silhouette_score(X, labels))
+        performance.append([db.get_params(), metrics.silhouette_score(X, labels)])
+    except:
+        pass
 
 id = generate_id()
 performDf = pd.DataFrame(np.array(performance), columns=cfg.header_cluster_performance)
 performDf.to_csv(cfg.performanceClustering.format(id), index=False, sep=cfg.sep)
-
-print("Eps: {}, min_samples: {}".format(e, s))
-
-db = DBSCAN(eps=e, min_samples=s).fit(X)
-core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-core_samples_mask[db.core_sample_indices_] = True
-labels = db.labels_
-
-# Number of clusters in labels, ignoring noise if present.
-n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-
-print('Estimated number of clusters: %d' % n_clusters_)
-
-print("Silhouette Coefficient: %0.3f"
-      % metrics.silhouette_score(X, labels))
+#
+# print("Eps: {}, min_samples: {}".format(e, s))
+#
+# db = DBSCAN(eps=e, min_samples=s).fit(X)
+# core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+# core_samples_mask[db.core_sample_indices_] = True
+# labels = db.labels_
+#
+# # Number of clusters in labels, ignoring noise if present.
+# n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+#
+# print('Estimated number of clusters: %d' % n_clusters_)
+#
+# print("Silhouette Coefficient: %0.3f"
+#       % metrics.silhouette_score(X, labels))
 ##############################################################################
 # Plot result
 # import matplotlib.pyplot as plt

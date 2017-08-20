@@ -153,12 +153,7 @@ def extend_files():
                 # Ergebnis in CSV-Datei schreiben
                 result.to_csv(os.path.join(destination_path, source_file), index=False)
 
-def saccade(input_blick = cfg.datenZerlegungHome):
-    vp = os.walk(cfg.datenZerlegungHome)
-    for root, folders, files in vp:
-
-
-
+# berechne_threshold()
 tls.showInfo('Beginn', 'Datenexpandieren')
 extend_files()
 tls.showInfo('Ende', 'Datenexpandieren')

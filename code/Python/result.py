@@ -6,6 +6,7 @@ import tools as tls
 import ntpath
 from shutil import copyfile
 import math
+from visualisierung_saccades import *
 
 def versuch_auswerten(versuch_werte, versuch_name, header):
 
@@ -274,7 +275,124 @@ def make_result_file():
             df = pd.DataFrame([werte], columns=header)
             result = result.append(df)
 
-    result.to_csv(os.path.join(cfg.resultHome, "result.csv"), index=False)
+    h, l, s = saccade()
+    df2 = pd.DataFrame({'sacc_horizontal_l': np.array(h)[:, 0], 'sacc_horizontal_r': np.array(h)[:, 1], 'sacc_horizontal_m': np.array(h)[:, 2],
+                        'sacc_rate_horizontal_l': (np.array(h)[:, 0])/(999*4), 'sacc_rate_horizontal_r': (np.array(h)[:, 1])/(999*4), 'sacc_rate_horizontal_m': (np.array(h)[:, 2])/(999*4),
+                                       'sacc_langsam_l': np.array(l)[:, 0], 'sacc_langsam_r': np.array(l)[:, 1], 'sacc_langsam_m': np.array(l)[:, 2],
+                                       'sacc_rate_langsam_l': (np.array(l)[:, 0])/(999*5), 'sacc_rate_langsam_r': (np.array(l)[:, 1])/(999*5), 'sacc_rate_langsam_m': (np.array(l)[:, 2])/(999*5),
+                                       'sacc_schnell_l': np.array(s)[:, 0], 'sacc_schnell_r': np.array(s)[:, 1], 'sacc_schnell_m': np.array(s)[:, 2],
+                                       'sacc_rate_schnell_l': (np.array(s)[:, 0])/(999*4), 'sacc_rate_schnell_r': (np.array(s)[:, 1])/(999*4), 'sacc_rate_schnell_m': (np.array(s)[:, 2])/(999*4)})
+    new_header = list(result)
+    new_header = new_header + list(df2)
+    values = np.concatenate((result.values, df2.values), axis=1)
+    r = pd.DataFrame(values, columns=new_header)
+    r.to_csv(os.path.join(cfg.resultHome, "result.csv"), index=False)
+
+def saccade(input_blick = cfg.datenZerlegungHome):
+    threshold = berechne_threshold()
+    vps = os.listdir(input_blick)
+    horizontal = list()
+    liegende_acht_langsam = list()
+    liegende_acht_schnell = list()
+    m = 0
+    for vp in vps:
+        n = int(tls.remove_begin('vp_', vp))
+        if n > m:
+            m = n
+
+    for i in range(m):
+        if not tls.int_to_str(i+1) in cfg.exclude:
+
+            root_path = os.path.join(input_blick, 'vp_{}'.format(tls.int_to_str(i+1)))
+            horizontal_path = os.path.join(root_path, 'horizontal')
+            langsam_path = os.path.join(root_path, 'liegende_acht_langsam')
+            schnell_path = os.path.join(root_path, 'liegende_acht_schnell')
+
+            h = os.walk(horizontal_path)
+            saccade_l = 0
+            saccade_r = 0
+            saccade_m = 0
+            for root, folders, files in h:
+                #print(root, folders, files)
+                if(len(folders) == 0):
+                    file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
+                    df = pd.read_csv(file, sep=cfg.sep)
+                    vals = df.values[:, 1:]
+                    links = vals[:, :2]
+                    recht = vals[:, 2:]
+                    middle = (links + recht) / 2
+                    #print(get_saccades_fixations(links, threshold))
+                    saccade_l += get_saccades_fixations(links, threshold)[1]
+                    saccade_r += get_saccades_fixations(recht, threshold)[1]
+                    saccade_m += get_saccades_fixations(middle, threshold)[1]
+            tmp = list()
+            tmp.append(saccade_l)
+            tmp.append(saccade_r)
+            tmp.append(saccade_m)
+            horizontal.append(tmp)
+
+            s = os.walk(schnell_path)
+            saccade_l = 0
+            saccade_r = 0
+            saccade_m = 0
+            for root, folders, files in s:
+                if(len(folders) == 0):
+                    file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
+                    df = pd.read_csv(file, sep=cfg.sep)
+                    vals = df.values[:, 1:]
+                    links = vals[:, :2]
+                    recht = vals[:, 2:]
+                    middle = (links + recht ) / 2
+                    saccade_l += get_saccades_fixations(links, threshold)[1]
+                    saccade_r += get_saccades_fixations(recht, threshold)[1]
+                    saccade_m += get_saccades_fixations(middle, threshold)[1]
+            tmp = list()
+            tmp.append(saccade_l)
+            tmp.append(saccade_r)
+            tmp.append(saccade_m)
+            liegende_acht_schnell.append(tmp)
+
+            l = os.walk(langsam_path)
+            saccade_l = 0
+            saccade_r = 0
+            saccade_m = 0
+            for root, folders, files in l:
+                if(len(folders) == 0):
+                    file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
+                    df = pd.read_csv(file, sep=cfg.sep)
+                    vals = df.values[:, 1:]
+                    links = vals[:, :2]
+                    recht = vals[:, 2:]
+                    middle = (links + recht ) / 2
+                    saccade_l += get_saccades_fixations(links, threshold)[1]
+                    saccade_r += get_saccades_fixations(recht, threshold)[1]
+                    saccade_m += get_saccades_fixations(middle, threshold)[1]
+            tmp = list()
+            tmp.append(saccade_l)
+            tmp.append(saccade_r)
+            tmp.append(saccade_m)
+            liegende_acht_langsam.append(tmp)
+
+    final = list()
+    final.append(horizontal)
+    final.append(liegende_acht_langsam)
+    final.append(liegende_acht_schnell)
+    return horizontal, liegende_acht_langsam, liegende_acht_schnell
+
+def berechne_threshold():
+    f = os.walk(cfg.datenZerlegungHome)
+    threshold = 0
+    i = 0
+    for root, folders, files in f:
+        if folders == []:
+            file = os.path.join(root, 'target.csv')
+            df = pd.read_csv(file, sep=cfg.sep)
+            t_data = df.values[:, 1:]
+            th = get_eye_data_axis(t_data)
+            threshold = threshold + min(th[1:])
+            i += 1
+
+    return threshold / i
 
 tls.showInfo('Beginn', 'Ausgangsdaten')
 make_result_file()

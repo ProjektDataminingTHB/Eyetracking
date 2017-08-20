@@ -31,7 +31,7 @@ class Config:
     experimente = ['liegende_acht_langsam', 'liegende_acht_schnell', 'horizontal']
     messungen = ['messung1', 'messung2', 'probe']
     cycles = ['cycle1', 'cycle2']
-    header_cluster_performance = ['eps', 'min_sample', 'n_cluster', 'silhouette']
+    header_cluster_performance = ['parameters', 'silhouette']
     id_length = 10
     sep=','
 
