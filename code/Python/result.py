@@ -6,7 +6,6 @@ import tools as tls
 import ntpath
 from shutil import copyfile
 import math
-from visualisierung_saccades import *
 
 def versuch_auswerten(versuch_werte, versuch_name, header):
 
@@ -24,6 +23,9 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     blick_l_y_values = pd.to_numeric(versuch_werte.blick_l_y).values
     blick_r_x_values = pd.to_numeric(versuch_werte.blick_r_x).values
     blick_r_y_values = pd.to_numeric(versuch_werte.blick_r_y).values
+    sacc_m_values = pd.to_numeric(versuch_werte.sacc_m).values
+    sacc_l_values = pd.to_numeric(versuch_werte.sacc_l).values
+    sacc_r_values = pd.to_numeric(versuch_werte.sacc_r).values
 
     # Mittelkwerte bestimmen
     # Kein Exceptionhandling, da ein leeres Array dazu fuehrt, dass np.mean() nan zurueckgibt und keine Exception
@@ -165,7 +167,6 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     else:
         var_geschwindigkeit_m = np.var(geschwindigkeit_m_values[np.nonzero(geschwindigkeit_m_values)])
 
-
     header = np.append(header, [versuch_name + '_varianz_delta_l', versuch_name + '_varianz_delta_r', versuch_name + '_varianz_delta_m', versuch_name + '_varianz_geschwindigkeit_l', versuch_name + '_varianz_geschwindigkeit_r', versuch_name + '_varianz_geschwindigkeit_m'])
 
     # Tendenz auswerten
@@ -228,14 +229,26 @@ def versuch_auswerten(versuch_werte, versuch_name, header):
     verhaeltnis_l_y_da = blick_l_y_values[np.nonzero(blick_l_y_values)].size / blick_l_y_values.size
     verhaeltnis_r_x_da = blick_r_x_values[np.nonzero(blick_r_x_values)].size / blick_r_x_values.size
     verhaeltnis_r_y_da = blick_r_y_values[np.nonzero(blick_r_y_values)].size / blick_r_y_values.size
-    
-    header = np.append(header, [versuch_name + '_links_verhaeltnis_x', versuch_name + '_links_verhaeltnis_y', versuch_name + '_rechts_verhaeltnis_x', versuch_name + '_rechts_verhaeltnis_y'])
 
-    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m, cov_x, cov_y, verhaeltnis_l_x_da, verhaeltnis_l_y_da, verhaeltnis_r_x_da, verhaeltnis_r_y_da]]
+    sacc_m = np.sum(sacc_m_values)
+    sacc_l = np.sum(sacc_l_values)
+    sacc_r = np.sum(sacc_r_values)
+    if versuch_name == 'Horizontal' or versuch_name == 'Liegende_8_schnell':
+        sacc_rate_m = sacc_m / (999*4)
+        sacc_rate_l = sacc_l / (999*4)
+        sacc_rate_r = sacc_r / (999*4)
+    else:
+        sacc_rate_m = sacc_m / (999*5)
+        sacc_rate_l = sacc_l / (999*5)
+        sacc_rate_r = sacc_r / (999*5)
+    
+    header = np.append(header, [versuch_name + '_links_verhaeltnis_x', versuch_name + '_links_verhaeltnis_y', versuch_name + '_rechts_verhaeltnis_x', versuch_name + '_rechts_verhaeltnis_y', versuch_name + '_sacc_m', versuch_name + '_sacc_rate_m', versuch_name + '_sacc_l', versuch_name + '_sacc_rate_l', versuch_name + '_sacc_r', versuch_name + '_sacc_rate_r'])
+
+    yield [[mean_delta_l, mean_delta_r, mean_delta_m, mean_geschwindigkeit_l, mean_geschwindigkeit_r, mean_geschwindigkeit_m, max_delta_l, max_delta_r, max_delta_m, max_geschwindigkeit_l, max_geschwindigkeit_r, max_geschwindigkeit_m, min_delta_l, min_delta_r, min_delta_m, min_geschwindigkeit_l, min_geschwindigkeit_r, min_geschwindigkeit_m, std_delta_l, std_delta_r, std_delta_m, std_geschwindigkeit_l, std_geschwindigkeit_r, std_geschwindigkeit_m, var_delta_l, var_delta_r, var_delta_m, var_geschwindigkeit_l, var_geschwindigkeit_r, var_geschwindigkeit_m, tendenz_l, tendenz_r, tendenz_m, cov_x, cov_y, verhaeltnis_l_x_da, verhaeltnis_l_y_da, verhaeltnis_r_x_da, verhaeltnis_r_y_da, sacc_m, sacc_l, sacc_r, sacc_rate_m, sacc_rate_l, sacc_rate_r]]
     yield header 
 
 def make_result_file():
-    header_source =['t_tracker','pix_x','pix_y','zeitstempel','blick_l_x','blick_l_y','blick_r_x','blick_r_y','blick_m_x','blick_m_y','pix_x_translation','pix_y_translation','delta_l_t','delta_m_t','delta_r_t','geschwindigkeit_l','geschwindigkeit_m','geschwindigkeit_r','richtung_delta_l_x','richtung_delta_l_y','richtung_delta_m_x','richtung_delta_m_y','richtung_delta_r_x','richtung_delta_r_y', 'tendenz_l', 'tendenz_m', 'tendenz_r']
+    header_source =['t_tracker','pix_x','pix_y','zeitstempel','blick_l_x','blick_l_y','blick_r_x','blick_r_y','blick_m_x','blick_m_y','pix_x_translation','pix_y_translation','delta_l_t','delta_m_t','delta_r_t','geschwindigkeit_l','geschwindigkeit_m','geschwindigkeit_r', 'sacc_l', 'sacc_m', 'sacc_r','richtung_delta_l_x','richtung_delta_l_y','richtung_delta_m_x','richtung_delta_m_y','richtung_delta_r_x','richtung_delta_r_y', 'tendenz_l', 'tendenz_m', 'tendenz_r']
     header_destination = ['person']
     source_folders = os.listdir(cfg.extendedHome)
     
@@ -274,125 +287,133 @@ def make_result_file():
             
             df = pd.DataFrame([werte], columns=header)
             result = result.append(df)
+    #
+    # df2 = pd.DataFrame({'sacc_horizontal_l': np.array(h)[:, 0], 'sacc_horizontal_r': np.array(h)[:, 1], 'sacc_horizontal_m': np.array(h)[:, 2],
+    #                     'sacc_rate_horizontal_l': (np.array(h)[:, 0])/(999*4), 'sacc_rate_horizontal_r': (np.array(h)[:, 1])/(999*4), 'sacc_rate_horizontal_m': (np.array(h)[:, 2])/(999*4),
+    #                                    'sacc_langsam_l': np.array(l)[:, 0], 'sacc_langsam_r': np.array(l)[:, 1], 'sacc_langsam_m': np.array(l)[:, 2],
+    #                                    'sacc_rate_langsam_l': (np.array(l)[:, 0])/(999*5), 'sacc_rate_langsam_r': (np.array(l)[:, 1])/(999*5), 'sacc_rate_langsam_m': (np.array(l)[:, 2])/(999*5),
+    #                                    'sacc_schnell_l': np.array(s)[:, 0], 'sacc_schnell_r': np.array(s)[:, 1], 'sacc_schnell_m': np.array(s)[:, 2],
+    #                                    'sacc_rate_schnell_l': (np.array(s)[:, 0])/(999*4), 'sacc_rate_schnell_r': (np.array(s)[:, 1])/(999*4), 'sacc_rate_schnell_m': (np.array(s)[:, 2])/(999*4)})
+    # new_header = list(result)
+    # new_header = new_header + list(df2)
+    # values = np.concatenate((result.values, df2.values), axis=1)
+    # r = pd.DataFrame(values, columns=header)
+    result.to_csv(os.path.join(cfg.resultHome, "result.csv"), index=False)
 
-    h, l, s = saccade()
-    df2 = pd.DataFrame({'sacc_horizontal_l': np.array(h)[:, 0], 'sacc_horizontal_r': np.array(h)[:, 1], 'sacc_horizontal_m': np.array(h)[:, 2],
-                        'sacc_rate_horizontal_l': (np.array(h)[:, 0])/(999*4), 'sacc_rate_horizontal_r': (np.array(h)[:, 1])/(999*4), 'sacc_rate_horizontal_m': (np.array(h)[:, 2])/(999*4),
-                                       'sacc_langsam_l': np.array(l)[:, 0], 'sacc_langsam_r': np.array(l)[:, 1], 'sacc_langsam_m': np.array(l)[:, 2],
-                                       'sacc_rate_langsam_l': (np.array(l)[:, 0])/(999*5), 'sacc_rate_langsam_r': (np.array(l)[:, 1])/(999*5), 'sacc_rate_langsam_m': (np.array(l)[:, 2])/(999*5),
-                                       'sacc_schnell_l': np.array(s)[:, 0], 'sacc_schnell_r': np.array(s)[:, 1], 'sacc_schnell_m': np.array(s)[:, 2],
-                                       'sacc_rate_schnell_l': (np.array(s)[:, 0])/(999*4), 'sacc_rate_schnell_r': (np.array(s)[:, 1])/(999*4), 'sacc_rate_schnell_m': (np.array(s)[:, 2])/(999*4)})
-    new_header = list(result)
-    new_header = new_header + list(df2)
-    values = np.concatenate((result.values, df2.values), axis=1)
-    r = pd.DataFrame(values, columns=new_header)
-    r.to_csv(os.path.join(cfg.resultHome, "result.csv"), index=False)
+# def saccade(input_blick = cfg.datenZerlegungHome):
+#     threshold = berechne_threshold()
+#     vps = os.listdir(input_blick)
+#     horizontal = list()
+#     liegende_acht_langsam = list()
+#     liegende_acht_schnell = list()
+#     m = 0
+#     for vp in vps:
+#         tmp = tls.remove_begin('vp_', vp)
+#         tmp = tls.remove_begin('_stats', tmp)
+#         n = int(tmp)
+#         if n > m:
+#             m = n
+#
+#     for i in range(m):
+#         if not tls.int_to_str(i+1) in cfg.exclude:
+#
+#             root_path = os.path.join(input_blick, 'vp_{}'.format(tls.int_to_str(i+1)))
+#             horizontal_path = os.path.join(root_path, 'horizontal')
+#             langsam_path = os.path.join(root_path, 'liegende_acht_langsam')
+#             schnell_path = os.path.join(root_path, 'liegende_acht_schnell')
+#
+#             h = os.walk(horizontal_path)
+#             saccade_l = 0
+#             saccade_r = 0
+#             saccade_m = 0
+#             for root, folders, files in h:
+#                 #print(root, folders, files)
+#                 if(len(folders) == 0):
+#                     file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
+#                     df = pd.read_csv(file, sep=cfg.sep)
+#                     vals = df.values[:, 1:]
+#                     links = vals[:, :2]
+#                     recht = vals[:, 2:]
+#                     middle = (links + recht) / 2
+#                     #print(get_saccades_fixations(links, threshold))
+#                     saccade_l += get_saccades_fixations(links, threshold)[1]
+#                     saccade_r += get_saccades_fixations(recht, threshold)[1]
+#                     saccade_m += get_saccades_fixations(middle, threshold)[1]
+#             tmp = list()
+#             tmp.append(saccade_l)
+#             tmp.append(saccade_r)
+#             tmp.append(saccade_m)
+#             horizontal.append(tmp)
+#
+#             s = os.walk(schnell_path)
+#             saccade_l = 0
+#             saccade_r = 0
+#             saccade_m = 0
+#             for root, folders, files in s:
+#                 if(len(folders) == 0):
+#                     file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
+#                     df = pd.read_csv(file, sep=cfg.sep)
+#                     vals = df.values[:, 1:]
+#                     links = vals[:, :2]
+#                     recht = vals[:, 2:]
+#                     middle = (links + recht ) / 2
+#                     saccade_l += get_saccades_fixations(links, threshold)[1]
+#                     saccade_r += get_saccades_fixations(recht, threshold)[1]
+#                     saccade_m += get_saccades_fixations(middle, threshold)[1]
+#             tmp = list()
+#             tmp.append(saccade_l)
+#             tmp.append(saccade_r)
+#             tmp.append(saccade_m)
+#             liegende_acht_schnell.append(tmp)
+#
+#             l = os.walk(langsam_path)
+#             saccade_l = 0
+#             saccade_r = 0
+#             saccade_m = 0
+#             for root, folders, files in l:
+#                 if(len(folders) == 0):
+#                     file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
+#                     df = pd.read_csv(file, sep=cfg.sep)
+#                     vals = df.values[:, 1:]
+#                     links = vals[:, :2]
+#                     recht = vals[:, 2:]
+#                     middle = (links + recht ) / 2
+#                     saccade_l += get_saccades_fixations(links, threshold)[1]
+#                     saccade_r += get_saccades_fixations(recht, threshold)[1]
+#                     saccade_m += get_saccades_fixations(middle, threshold)[1]
+#             tmp = list()
+#             tmp.append(saccade_l)
+#             tmp.append(saccade_r)
+#             tmp.append(saccade_m)
+#             liegende_acht_langsam.append(tmp)
 
-def saccade(input_blick = cfg.datenZerlegungHome):
-    threshold = berechne_threshold()
-    vps = os.listdir(input_blick)
-    horizontal = list()
-    liegende_acht_langsam = list()
-    liegende_acht_schnell = list()
-    m = 0
-    for vp in vps:
-        n = int(tls.remove_begin('vp_', vp))
-        if n > m:
-            m = n
 
-    for i in range(m):
-        if not tls.int_to_str(i+1) in cfg.exclude:
+    # final = list()
+    # final.append(horizontal)
+    # final.append(liegende_acht_langsam)
+    # final.append(liegende_acht_schnell)
+    # return horizontal, liegende_acht_langsam, liegende_acht_schnell
 
-            root_path = os.path.join(input_blick, 'vp_{}'.format(tls.int_to_str(i+1)))
-            horizontal_path = os.path.join(root_path, 'horizontal')
-            langsam_path = os.path.join(root_path, 'liegende_acht_langsam')
-            schnell_path = os.path.join(root_path, 'liegende_acht_schnell')
+# def saccades():
+#     horizontal = os.walk(cfg.horizontalHome)
+#     for root, folders, files in horizontal:
+#
+#     pass
 
-            h = os.walk(horizontal_path)
-            saccade_l = 0
-            saccade_r = 0
-            saccade_m = 0
-            for root, folders, files in h:
-                #print(root, folders, files)
-                if(len(folders) == 0):
-                    file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
-                    df = pd.read_csv(file, sep=cfg.sep)
-                    vals = df.values[:, 1:]
-                    links = vals[:, :2]
-                    recht = vals[:, 2:]
-                    middle = (links + recht) / 2
-                    #print(get_saccades_fixations(links, threshold))
-                    saccade_l += get_saccades_fixations(links, threshold)[1]
-                    saccade_r += get_saccades_fixations(recht, threshold)[1]
-                    saccade_m += get_saccades_fixations(middle, threshold)[1]
-            tmp = list()
-            tmp.append(saccade_l)
-            tmp.append(saccade_r)
-            tmp.append(saccade_m)
-            horizontal.append(tmp)
-
-            s = os.walk(schnell_path)
-            saccade_l = 0
-            saccade_r = 0
-            saccade_m = 0
-            for root, folders, files in s:
-                if(len(folders) == 0):
-                    file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
-                    df = pd.read_csv(file, sep=cfg.sep)
-                    vals = df.values[:, 1:]
-                    links = vals[:, :2]
-                    recht = vals[:, 2:]
-                    middle = (links + recht ) / 2
-                    saccade_l += get_saccades_fixations(links, threshold)[1]
-                    saccade_r += get_saccades_fixations(recht, threshold)[1]
-                    saccade_m += get_saccades_fixations(middle, threshold)[1]
-            tmp = list()
-            tmp.append(saccade_l)
-            tmp.append(saccade_r)
-            tmp.append(saccade_m)
-            liegende_acht_schnell.append(tmp)
-
-            l = os.walk(langsam_path)
-            saccade_l = 0
-            saccade_r = 0
-            saccade_m = 0
-            for root, folders, files in l:
-                if(len(folders) == 0):
-                    file = os.path.join(root, files[files.index('vp_{}_gaze.csv'.format(tls.int_to_str(i+1)))])
-                    df = pd.read_csv(file, sep=cfg.sep)
-                    vals = df.values[:, 1:]
-                    links = vals[:, :2]
-                    recht = vals[:, 2:]
-                    middle = (links + recht ) / 2
-                    saccade_l += get_saccades_fixations(links, threshold)[1]
-                    saccade_r += get_saccades_fixations(recht, threshold)[1]
-                    saccade_m += get_saccades_fixations(middle, threshold)[1]
-            tmp = list()
-            tmp.append(saccade_l)
-            tmp.append(saccade_r)
-            tmp.append(saccade_m)
-            liegende_acht_langsam.append(tmp)
-
-    final = list()
-    final.append(horizontal)
-    final.append(liegende_acht_langsam)
-    final.append(liegende_acht_schnell)
-    return horizontal, liegende_acht_langsam, liegende_acht_schnell
-
-def berechne_threshold():
-    f = os.walk(cfg.datenZerlegungHome)
-    threshold = 0
-    i = 0
-    for root, folders, files in f:
-        if folders == []:
-            file = os.path.join(root, 'target.csv')
-            df = pd.read_csv(file, sep=cfg.sep)
-            t_data = df.values[:, 1:]
-            th = get_eye_data_axis(t_data)
-            threshold = threshold + min(th[1:])
-            i += 1
-
-    return threshold / i
+# def berechne_threshold():
+#     f = os.walk(cfg.datenZerlegungHome)
+#     threshold = 0
+#     i = 0
+#     for root, folders, files in f:
+#         if folders == []:
+#             file = os.path.join(root, 'target.csv')
+#             df = pd.read_csv(file, sep=cfg.sep)
+#             t_data = df.values[:, 1:]
+#             th = get_eye_data_axis(t_data)
+#             threshold = threshold + min(th[1:])
+#             i += 1
+#
+#     return threshold / i
 
 tls.showInfo('Beginn', 'Ausgangsdaten')
 make_result_file()

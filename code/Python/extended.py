@@ -6,7 +6,6 @@ import tools as tls
 import ntpath
 from shutil import copyfile
 import math
-from visualisierung_saccades import *
 
 
 def berechne_Mitte(links, rechts):
@@ -137,7 +136,7 @@ def extend_files():
                 distanz = middle_eyes.assign(delta_l_t = berechne_Abstand(pd.to_numeric(middle_eyes.blick_l_x), pd.to_numeric(middle_eyes.pix_x_translation), pd.to_numeric(middle_eyes.blick_l_y), pd.to_numeric(middle_eyes.pix_y_translation)), delta_r_t = berechne_Abstand(pd.to_numeric(middle_eyes.blick_r_x), pd.to_numeric(middle_eyes.pix_x_translation), pd.to_numeric(middle_eyes.blick_r_y), pd.to_numeric(middle_eyes.pix_y_translation)), delta_m_t = berechne_Abstand(pd.to_numeric(middle_eyes.blick_m_x), pd.to_numeric(middle_eyes.pix_x_translation), pd.to_numeric(middle_eyes.blick_m_y), pd.to_numeric(middle_eyes.pix_y_translation)))
 
                 # Erweiterung um die Geschwindigkeiten
-                geschwindigkeit = distanz.assign(geschwindigkeit_l = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_l_y), pd.to_numeric(distanz.blick_l_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_r = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_r_y), pd.to_numeric(distanz.blick_r_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_m = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_m_y), pd.to_numeric(distanz.blick_m_x), pd.to_numeric(distanz.zeitstempel)))
+                geschwindigkeit = distanz.assign(geschwindigkeit_l = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_l_y), pd.to_numeric(distanz.blick_l_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_r = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_r_y), pd.to_numeric(distanz.blick_r_x), pd.to_numeric(distanz.zeitstempel)), geschwindigkeit_m = berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_m_y), pd.to_numeric(distanz.blick_m_x), pd.to_numeric(distanz.zeitstempel)), sacc_m = np.array(np.array(berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_m_y), pd.to_numeric(distanz.blick_m_x), pd.to_numeric(distanz.zeitstempel))) > 0.00048623, dtype=int), sacc_l = np.array(np.array(berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_l_y), pd.to_numeric(distanz.blick_l_x), pd.to_numeric(distanz.zeitstempel))) > 0.00048623, dtype=int), sacc_r = np.array(np.array(berechne_Geschwindigkeit(pd.to_numeric(distanz.blick_r_y), pd.to_numeric(distanz.blick_r_x), pd.to_numeric(distanz.zeitstempel))) > 0.00048623, dtype=int))
 
                 #Berechnung, ob die Blickposition hinterher ist, oder voraus.
                 # 1 = voraus

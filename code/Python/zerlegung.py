@@ -88,7 +88,9 @@ def zerlegung(ausgabe_ordner = cfg.datenZerlegungHome, eingabe_ordner = cfg.rawD
         if csv_datei.lower().endswith('.txt'):
             csv_name = csv_datei.split('.')[0]
             csv_name = tls.remove_begin(eingabe_prefix, csv_name)
-            if not tls.occurIn(cfg.exclude, csv_name):
+            number = tls.remove_end(eingabe_blick_suffix, csv_name)
+
+            if not number in cfg.exclude:
                 if eingabe_blick_suffix in csv_name:    #Kontroll, ob sich die Datei mit gaze endet
                     csv_name = tls.remove_end(eingabe_blick_suffix, csv_name)
                     inhalt_datei = pd.read_csv(os.path.join(eingabe_ordner, csv_datei), sep = delim, names=['zeitstempel', 'blick_l_x', 'blick_l_y',
