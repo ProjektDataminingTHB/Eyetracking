@@ -37,14 +37,10 @@ def plots(input_blick = os.path.join(cfg.datenZerlegungHome, 'vp_{}/liegende_ach
     target_data_array[:, 1] = -1 * target_data_array[:, 1]
     z_target_data_array = target_data_array + u
 
-    plt.plot(target_data_array[:, 0], target_data_array[:, 1], 'r', marker='x', markersize = 7, label='Targetpunkte')
-    plt.plot(z_target_data_array[:, 0], z_target_data_array[:, 1], 'k', marker='*', markersize = 7, label='transformierte\nTargetpunkte')
-    plt.plot(target_mitte[0], target_mitte[1], 'y', marker='o', markersize = 5, label='Mitte Targetpunkte')
-    plt.plot(mitte_mitte[0], mitte_mitte[1], 'c', marker='o', markersize = 5, label='Mitte Blickpunkte')
-    plt.plot(cfg.o_prim[0], cfg.o_prim[1], 'm', marker='+', markersize = 5, label='Ursprung')
-    plt.plot(mitte[:, 0], mitte[:, 1], 'm', marker='o', label='Blick., Mitte')
-    plt.plot(link[:, 0], link[:, 1], 'b', marker='o', label='Blick., l. Auge')
-    plt.plot(recht[:, 0], recht[:, 1], 'g', marker='^', label='Blickp., r. Auge')
+    plt.plot(target_data_array[:, 0], target_data_array[:, 1], 'r', marker='.', markersize = 7, label='Targetpunkte')
+    plt.plot(z_target_data_array[:, 0], z_target_data_array[:, 1], 'k', marker='.', markersize = 9, label='transformierte\nTargetpunkte')
+    plt.plot(target_mitte[0], target_mitte[1], 'b', marker='+', markersize = 11, mew=2, label='Mitte Targetpunkte')
+    plt.plot(mitte[:, 0], mitte[:, 1], 'g', marker='o', label='Blick., Mitte')
     plt.axis([-1*cfg.o_prim[0] + min(np.min(mitte[:, 0]), np.min(z_target_data_array[:, 0])),
                   cfg.o_prim[0] + max(np.max(mitte[:, 0]), np.max(z_target_data_array[:, 0])),
                   -1 * cfg.o_prim[1] +min(np.min(mitte[:, 1]), np.min(z_target_data_array[:, 1])),

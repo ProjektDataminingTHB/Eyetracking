@@ -21,7 +21,7 @@ class Config:
     clusterName = os.path.join(clusteringHome, 'cluster.csv')
 
     #Excludes
-    exclude = ['131', '071', '090']
+    exclude = ['131', '071', '090', '136']
 
     #Origin
     o_prim = np.array([640, 512])
